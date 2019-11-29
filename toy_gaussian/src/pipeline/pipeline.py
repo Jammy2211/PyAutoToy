@@ -8,11 +8,9 @@ class PipelineSettings(object):
 
 
 class PipelineDataset(af.Pipeline):
-    def __init__(self, pipeline_name, pipeline_tag, *phases, hyper_mode=False):
+    def __init__(self, pipeline_name, pipeline_tag, *phases):
 
         super(PipelineDataset, self).__init__(pipeline_name, pipeline_tag, *phases)
-
-        self.hyper_mode = hyper_mode
 
     def run(self, dataset, mask=None, data_name=None):
         def runner(phase, results):
