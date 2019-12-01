@@ -73,7 +73,6 @@ class PhaseDatasetVisualize(SubPlotVisualizer):
             "plot_fit_normalized_residual_map"
         )
         self.plot_fit_chi_squared_map = plot_setting("plot_fit_chi_squared_map")
-        self.plot_fit_contribution_maps = plot_setting("plot_fit_contribution_maps")
         self.plot_fit_inversion_residual_map = plot_setting(
             "plot_fit_inversion_residual_map"
         )
@@ -144,6 +143,7 @@ class PhaseImagingVisualizer(PhaseDatasetVisualize):
                 self.plot_fit_inversion_regularization_weights
             ),
             unit_label=self.unit_label,
+            unit_conversion_factor=1.0,
             visualize_path=self.image_path,
             subplot_path=self.subplot_path,
         )

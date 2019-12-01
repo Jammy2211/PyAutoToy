@@ -5,8 +5,8 @@ from toy_gaussian.src.pipeline.phase.dataset.result import Result
 
 
 def default_mask_function(shape_2d, pixel_scales):
-    return aa.mask.circular(
-        shape_2d=shape_2d, pixel_scales=pixel_scales, sub_size=1, radius=3.0
+    return aa.mask.unmasked(
+        shape_2d=shape_2d, pixel_scales=pixel_scales, sub_size=1,
     )
 
 
