@@ -67,9 +67,15 @@ aggregator = af.Aggregator(directory=output_path + output_folder)
 optimizers = aggregator.optimizers_with(pipeline=pipeline_meta, phase=phase_name)
 phases = aggregator.phases_with(pipeline=pipeline_meta, phase=phase_name)
 
-non_linear_outputs = list(map(lambda out, phase :
-                             multi_nest_output.MultiNestOutput(model=phase.model, paths=out.paths),
-                             optimizers, phases))
+non_linear_outputs = list(
+    map(
+        lambda out, phase: multi_nest_output.MultiNestOutput(
+            model=phase.model, paths=out.paths
+        ),
+        optimizers,
+        phases,
+    )
+)
 
 
 # First, if we print the non_linear_outputs we'll see that we have a Python list of two non_linear_outputs. These are the non_linear_outputs

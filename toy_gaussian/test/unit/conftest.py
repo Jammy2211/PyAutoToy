@@ -89,12 +89,8 @@ def make_phase_imaging_7x7(mask_function_7x7):
 
 
 @pytest.fixture(name="results_7x7")
-def make_results(
-    mask_7x7,
-):
-    return mock_pipeline.MockResults(
-        mask=mask_7x7,
-    )
+def make_results(mask_7x7,):
+    return mock_pipeline.MockResults(mask=mask_7x7)
 
 
 @pytest.fixture(name="results_collection_7x7")

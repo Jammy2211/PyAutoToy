@@ -5,32 +5,25 @@ class TestPhaseTag:
     def test__mixture_of_values(self):
 
         phase_tag = toy.phase_tagging.phase_tag_from_phase_settings(
-            sub_size=2,
-            signal_to_noise_limit=2,
-            bin_up_factor=None,
+            sub_size=2, signal_to_noise_limit=2, bin_up_factor=None
         )
 
         assert phase_tag == "phase_tag__sub_2__snr_2"
 
         phase_tag = toy.phase_tagging.phase_tag_from_phase_settings(
-            sub_size=1,
-            signal_to_noise_limit=None,
-            bin_up_factor=3,
+            sub_size=1, signal_to_noise_limit=None, bin_up_factor=3
         )
 
         assert phase_tag == "phase_tag__sub_1__bin_3"
 
         phase_tag = toy.phase_tagging.phase_tag_from_phase_settings(
-            sub_size=1,
-            real_space_shape_2d=(3, 3),
-            real_space_pixel_scales=(1.0, 2.0),
+            sub_size=1, real_space_shape_2d=(3, 3), real_space_pixel_scales=(1.0, 2.0)
         )
 
         assert phase_tag == "phase_tag__rs_shape_3x3__rs_pix_1.00x2.00__sub_1"
 
 
 class TestPhaseTaggers:
-
     def test__sub_size_tagger(self):
 
         tag = toy.phase_tagging.sub_size_tag_from_sub_size(sub_size=1)

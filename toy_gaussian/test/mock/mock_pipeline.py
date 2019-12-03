@@ -1,11 +1,13 @@
 import autofit as af
 
+
 class MockAnalysis(object):
     def __init__(self, value):
         self.value = value
 
     def fit(self, instance):
         return 1
+
 
 class MockResults(object):
     def __init__(

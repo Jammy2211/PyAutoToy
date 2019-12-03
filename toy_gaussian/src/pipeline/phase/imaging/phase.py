@@ -97,10 +97,7 @@ class PhaseImaging(dataset.PhaseDataset):
         modified_image = self.modify_image(image=dataset.image, results=results)
 
         masked_imaging = self.meta_imaging_fit.masked_dataset_from(
-            dataset=dataset,
-            mask=mask,
-            results=results,
-            modified_image=modified_image,
+            dataset=dataset, mask=mask, results=results, modified_image=modified_image
         )
 
         self.output_phase_info()

@@ -48,6 +48,7 @@ def imaging_of_phase(
         output_format="png",
     )
 
+
 def imaging_fit_of_phase(
     fit,
     during_analysis,

@@ -116,9 +116,7 @@ class TestResult(object):
         phase_imaging_7x7 = toy.PhaseImaging(
             optimizer_class=mock_pipeline.MockNLO,
             mask_function=mask_function_7x7,
-            gaussians=[
-                toy.SphericalGaussian
-            ],
+            gaussians=[toy.SphericalGaussian],
             phase_name="test_phase_2",
         )
 
@@ -134,9 +132,7 @@ class TestResult(object):
         phase_imaging_7x7 = toy.PhaseImaging(
             optimizer_class=mock_pipeline.MockNLO,
             mask_function=mask_function_7x7,
-            gaussians=[
-                toy.SphericalGaussian
-            ],
+            gaussians=[toy.SphericalGaussian],
             sub_size=2,
             phase_name="test_phase_2",
         )
@@ -149,6 +145,7 @@ class TestResult(object):
 
         assert (result.mask == mask).all()
 
+
 class TestPhasePickle(object):
 
     # noinspection PyTypeChecker
@@ -160,30 +157,22 @@ class TestPhasePickle(object):
             phase_name="phase_name",
             mask_function=mask_function_7x7,
             optimizer_class=mock_pipeline.MockNLO,
-            gaussians=[
-                toy.SphericalGaussian
-            ]
+            gaussians=[toy.SphericalGaussian],
         )
 
         phase_imaging_7x7.make_analysis = make_analysis
-        result = phase_imaging_7x7.run(
-            dataset=imaging_7x7, results=None, mask=None,
-        )
+        result = phase_imaging_7x7.run(dataset=imaging_7x7, results=None, mask=None)
         assert result is not None
 
         phase_imaging_7x7 = toy.PhaseImaging(
             phase_name="phase_name",
             mask_function=mask_function_7x7,
             optimizer_class=mock_pipeline.MockNLO,
-            gaussians=[
-                toy.SphericalGaussian
-            ]
+            gaussians=[toy.SphericalGaussian],
         )
 
         phase_imaging_7x7.make_analysis = make_analysis
-        result = phase_imaging_7x7.run(
-            dataset=imaging_7x7, results=None, mask=None,
-        )
+        result = phase_imaging_7x7.run(dataset=imaging_7x7, results=None, mask=None)
         assert result is not None
 
         class CustomPhase(toy.PhaseImaging):
@@ -194,8 +183,6 @@ class TestPhasePickle(object):
             phase_name="phase_name",
             mask_function=mask_function_7x7,
             optimizer_class=mock_pipeline.MockNLO,
-            gaussians=[
-                toy.SphericalGaussian
-            ]
+            gaussians=[toy.SphericalGaussian],
         )
         phase_imaging_7x7.make_analysis = make_analysis

@@ -11,11 +11,9 @@ import toy_gaussian as toy
 # Prior Passing: None
 # Notes: None
 
+
 def make_pipeline(
-    phase_folders=None,
-    sub_size=2,
-    signal_to_noise_limit=None,
-    bin_up_factor=None,
+    phase_folders=None, sub_size=2, signal_to_noise_limit=None, bin_up_factor=None
 ):
 
     ### SETUP PIPELINE AND PHASE NAMES, TAGS AND PATHS ###
@@ -47,7 +45,7 @@ def make_pipeline(
     phase1 = toy.PhaseImaging(
         phase_name="phase_1__x1_gaussian",
         phase_folders=phase_folders,
-        gaussians=[gaussian],
+        gaussians=af.CollectionPriorModel(gaussian_0=gaussian),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,

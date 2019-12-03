@@ -65,13 +65,13 @@ toy.plot.imaging.subplot(imaging=imaging)
 from toy_gaussian.workspace.pipelines.initialize import x1_gaussian
 
 pipeline_initialize = x1_gaussian.make_pipeline(
-    phase_folders=["gaussian_x1_solo_fit", dataset_label],
+    phase_folders=["gaussian_x1_solo_fit", dataset_label]
 )
 
 from toy_gaussian.workspace.pipelines.main import x1_gaussian
 
 pipeline_main = x1_gaussian.make_pipeline(
-    phase_folders=["gaussian_x1_solo_fit", dataset_label],
+    phase_folders=["gaussian_x1_solo_fit", dataset_label]
 )
 
 pipeline = pipeline_initialize + pipeline_main

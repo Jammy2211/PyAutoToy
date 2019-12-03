@@ -40,7 +40,7 @@ import toy_gaussian as toy
 # It is convenient to specify the lens name as a string, so that if the pipeline is applied to multiple images we \
 # don't have to change all of the path entries in the function below.
 
-dataset_label = "gaussian_x2"
+dataset_label = "gaussian__sub_gaussian"
 pixel_scales = 0.1
 
 # Create the path where the dataset will be loaded from, which in this case is
@@ -62,9 +62,19 @@ toy.plot.imaging.subplot(imaging=imaging)
 # profile. Checkout autolens_workspace/pipelines/examples/lens_sersic_sie_shear_source_sersic.py_' for a full
 # description of the pipeline.
 
-from toy_gaussian.workspace.pipelines.initialize import x2_gaussian_separate
+from toy_gaussian.workspace.pipelines.initialize import x1_gaussian
 
-pipeline = x2_gaussian_separate.make_pipeline(phase_folders=[dataset_label])
+pipeline_initialize = x1_gaussian.make_pipeline(
+    phase_folders=["gaussian_x1__sub_gaussian__grid", dataset_label]
+)
+
+from toy_gaussian.workspace.pipelines.main import x1_gaussian__sub_gaussian__grid
+
+pipeline_main = x1_gaussian__sub_gaussian__grid.make_pipeline(
+    phase_folders=["gaussian_x1__sub_gaussian__grid", dataset_label], parallel=True
+)
+
+pipeline = pipeline_initialize + pipeline_main
 
 pipeline.run(dataset=imaging)
 

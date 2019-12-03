@@ -87,7 +87,9 @@ class TestPhase(object):
         class MyPhase(toy.PhaseImaging):
             def modify_image(self, image, results):
                 assert imaging_7x7.image.shape_2d == image.shape_2d
-                image = aa.array.full(fill_value=20.0, shape_2d=(7, 7), pixel_scales=image.pixel_scales)
+                image = aa.array.full(
+                    fill_value=20.0, shape_2d=(7, 7), pixel_scales=image.pixel_scales
+                )
                 return image
 
         phase_imaging_7x7 = MyPhase(
@@ -222,6 +224,8 @@ class TestPhase(object):
         masked_imaging = aa.masked.imaging(imaging=imaging_7x7, mask=mask)
 
         model_image = gaussian.profile_image_from_grid(grid=masked_imaging.grid)
-        fit = fit_masked_dataset(masked_dataset=masked_imaging, model_data=model_image.in_1d_binned)
+        fit = fit_masked_dataset(
+            masked_dataset=masked_imaging, model_data=model_image.in_1d_binned
+        )
 
         assert fit.likelihood == fit_figure_of_merit

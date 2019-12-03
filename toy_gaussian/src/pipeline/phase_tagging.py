@@ -73,6 +73,7 @@ def bin_up_factor_tag_from_bin_up_factor(bin_up_factor):
     else:
         return "__bin_" + str(bin_up_factor)
 
+
 def real_space_shape_2d_tag_from_real_space_shape_2d(real_space_shape_2d):
     """Generate a sub-grid tag, to customize phase names based on the sub-grid size used.
 

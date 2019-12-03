@@ -11,11 +11,9 @@ import toy_gaussian as toy
 # Prior Passing: None
 # Notes: None
 
+
 def make_pipeline(
-    phase_folders=None,
-    sub_size=2,
-    signal_to_noise_limit=None,
-    bin_up_factor=None,
+    phase_folders=None, sub_size=2, signal_to_noise_limit=None, bin_up_factor=None
 ):
 
     ### SETUP PIPELINE AND PHASE NAMES, TAGS AND PATHS ###
@@ -47,7 +45,7 @@ def make_pipeline(
     phase1 = toy.PhaseImaging(
         phase_name="phase_1__left_gaussian",
         phase_folders=phase_folders,
-        gaussians=[gaussian_0],
+        gaussians=af.CollectionPriorModel(gaussian_0=gaussian_0),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,
@@ -63,16 +61,18 @@ def make_pipeline(
     # In phase 2, we will fit the Gaussian profile, where we:
 
     # 1) Use the resulting Gaussian from the result of phase 1 to fit its light.
-    # 2) Set our priors on the second Gaussian's (y,x) centre such that we assume the Gaussian is centred around (0.0, -1.0).
+    # 2) Set our priors on the second Gaussian's (y,x) centre such that we assume the Gaussian is centred around (0.0, 1.0).
 
     gaussian_1 = af.PriorModel(toy.SphericalGaussian)
     gaussian_1.centre_0 = af.GaussianPrior(mean=0.0, sigma=0.1)
-    gaussian_1.centre_1 = af.GaussianPrior(mean=-1.0, sigma=0.1)
+    gaussian_1.centre_1 = af.GaussianPrior(mean=1.0, sigma=0.1)
 
     phase2 = toy.PhaseImaging(
         phase_name="phase_2__right_gaussian",
         phase_folders=phase_folders,
-        gaussians=[phase1.result.instance.gaussians[0], gaussian_1],
+        gaussians=af.CollectionPriorModel(
+            gaussian_0=phase1.result.instance.gaussians.gaussian_0, gaussian_1=gaussian_1
+        ),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,
@@ -92,7 +92,10 @@ def make_pipeline(
     phase3 = toy.PhaseImaging(
         phase_name="phase_3__both_gaussian",
         phase_folders=phase_folders,
-        gaussians=[phase1.result.model.gaussians[0], phase2.result.model.gaussians[1]],
+        gaussians=af.CollectionPriorModel(
+            gaussian_0=phase1.result.model.gaussians.gaussian_0,
+            gaussian_1=phase2.result.model.gaussians.gaussian_1,
+        ),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,

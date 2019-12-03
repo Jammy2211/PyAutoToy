@@ -21,7 +21,11 @@ def simulate_imaging_from_gaussian_and_output_to_fits(
     )
 
     # Use this grid and our Gaussian profile to create an image of the Gaussian.
-    image = sum(list(map(lambda gaussian : gaussian.profile_image_from_grid(grid=grid), gaussians)))
+    image = sum(
+        list(
+            map(lambda gaussian: gaussian.profile_image_from_grid(grid=grid), gaussians)
+        )
+    )
 
     # Simulate the imaging data, including Poisson noise.
     imaging = aa.imaging.simulate(
@@ -78,6 +82,7 @@ def make__gaussian_x1(sub_size):
         sub_size=sub_size,
     )
 
+
 def make__gaussian_x2(sub_size):
 
     data_type = "gaussian_x2"
@@ -86,6 +91,24 @@ def make__gaussian_x2(sub_size):
 
     gaussian_0 = toy.SphericalGaussian(centre=(0.0, 1.0), intensity=10.0, sigma=0.5)
     gaussian_1 = toy.SphericalGaussian(centre=(0.0, -1.0), intensity=10.0, sigma=0.5)
+
+    simulate_imaging_from_gaussian_and_output_to_fits(
+        gaussians=[gaussian_0, gaussian_1],
+        pixel_scales=0.1,
+        shape_2d=(40, 40),
+        data_type=data_type,
+        sub_size=sub_size,
+    )
+
+
+def make__gaussian__sub_gaussian(sub_size):
+
+    data_type = "gaussian__sub_gaussian"
+
+    # This lens-only system has a Dev Vaucouleurs spheroid / bulge.
+
+    gaussian_0 = toy.SphericalGaussian(centre=(0.0, 0.0), intensity=10.0, sigma=1.0)
+    gaussian_1 = toy.SphericalGaussian(centre=(0.5, 0.5), intensity=0.2, sigma=0.1)
 
     simulate_imaging_from_gaussian_and_output_to_fits(
         gaussians=[gaussian_0, gaussian_1],

@@ -95,7 +95,10 @@ class TestPhase(object):
     def test__duplication(self):
         phase_dataset_7x7 = toy.PhaseImaging(
             phase_name="test_phase",
-            gaussians=[af.PriorModel(cls=toy.SphericalGaussian), af.PriorModel(cls=toy.SphericalGaussian)],
+            gaussians=[
+                af.PriorModel(cls=toy.SphericalGaussian),
+                af.PriorModel(cls=toy.SphericalGaussian),
+            ],
         )
 
         toy.PhaseImaging(phase_name="test_phase")
@@ -104,7 +107,10 @@ class TestPhase(object):
 
     def test__phase_can_receive_list_of_gaussian_models(self):
         phase_dataset_7x7 = toy.PhaseImaging(
-            gaussians=[af.PriorModel(cls=toy.SphericalGaussian), af.PriorModel(cls=toy.SphericalGaussian)],
+            gaussians=[
+                af.PriorModel(cls=toy.SphericalGaussian),
+                af.PriorModel(cls=toy.SphericalGaussian),
+            ],
             optimizer_class=af.MultiNest,
             phase_name="test_phase",
         )

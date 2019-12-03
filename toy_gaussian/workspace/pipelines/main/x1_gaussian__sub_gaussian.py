@@ -1,7 +1,9 @@
 import autofit as af
 import toy_gaussian as toy
 
-# In this pipeline, we'll perform a basic analysis which fits a single Spherical Gaussian profile.
+# In this pipeline, we'll perform a basic analysis which fits two Spherical Gaussian profiles, where we anticipate the
+# second component will be a fainter and smaller Gaussian located within the main Gaussian, and only revealed after its
+# subtraction.
 
 # Phase 1:
 
@@ -22,7 +24,7 @@ def make_pipeline(
     # will be the string specified below However, its good practise to use the 'tag.' function below, incase
     # a pipeline does use customized tag names.
 
-    pipeline_name = "pipeline_main__x1_gaussian"
+    pipeline_name = "pipeline_main__x1_gaussian__sub_gaussian"
 
     pipeline_tag = toy.pipeline_tagging.pipeline_tag_from_pipeline_settings()
 
@@ -38,11 +40,17 @@ def make_pipeline(
 
     # 1) Set our priors on the Gaussian's (y,x) centre such that we assume the image is centred around the Gaussian.
 
+    sub_gaussian = af.PriorModel(cls=toy.SphericalGaussian)
+
+    sub_gaussian.centre.centre_0 = af.UniformPrior(lower_limit=-2.0, upper_limit=2.0)
+    sub_gaussian.centre.centre_1 = af.UniformPrior(lower_limit=-2.0, upper_limit=2.0)
+
     phase1 = toy.PhaseImaging(
-        phase_name="phase_1__x1_gaussian_final",
+        phase_name="phase_1__x1_gaussian__sub_gaussian",
         phase_folders=phase_folders,
         gaussians=af.CollectionPriorModel(
-            gaussian_0=af.last.model.gaussians.gaussian_0
+            gaussian_0=af.last.model.gaussians.gaussian_0,
+            sub_gaussian=sub_gaussian,
         ),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,

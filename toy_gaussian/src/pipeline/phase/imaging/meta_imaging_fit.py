@@ -25,8 +25,7 @@ class MetaImagingFit(meta_dataset_fit.MetaDatasetFit):
         )
 
         masked_imaging = masked_dataset.MaskedImaging(
-            imaging=dataset.modified_image_from_image(modified_image),
-            mask=mask,
+            imaging=dataset.modified_image_from_image(modified_image), mask=mask
         )
 
         if self.signal_to_noise_limit is not None:
