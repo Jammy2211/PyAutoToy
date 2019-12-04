@@ -15,7 +15,11 @@ import toy_gaussian as toy
 
 
 def make_pipeline(
-    phase_folders=None, sub_size=2, signal_to_noise_limit=None, bin_up_factor=None, parallel=False,
+    phase_folders=None,
+    sub_size=2,
+    signal_to_noise_limit=None,
+    bin_up_factor=None,
+    parallel=False,
 ):
 
     ### SETUP PIPELINE AND PHASE NAMES, TAGS AND PATHS ###
@@ -57,8 +61,7 @@ def make_pipeline(
         phase_name="phase_1__x1_gaussian__sub_gaussian",
         phase_folders=phase_folders,
         gaussians=af.CollectionPriorModel(
-            gaussian_0=af.last.instance.gaussians.gaussian_0,
-            sub_gaussian=sub_gaussian,
+            gaussian_0=af.last.instance.gaussians.gaussian_0, sub_gaussian=sub_gaussian
         ),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
@@ -85,7 +88,7 @@ def make_pipeline(
         phase_folders=phase_folders,
         gaussians=af.CollectionPriorModel(
             gaussian_0=af.last[-1].model.gaussians.gaussian_0,
-        #    sub_gaussian=phase1.best_result.model.gaussians.sub_gaussian,
+            #    sub_gaussian=phase1.best_result.model.gaussians.sub_gaussian,
         ),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,

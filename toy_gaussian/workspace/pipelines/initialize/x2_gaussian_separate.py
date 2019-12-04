@@ -71,7 +71,8 @@ def make_pipeline(
         phase_name="phase_2__right_gaussian",
         phase_folders=phase_folders,
         gaussians=af.CollectionPriorModel(
-            gaussian_0=phase1.result.instance.gaussians.gaussian_0, gaussian_1=gaussian_1
+            gaussian_0=phase1.result.instance.gaussians.gaussian_0,
+            gaussian_1=gaussian_1,
         ),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
