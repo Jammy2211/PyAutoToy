@@ -100,3 +100,6 @@ venv.bak/
 
 # mkdocs documentation
 /site
+toy_gaussian/workspace/dataset/
+toy_gaussian/workspace/output/
+

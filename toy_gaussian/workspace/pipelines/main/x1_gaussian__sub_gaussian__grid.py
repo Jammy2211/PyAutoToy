@@ -1,6 +1,7 @@
 import autofit as af
 import toy_gaussian as toy
 
+
 # In this pipeline, we'll perform a basic analysis which fits two Spherical Gaussian profiles, where we anticipate the
 # second component will be a fainter and smaller Gaussian located within the main Gaussian, and only revealed after its
 # subtraction.
@@ -21,7 +22,6 @@ def make_pipeline(
     bin_up_factor=None,
     parallel=False,
 ):
-
     ### SETUP PIPELINE AND PHASE NAMES, TAGS AND PATHS ###
 
     # We setup the pipeline name using the tagging module. In this case, the pipeline name is not given a tag and
@@ -87,8 +87,8 @@ def make_pipeline(
         phase_name="phase_2__subhalo_refine",
         phase_folders=phase_folders,
         gaussians=af.CollectionPriorModel(
-            gaussian_0=af.last[-1].model.gaussians.gaussian_0,
-            #    sub_gaussian=phase1.best_result.model.gaussians.sub_gaussian,
+        gaussian_0=af.last[-1].model.gaussians.gaussian_0,
+        sub_gaussian=phase1.result.model.gaussians.sub_gaussian,
         ),
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
