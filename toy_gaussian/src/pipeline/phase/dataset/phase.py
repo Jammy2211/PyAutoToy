@@ -1,5 +1,6 @@
 import autofit as af
 import autoarray as aa
+from autofit.tools.phase import Dataset
 from toy_gaussian.src.pipeline.phase import abstract
 from toy_gaussian.src.pipeline.phase.dataset.result import Result
 
@@ -29,7 +30,7 @@ class PhaseDataset(abstract.AbstractPhase):
         super(PhaseDataset, self).__init__(paths, optimizer_class=optimizer_class)
         self.gaussians = gaussians or []
 
-    def run(self, dataset, results=None, mask=None):
+    def run(self, dataset: Dataset, results=None, mask=None):
         """
         Run this phase.
 
@@ -47,6 +48,7 @@ class PhaseDataset(abstract.AbstractPhase):
         result: AbstractPhase.Result
             A result object comprising the best fit model and other hyper_gaussians.
         """
+        dataset.save(self.paths.phase_output_path)
         self.model = self.model.populate(results)
 
         analysis = self.make_analysis(dataset=dataset, results=results, mask=mask)

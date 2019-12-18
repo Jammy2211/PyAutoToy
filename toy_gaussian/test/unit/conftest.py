@@ -1,13 +1,13 @@
-import autofit as af
-import toy_gaussian
-
-from test_autoarray.unit.conftest import *
-from test_autoarray.mock import mock_mask
-from toy_gaussian.test.mock import mock_pipeline
+from os import path
 
 import numpy as np
-from os import path
 import pytest
+
+import autofit as af
+import toy_gaussian
+from autoarray.mask import mask
+from test_autoarray.unit.conftest import *
+from toy_gaussian.test.mock import mock_pipeline
 
 directory = path.dirname(path.realpath(__file__))
 
@@ -46,7 +46,7 @@ def make_mask_function_7x7_1_pix():
             ]
         )
 
-        return mock_mask.MockMask(mask_2d=array)
+        return mask.Mask(mask_2d=array)
 
     return mask_function_7x7_1_pix
 
@@ -89,7 +89,7 @@ def make_phase_imaging_7x7(mask_function_7x7):
 
 
 @pytest.fixture(name="results_7x7")
-def make_results(mask_7x7,):
+def make_results(mask_7x7, ):
     return mock_pipeline.MockResults(mask=mask_7x7)
 
 
