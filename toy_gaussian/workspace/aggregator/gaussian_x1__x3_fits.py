@@ -44,10 +44,10 @@ aggregator = af.Aggregator(
 # This line is telling the Phase which non-linear optimizer to use, in this case MultiNest. Every optimizer is created
 # as an instance of a class in Python, which has methods built-in allowing one to manipulate its results.
 
-non_linear_outputs = aggregator.outputs_with(
+non_linear_outputs = aggregator.filter(
     pipeline=pipeline_meta,
     phase=phase_name
-)
+).output
 
 # First, if we print the non_linear_outputs we'll see that we have a Python list of two non_linear_outputs. These are the non_linear_outputs
 # of phase 1 of our main pipeline for the image we modeled.
@@ -105,9 +105,9 @@ print(most_probable_model_instances)
 
 # Other than printing this string for a quick inspection of all results, this doesn't offer too much utility, but it
 # can be a handy way to quickly inspect all results.
-results = aggregator.model_results(
+results = aggregator.filter(
     pipeline=pipeline_meta,
     phase=phase_name
-)
+).model_results
 
 print(results)
