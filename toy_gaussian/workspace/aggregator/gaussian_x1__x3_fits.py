@@ -29,13 +29,6 @@ output_folder = "gaussian_x1__x3_fits/"
 pipeline_name = "pipeline_main__x1_gaussian"
 phase_name = "phase_1__x1_gaussian_final"
 
-#### BUG 1 - The pipeline meta should not contain all summed pipeline names. We should only have to specify one pipeline
-#### name in order to return the results oof that pipeline. E.g. we should be able to use the pipeline_name variable above.
-
-#### Alternative, if changing the pipeline_meta is a pain, we could make it so that the aggregator only looks for whether the
-#### in input string is 'in' the pipeline meta variable. The phase_name is unique and thus ensures we can get the results
-#### we want, however this would mean that we are required to input a phase name to extract results.
-
 pipeline_meta = "pipeline_main__x1_gaussian"
 
 # First, we create an instance of the aggregator, which takes the output path as input, telling it where to load
