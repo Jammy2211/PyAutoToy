@@ -22,7 +22,7 @@ af.conf.instance = af.conf.Config(
 # To use the aggregator we have to supply it with the pipeline name we want to load results from and the phase name
 # of that pipeline we want to load results from. Lets load the results of the pipeline's final phase.
 
-output_folder = "gaussian_x1_solo_fit/"
+output_folder = "gaussian_x1__x3_fits/"
 pipeline_name = "pipeline_main__x1_gaussian"
 phase_name = "phase_1__x1_gaussian_final"
 
@@ -42,12 +42,11 @@ pipeline_meta = "pipeline_initialize__x1_gaussian + pipeline_main__x1_gaussian"
 
 ### FEATURE - it would be good if this printed summary information of the pipelines / phases found. For example:
 
-### Aggregator has found the results of fits in the following 17 folders:
+### Aggregator has found the results of fits in the following 3 folders:
 
-### Folder 1 - gaussian_x1
-### Folder 2 - gaussian_x1_image_2
-### Folder 3 - gaussian_x1_image_3
-
+### Folder 1 - gaussian_x1__x3_fits/gaussian_x1__sigma_0.1
+### Folder 2 - gaussian_x1__x3_fits/gaussian_x1__sigma_0.5
+### Folder 3 - gaussian_x1__x3_fits/gaussian_x1__sigma_1.0
 
 aggregator = af.Aggregator(directory=output_path + output_folder)
 

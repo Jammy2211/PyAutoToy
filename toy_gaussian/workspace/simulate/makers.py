@@ -83,6 +83,23 @@ def make__gaussian_x1(sub_size):
     )
 
 
+def make__gaussian_x1__input_sigma(sub_size, sigma):
+
+    data_type = "gaussian_x1__sigma_" + str(sigma)
+
+    # This lens-only system has a Dev Vaucouleurs spheroid / bulge.
+
+    gaussian = toy.SphericalGaussian(centre=(0.0, 0.0), intensity=10.0, sigma=sigma)
+
+    simulate_imaging_from_gaussian_and_output_to_fits(
+        gaussians=[gaussian],
+        pixel_scales=0.1,
+        shape_2d=(25, 25),
+        data_type=data_type,
+        sub_size=sub_size,
+    )
+
+
 def make__gaussian_x2(sub_size):
 
     data_type = "gaussian_x2"
