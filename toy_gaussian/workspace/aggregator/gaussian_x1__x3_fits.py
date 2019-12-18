@@ -101,8 +101,6 @@ most_probable_model_instances = list(map(
 
 print(most_probable_model_instances)
 
-#### BUG 3 - This no lonoger returns the model results successfully.
-
 # We can load the results of all phases. The results are just a Python string that summarizes every fit's lens model.
 
 # Other than printing this string for a quick inspection of all results, this doesn't offer too much utility, but it
