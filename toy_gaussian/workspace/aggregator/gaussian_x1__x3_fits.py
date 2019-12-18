@@ -33,15 +33,6 @@ pipeline_meta = "pipeline_main__x1_gaussian"
 
 # First, we create an instance of the aggregator, which takes the output path as input, telling it where to load
 # results from.
-
-### FEATURE - it would be good if this printed summary information of the pipelines / phases found. For example:
-
-### Aggregator has found the results of fits in the following 3 folders:
-
-### Folder 1 - gaussian_x1__x3_fits/gaussian_x1__sigma_0.1
-### Folder 2 - gaussian_x1__x3_fits/gaussian_x1__sigma_0.5
-### Folder 3 - gaussian_x1__x3_fits/gaussian_x1__sigma_1.0
-
 aggregator = af.Aggregator(
     directory=str(output_path / output_folder)
 )
