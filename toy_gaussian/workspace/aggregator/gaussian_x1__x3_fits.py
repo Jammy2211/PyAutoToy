@@ -111,3 +111,7 @@ results = aggregator.filter(
 ).model_results
 
 print(results)
+
+# We can also grab an instance of the dataset that was passed down the pipeline
+instance = aggregator[0].dataset
+print(instance.data)
