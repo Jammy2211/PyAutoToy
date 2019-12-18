@@ -36,7 +36,7 @@ phase_name = "phase_1__x1_gaussian_final"
 #### in input string is 'in' the pipeline meta variable. The phase_name is unique and thus ensures we can get the results
 #### we want, however this would mean that we are required to input a phase name to extract results.
 
-pipeline_meta = "pipeline_initialize__x1_gaussian + pipeline_main__x1_gaussian"
+pipeline_meta = "pipeline_main__x1_gaussian"
 
 # First, we create an instance of the aggregator, which takes the output path as input, telling it where to load
 # results from.
