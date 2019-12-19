@@ -46,7 +46,7 @@ def make_mask_function_7x7_1_pix():
             ]
         )
 
-        return mask.Mask(mask_2d=array)
+        return mask.Mask(mask_2d=array, pixel_scales=1.0)
 
     return mask_function_7x7_1_pix
 
