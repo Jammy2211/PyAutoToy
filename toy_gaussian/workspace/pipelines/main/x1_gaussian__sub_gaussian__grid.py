@@ -20,6 +20,7 @@ def make_pipeline(
     sub_size=2,
     signal_to_noise_limit=None,
     bin_up_factor=None,
+    optimizer_class=af.MultiNest,
     parallel=False,
 ):
     ### SETUP PIPELINE AND PHASE NAMES, TAGS AND PATHS ###
@@ -66,7 +67,7 @@ def make_pipeline(
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,
-        optimizer_class=af.MultiNest,
+        optimizer_class=optimizer_class,
         number_of_steps=2,
     )
 
@@ -93,7 +94,7 @@ def make_pipeline(
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,
-        optimizer_class=af.MultiNest,
+        optimizer_class=optimizer_class,
     )
 
     phase2.optimizer.const_efficiency_mode = True

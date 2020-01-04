@@ -85,7 +85,10 @@ class TestMetaData(object):
 
         print(mock_files[1].text)
 
-        assert  "pipeline=pipeline_name\nphase=phase_name\ndataset_name=data_name" in mock_files[1].text
+        assert (
+            "pipeline=pipeline_name\nphase=phase_name\ndataset_name=data_name"
+            in mock_files[1].text
+        )
 
         assert "phase_name///optimizer.pickle" in mock_files[2].filename
 

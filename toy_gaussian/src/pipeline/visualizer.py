@@ -26,7 +26,7 @@ class AbstractVisualizer:
         self.unit_label = af.conf.instance.visualize.get(
             "figures", "unit_label", str
         ).strip()
-        self.include_mask = figure_setting("include_mask")
+        self.mask = figure_setting("mask")
 
 
 class SubPlotVisualizer(AbstractVisualizer):
@@ -102,7 +102,7 @@ class PhaseImagingVisualizer(PhaseDatasetVisualize):
         return self.masked_dataset
 
     def plot_imaging(self):
-        mask = self.masked_dataset.mask if self.include_mask else None
+        mask = self.masked_dataset.mask if self.mask else None
 
         phase_plotters.imaging_of_phase(
             imaging=self.masked_dataset.imaging,
@@ -124,7 +124,7 @@ class PhaseImagingVisualizer(PhaseDatasetVisualize):
         phase_plotters.imaging_fit_of_phase(
             fit=fit,
             during_analysis=during_analysis,
-            include_mask=self.include_mask,
+            mask=self.mask,
             plot_all_at_end_png=self.plot_fit_all_at_end_png,
             plot_all_at_end_fits=self.plot_fit_all_at_end_fits,
             plot_fit_as_subplot=self.plot_fit_as_subplot,

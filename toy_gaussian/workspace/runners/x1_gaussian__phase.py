@@ -55,28 +55,20 @@ imaging = toy.imaging.from_fits(
     pixel_scales=pixel_scales,
 )
 
-toy.plot.imaging.subplot(imaging=imaging)
+# toy.plot.imaging.subplot(imaging=imaging)
 
-# Running a pipeline is easy, we simply import it from the pipelines folder and pass the lens dataset to its run function.
-# Below, we'll use a 3 phase example pipeline to fit the dataset with a parametric lens light, mass and source light
-# profile. Checkout autolens_workspace/pipelines/examples/lens_sersic_sie_shear_source_sersic.py_' for a full
-# description of the pipeline.
 
-from toy_gaussian.workspace.pipelines.initialize import x1_gaussian
-
-pipeline_initialize = x1_gaussian.make_pipeline(
-    phase_folders=["gaussian_x1_solo_fit", dataset_label], optimizer_class=af.Emcee
+phase = toy.PhaseImaging(
+    phase_name="phase_gaussian_example_loads",
+    gaussians=af.CollectionPriorModel(gaussian_0=toy.SphericalGaussian),
+    sub_size=1,
+    optimizer_class=af.Emcee,
 )
 
-from toy_gaussian.workspace.pipelines.main import x1_gaussian
+phase.optimizer.nwalkers = 100
+phase.optimizer.nsteps = 200000
 
-pipeline_main = x1_gaussian.make_pipeline(
-    phase_folders=["gaussian_x1_solo_fit", dataset_label], optimizer_class=af.Emcee
-)
-
-pipeline = pipeline_initialize + pipeline_main
-
-pipeline.run(dataset=imaging)
+phase.run(dataset=imaging)
 
 # Another example pipeline is shown below, which fits the dataset using a pixelized inversion for the source light.
 # If you commented out the 3 lines of code above, and uncomment the code below, you can easily set this pipeline

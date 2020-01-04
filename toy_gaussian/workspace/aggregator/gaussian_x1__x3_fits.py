@@ -17,8 +17,7 @@ output_path = workspace_path / "output/"
 
 # Now we'll ue this path to explicitly set the config path and output path.
 af.conf.instance = af.conf.Config(
-    config_path=str(workspace_path / "config"),
-    output_path=str(output_path)
+    config_path=str(workspace_path / "config"), output_path=str(output_path)
 )
 
 # To use the aggregator we have to supply it with the pipeline name we want to load results from and the phase name
@@ -28,13 +27,10 @@ output_folder = "gaussian_x1__x3_fits/"
 pipeline_name = "pipeline_main__x1_gaussian"
 phase_name = "phase_1__x1_gaussian_final"
 
-pipeline_meta = "pipeline_main__x1_gaussian"
-
 # First, we create an instance of the aggregator, which takes the output path as input, telling it where to load
 # results from.
-aggregator = af.Aggregator(
-    directory=str(output_path / output_folder)
-)
+
+aggregator = af.Aggregator(directory=str(output_path / output_folder))
 
 # We can create a list of the optimizer classes of every phase. When you make a phase in a pipeline, you are
 # probably used to seeing the following line:
@@ -44,10 +40,7 @@ aggregator = af.Aggregator(
 # This line is telling the Phase which non-linear optimizer to use, in this case MultiNest. Every optimizer is created
 # as an instance of a class in Python, which has methods built-in allowing one to manipulate its results.
 
-non_linear_outputs = aggregator.filter(
-    pipeline=pipeline_meta,
-    phase=phase_name
-).output
+non_linear_outputs = aggregator.filter(pipeline=pipeline_name, phase=phase_name).output
 
 # First, if we print the non_linear_outputs we'll see that we have a Python list of two non_linear_outputs. These are the non_linear_outputs
 # of phase 1 of our main pipeline for the image we modeled.
@@ -61,10 +54,9 @@ print(non_linear_outputs)
 # disk. This means we can use the non_linear_outputs to, for example, create an instance of the most likely (e.g. highest
 # likelihood) model of every fit to an image.
 
-most_likely_model_parameters = list(map(
-    lambda out: out.most_likely_model_parameters,
-    non_linear_outputs
-))
+most_likely_model_parameters = list(
+    map(lambda out: out.most_likely_model_parameters, non_linear_outputs)
+)
 
 print(most_likely_model_parameters)
 
@@ -72,10 +64,9 @@ print(most_likely_model_parameters)
 # which values correspond to which parameters? To find out, you'd have to directly compare to the files output on the
 # hard-disk, which isn't ideal. However, we can instead create a model instance of every fit.
 
-most_likely_model_instances = list(map(
-    lambda out: out.most_likely_model_instance,
-    non_linear_outputs
-))
+most_likely_model_instances = list(
+    map(lambda out: out.most_likely_model_instance, non_linear_outputs)
+)
 
 print(most_likely_model_instances)
 
@@ -85,19 +76,17 @@ print(most_likely_model_instances)
 # We can also access the 'most probable' model, which is the model computed by marginalizing over the MultiNest samples
 # of every parameter in 1D and taking the median of this PDF.
 
-most_probable_model_parameters = list(map(
-    lambda out: out.most_probable_model_parameters,
-    non_linear_outputs
-))
+most_probable_model_parameters = list(
+    map(lambda out: out.most_probable_model_parameters, non_linear_outputs)
+)
 print(most_probable_model_parameters)
 
 # This again produces a 1D Python list where it is difficult to know which parameters are which. Fortunately, we can
 # create an equivalent ModelInstance of the most probable model.
 
-most_probable_model_instances = list(map(
-    lambda out: out.most_probable_model_instance,
-    non_linear_outputs
-))
+most_probable_model_instances = list(
+    map(lambda out: out.most_probable_model_instance, non_linear_outputs)
+)
 
 print(most_probable_model_instances)
 
@@ -105,10 +94,7 @@ print(most_probable_model_instances)
 
 # Other than printing this string for a quick inspection of all results, this doesn't offer too much utility, but it
 # can be a handy way to quickly inspect all results.
-results = aggregator.filter(
-    pipeline=pipeline_meta,
-    phase=phase_name
-).model_results
+results = aggregator.filter(pipeline=pipeline_name, phase=phase_name).model_results
 
 print(results)
 

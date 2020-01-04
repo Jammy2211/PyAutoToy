@@ -13,7 +13,11 @@ import toy_gaussian as toy
 
 
 def make_pipeline(
-    phase_folders=None, sub_size=2, signal_to_noise_limit=None, bin_up_factor=None
+    phase_folders=None,
+    sub_size=2,
+    signal_to_noise_limit=None,
+    bin_up_factor=None,
+    optimizer_class=af.MultiNest,
 ):
 
     ### SETUP PIPELINE AND PHASE NAMES, TAGS AND PATHS ###
@@ -49,7 +53,7 @@ def make_pipeline(
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,
-        optimizer_class=af.MultiNest,
+        optimizer_class=optimizer_class,
     )
 
     phase1.optimizer.const_efficiency_mode = True
@@ -77,7 +81,7 @@ def make_pipeline(
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,
-        optimizer_class=af.MultiNest,
+        optimizer_class=optimizer_class,
     )
 
     phase2.optimizer.const_efficiency_mode = True
@@ -100,7 +104,7 @@ def make_pipeline(
         sub_size=sub_size,
         signal_to_noise_limit=signal_to_noise_limit,
         bin_up_factor=bin_up_factor,
-        optimizer_class=af.MultiNest,
+        optimizer_class=optimizer_class,
     )
 
     phase3.optimizer.const_efficiency_mode = True

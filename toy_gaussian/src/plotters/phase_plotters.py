@@ -52,7 +52,7 @@ def imaging_of_phase(
 def imaging_fit_of_phase(
     fit,
     during_analysis,
-    include_mask,
+    mask,
     unit_label,
     unit_conversion_factor,
     plot_all_at_end_png,
@@ -82,7 +82,7 @@ def imaging_fit_of_phase(
 
         aa.plot.fit_imaging.subplot(
             fit=fit,
-            include_mask=include_mask,
+            mask=mask,
             unit_label=unit_label,
             unit_conversion_factor=unit_conversion_factor,
             output_path=subplot_path,
@@ -91,7 +91,7 @@ def imaging_fit_of_phase(
 
     aa.plot.fit_imaging.individuals(
         fit=fit,
-        include_mask=include_mask,
+        mask=mask,
         unit_label=unit_label,
         unit_conversion_factor=unit_conversion_factor,
         plot_image=plot_image,
@@ -115,7 +115,7 @@ def imaging_fit_of_phase(
 
             aa.plot.fit_imaging.individuals(
                 fit=fit,
-                include_mask=include_mask,
+                mask=mask,
                 unit_label=unit_label,
                 unit_conversion_factor=unit_conversion_factor,
                 plot_image=True,
@@ -141,7 +141,7 @@ def imaging_fit_of_phase(
 
             aa.plot.fit_imaging.individuals(
                 fit=fit,
-                include_mask=include_mask,
+                mask=mask,
                 unit_label=unit_label,
                 unit_conversion_factor=unit_conversion_factor,
                 plot_image=True,
