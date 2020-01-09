@@ -30,7 +30,7 @@ def imaging_of_phase(
             unit_label=unit_label,
             unit_conversion_factor=unit_conversion_factor,
             output_path=subplot_path,
-            output_format="png",
+            format="png",
         )
 
     aa.plot.imaging.individual(
@@ -45,7 +45,7 @@ def imaging_of_phase(
         plot_absolute_signal_to_noise_map=plot_absolute_signal_to_noise_map,
         plot_potential_chi_squared_map=plot_potential_chi_squared_map,
         output_path=output_path,
-        output_format="png",
+        format="png",
     )
 
 
@@ -86,7 +86,7 @@ def imaging_fit_of_phase(
             unit_label=unit_label,
             unit_conversion_factor=unit_conversion_factor,
             output_path=subplot_path,
-            output_format="png",
+            format="png",
         )
 
     aa.plot.fit_imaging.individuals(
@@ -106,7 +106,7 @@ def imaging_fit_of_phase(
         plot_inversion_chi_squared_map=plot_inversion_chi_squared_map,
         plot_inversion_regularization_weight_map=plot_inversion_regularization_weights,
         output_path=output_path,
-        output_format="png",
+        format="png",
     )
 
     if not during_analysis:
@@ -130,7 +130,7 @@ def imaging_fit_of_phase(
                 plot_inversion_chi_squared_map=True,
                 plot_inversion_regularization_weight_map=True,
                 output_path=output_path,
-                output_format="png",
+                format="png",
             )
 
         if plot_all_at_end_fits:
