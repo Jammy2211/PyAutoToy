@@ -5,18 +5,18 @@ import numpy as np
 
 
 class Species:
-    def __init__(self, growth_rate: float):
+    def __init__(self, growth_rate: float = 1.0):
         """
         A species that has a defined growth rate and interaction rate with other species.
 
-        If no interaction rate is defined then a default interaction rate of 1.0 is used.
+        If no interaction rate is defined then a default interaction rate of 0.0 is used.
 
         Parameters
         ----------
         growth_rate
             The rate of growth of the species in the absence of other species.
         """
-        self.interactions = defaultdict(lambda: 1.0)
+        self.interactions = defaultdict(lambda: 0.0)
         self.growth_rate = growth_rate
 
     def __getitem__(self, species: "Species") -> float:
@@ -65,6 +65,8 @@ class SpeciesCollection:
         """
         A collection of species which interact with each other.
 
+        If no interaction is defined between two species it defaults to 0.
+
         Parameters
         ----------
         species
@@ -74,7 +76,10 @@ class SpeciesCollection:
         for species_a in self.species:
             for species_b in self.species:
                 if species_b not in species_a.interactions:
-                    species_a.interactions[species_b] = 1.0
+                    species_a.interactions[species_b] = 0.0
+
+    def __len__(self):
+        return len(self.species)
 
     @property
     def interaction_matrix(self) -> np.ndarray:

@@ -1,11 +1,33 @@
 import numpy as np
+import pytest
 
 from time_series import species as s
 
 
+@pytest.fixture(name="species_a")
+def make_species_a():
+    return s.Species(1.0)
+
+
+@pytest.fixture(name="species_b")
+def make_species_b():
+    return s.Species(2.0)
+
+
+@pytest.fixture(name="species_collection")
+def make_species_collection(
+        species_a,
+        species_b
+):
+    return s.SpeciesCollection(
+        species_a,
+        species_b
+    )
+
+
 class TestSpecies:
     def test_interaction(self, species_a):
-        assert species_a.interactions[species_a] == 1.0
+        assert species_a.interactions[species_a] == 0.0
 
         species_a.interactions[species_a] = 0.5
         assert species_a.interactions[species_a] == 0.5
@@ -16,7 +38,7 @@ class TestSpeciesCollection:
         collection = s.SpeciesCollection(species_a)
 
         assert collection.species == [species_a]
-        assert collection.interaction_matrix == np.array([[1.0]])
+        assert collection.interaction_matrix == np.array([[0.0]])
 
     def test_interaction_matrix(
             self,
@@ -29,8 +51,8 @@ class TestSpeciesCollection:
 
         assert (species_collection.interaction_matrix == np.array(
             [
-                [1.0, 0.5],
-                [0.7, 1.0]
+                [0.0, 0.5],
+                [0.7, 0.0]
             ]
         )).all()
 
