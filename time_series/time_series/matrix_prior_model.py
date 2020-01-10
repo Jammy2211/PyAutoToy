@@ -1,7 +1,51 @@
 import inspect
+from collections import defaultdict
+from typing import Union
 
 import autofit as af
 from time_series.matrix import Matrix
+
+
+class SpeciesPriorModel(af.PriorModel):
+    def __init__(self, cls, **kwargs):
+        super().__init__(cls, **kwargs)
+        self.interactions = defaultdict(lambda: 0.0)
+
+    def __getitem__(self, species: "SpeciesPriorModel") -> Union[float, af.Prior]:
+        """
+        Convenience method for getting the interaction value of this species with another.
+
+        If no interaction rate has been set then 1.0 is returned.
+
+        Parameters
+        ----------
+        species
+            A species with which this species interacts
+
+        Returns
+        -------
+        The negative impact the presence of the other species has on the growth
+        of this species.
+        """
+        return self.interactions[species]
+
+    def __setitem__(
+            self,
+            species: "SpeciesPriorModel",
+            interaction: Union[float, af.Prior]
+    ):
+        """
+        Convenience method for setting the interaction value of this species with another.
+
+        Parameters
+        ----------
+        species
+            A species with which this species interacts
+        interaction
+            The negative impact the presence of the other species has on the growth
+            of this species.
+        """
+        self.interactions[species] = interaction
 
 
 class MatrixPriorModel(af.CollectionPriorModel, Matrix):
@@ -17,7 +61,7 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
         items
             A collection of items that implement the Species interface
         """
-        super().__init__(items)
+        super().__init__(list(map(SpeciesPriorModel, items)))
         self.cls = cls
 
     def instance_for_arguments(self, arguments: dict) -> object:

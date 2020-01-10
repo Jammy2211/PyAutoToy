@@ -22,7 +22,7 @@ class TestBasicBehaviour:
             matrix_prior_model,
             af.CollectionPriorModel
         )
-        assert matrix_prior_model.prior_count == 0
+        assert matrix_prior_model.prior_count == 2
 
         instance = matrix_prior_model.instance_from_prior_medians()
         assert isinstance(instance, s.SpeciesCollection)
@@ -33,7 +33,7 @@ class TestBasicBehaviour:
         for i in range(len(matrix_prior_model)):
             matrix_prior_model[i, i] = prior
 
-        assert matrix_prior_model.prior_count == 1
+        assert matrix_prior_model.prior_count == 3
 
         instance = matrix_prior_model.instance_from_prior_medians()
         assert instance[0, 0] == 0.5

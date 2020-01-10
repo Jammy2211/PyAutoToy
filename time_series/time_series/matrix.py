@@ -8,8 +8,8 @@ import autofit as af
 
 
 class Species:
-    def __init__(self):
-        self.interactions = defaultdict(lambda: 0.0)
+    def __init__(self, interactions=None):
+        self.interactions = interactions or defaultdict(lambda: 0.0)
 
     def __getitem__(self, species: "Species") -> float:
         """
