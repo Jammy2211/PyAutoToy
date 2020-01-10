@@ -1,4 +1,3 @@
-import inspect
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import Union, Tuple, List
@@ -135,29 +134,6 @@ class Matrix(ABC):
             self.items[index] = value
         elif isinstance(index, tuple):
             self[index[0]][self[index[1]]] = value
-
-
-class MatrixPriorModel(af.CollectionPriorModel, Matrix):
-    def __init__(self, cls, *items):
-        super().__init__(*items)
-        self.cls = cls
-
-    def instance_for_arguments(self, arguments):
-        species = super().instance_for_arguments(
-            arguments
-        )
-        return self.cls(
-            list(filter(
-                lambda item: not inspect.isclass(item),
-                species
-            ))
-        )
-
-    def __setattr__(self, key, value):
-        if key == "cls":
-            object.__setattr__(self, key, value)
-        else:
-            super().__setattr__(key, value)
 
 
 class SpeciesCollection(Matrix):

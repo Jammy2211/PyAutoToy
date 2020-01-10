@@ -1,12 +1,13 @@
 import pytest
 
 import autofit as af
+from time_series import matrix_prior_model as m
 from time_series import species as s
 
 
 @pytest.fixture(name="matrix_prior_model")
 def make_matrix_prior_model():
-    return s.MatrixPriorModel(
+    return m.MatrixPriorModel(
         s.SpeciesCollection,
         [
             s.Species(),
