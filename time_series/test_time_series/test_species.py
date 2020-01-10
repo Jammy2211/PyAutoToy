@@ -63,3 +63,12 @@ class TestSpeciesCollection:
         assert (species_collection.growth_rate_vector == np.array(
             [1.0, 2.0]
         )).all()
+
+    def test_simple_indexing(
+            self,
+            species_a,
+            species_b,
+            species_collection
+    ):
+        assert species_collection[0] == species_a
+        assert species_collection[1] == species_b

@@ -35,3 +35,6 @@ class SpeciesCollection:
             species.growth_rate
             for species in self.species
         ])
+
+    def __getitem__(self, item):
+        return self.species[item]
