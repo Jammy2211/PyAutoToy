@@ -53,3 +53,17 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
             object.__setattr__(self, key, value)
         else:
             super().__setattr__(key, value)
+
+    def __len__(self):
+        return super().__len__() - 1
+
+    def __getitem__(self, item):
+        if isinstance(item, tuple):
+            return Matrix.__getitem__(self, item)
+        return super().__getitem__(item)
+
+    def __setitem__(self, key, value):
+        if isinstance(key, tuple):
+            Matrix.__setitem__(self, key, value)
+        else:
+            super().__setitem__(key, value)
