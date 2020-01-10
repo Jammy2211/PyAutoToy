@@ -1,7 +1,7 @@
 import inspect
 
 import autofit as af
-from time_series.species import Matrix
+from time_series.matrix import Matrix
 
 
 class MatrixPriorModel(af.CollectionPriorModel, Matrix):
