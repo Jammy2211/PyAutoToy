@@ -1,7 +1,11 @@
+import inspect
+from abc import ABC, abstractmethod
 from collections import defaultdict
-from typing import Union, Tuple
+from typing import Union, Tuple, List
 
 import numpy as np
+
+import autofit as af
 
 
 class Species:
@@ -57,29 +61,17 @@ class Species:
 
 
 Index = Union[int, Tuple[int, int]]
-SpeciesOrInteraction = Union[Species, float]
+SpeciesOrInteraction = Union[Species, af.Prior, float]
 
 
-class SpeciesCollection:
-    def __init__(self, *species):
-        """
-        A collection of species which interact with each other.
-
-        If no interaction is defined between two species it defaults to 0.
-
-        Parameters
-        ----------
-        species
-            A list of species.
-        """
-        self.species = list(species)
-        for species_a in self.species:
-            for species_b in self.species:
-                if species_b not in species_a.interactions:
-                    species_a.interactions[species_b] = 0.0
+class Matrix(ABC):
+    @property
+    @abstractmethod
+    def items(self):
+        pass
 
     def __len__(self):
-        return len(self.species)
+        return len(self.items)
 
     @property
     def interaction_matrix(self) -> np.ndarray:
@@ -93,19 +85,9 @@ class SpeciesCollection:
                 species_a.interactions[
                     species_b
                 ]
-                for species_b in self.species
+                for species_b in self.items
             ]
-            for species_a in self.species
-        ])
-
-    @property
-    def growth_rate_vector(self) -> np.ndarray:
-        """
-        A vector of floats describing the growth rate of each individual species.
-        """
-        return np.array([
-            species.growth_rate
-            for species in self.species
+            for species_a in self.items
         ])
 
     def __getitem__(
@@ -128,7 +110,7 @@ class SpeciesCollection:
         A species or interaction coefficient.
         """
         if isinstance(item, int):
-            return self.species[item]
+            return self.items[item]
         elif isinstance(item, tuple):
             return self[item[0]][self[item[1]]]
 
@@ -150,6 +132,62 @@ class SpeciesCollection:
             A float or species
         """
         if isinstance(index, int):
-            self.species[index] = value
+            self.items[index] = value
         elif isinstance(index, tuple):
             self[index[0]][self[index[1]]] = value
+
+
+class MatrixPriorModel(af.CollectionPriorModel, Matrix):
+    def __init__(self, cls, *items):
+        super().__init__(*items)
+        self.cls = cls
+
+    def instance_for_arguments(self, arguments):
+        species = super().instance_for_arguments(
+            arguments
+        )
+        return self.cls(
+            list(filter(
+                lambda item: not inspect.isclass(item),
+                species
+            ))
+        )
+
+    def __setattr__(self, key, value):
+        if key == "cls":
+            object.__setattr__(self, key, value)
+        else:
+            super().__setattr__(key, value)
+
+
+class SpeciesCollection(Matrix):
+    @property
+    def items(self):
+        return self.species
+
+    def __init__(self, species: List[Species]):
+        """
+        A collection of species which interact with each other.
+
+        If no interaction is defined between two species it defaults to 0.
+
+        Parameters
+        ----------
+        species
+            A list of species.
+        """
+        self.species = list(species)
+        for species_a in self.species:
+            for species_b in self.species:
+                if species_b not in species_a.interactions:
+                    species_a.interactions[species_b] = 0.0
+
+    @property
+    def growth_rate_vector(self) -> np.ndarray:
+        """
+        A vector of floats describing the growth rate of each individual species.
+        """
+        return np.array([
+            species.growth_rate
+            for species in self.species
+        ])

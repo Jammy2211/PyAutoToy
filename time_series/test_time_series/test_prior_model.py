@@ -1,0 +1,28 @@
+import pytest
+
+import autofit as af
+from time_series import species as s
+
+
+@pytest.fixture(name="matrix_prior_model")
+def make_matrix_prior_model():
+    return s.MatrixPriorModel(
+        s.SpeciesCollection,
+        [
+            s.Species(),
+            s.Species()
+        ]
+    )
+
+
+class TestBasicBehaviour:
+    def test_instantiate(self, matrix_prior_model):
+        assert isinstance(
+            matrix_prior_model,
+            af.CollectionPriorModel
+        )
+        assert matrix_prior_model.prior_count == 0
+
+        instance = matrix_prior_model.instance_from_prior_medians()
+        assert isinstance(instance, s.SpeciesCollection)
+        assert len(instance) == 2
