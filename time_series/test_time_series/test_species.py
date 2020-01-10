@@ -19,10 +19,10 @@ def make_species_collection(
         species_a,
         species_b
 ):
-    return s.SpeciesCollection(
+    return s.SpeciesCollection([
         species_a,
         species_b
-    )
+    ])
 
 
 class TestSpecies:
@@ -35,7 +35,7 @@ class TestSpecies:
 
 class TestSpeciesCollection:
     def test_trivial_interaction_matrix(self, species_a):
-        collection = s.SpeciesCollection(species_a)
+        collection = s.SpeciesCollection([species_a])
 
         assert collection.species == [species_a]
         assert collection.interaction_matrix == np.array([[0.0]])

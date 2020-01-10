@@ -7,10 +7,10 @@ from time_series import species as s
 
 @pytest.fixture(name="lotka_voltera_model")
 def make_lotka_voltera_model():
-    collection = s.SpeciesCollection(
+    collection = s.SpeciesCollection([
         s.Species(),
         s.Species()
-    )
+    ])
 
     for i in range(len(collection)):
         collection[i, i] = 1.0
