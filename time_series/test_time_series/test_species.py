@@ -6,12 +6,23 @@ from time_series import species as s
 
 @pytest.fixture(name="species_a")
 def make_species_a():
-    return s.Species()
+    return s.Species(1.0)
 
 
 @pytest.fixture(name="species_b")
 def make_species_b():
-    return s.Species()
+    return s.Species(2.0)
+
+
+@pytest.fixture(name="species_collection")
+def make_species_collection(
+        species_a,
+        species_b
+):
+    return s.SpeciesCollection(
+        species_a,
+        species_b
+    )
 
 
 class TestSpecies:
@@ -29,14 +40,26 @@ class TestSpeciesCollection:
         assert collection.species == (species_a,)
         assert collection.interaction_matrix == np.array([[1.0]])
 
-    def test_interaction_matrix(self, species_a, species_b):
+    def test_interaction_matrix(
+            self,
+            species_a,
+            species_b,
+            species_collection
+    ):
         species_a.interactions[species_b] = 0.5
         species_b.interactions[species_a] = 0.7
 
-        collection = s.SpeciesCollection(species_a, species_b)
-        assert (collection.interaction_matrix == np.array(
+        assert (species_collection.interaction_matrix == np.array(
             [
                 [1.0, 0.5],
                 [0.7, 1.0]
             ]
+        )).all()
+
+    def test_growth_rate_vector(
+            self,
+            species_collection
+    ):
+        assert (species_collection.growth_rate_vector == np.array(
+            [1.0, 2.0]
         )).all()

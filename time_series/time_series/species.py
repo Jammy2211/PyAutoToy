@@ -4,8 +4,9 @@ import numpy as np
 
 
 class Species:
-    def __init__(self):
+    def __init__(self, growth_rate):
         self.interactions = defaultdict(lambda: 1.0)
+        self.growth_rate = growth_rate
 
 
 class SpeciesCollection:
@@ -26,4 +27,11 @@ class SpeciesCollection:
                 for species_b in self.species
             ]
             for species_a in self.species
+        ])
+
+    @property
+    def growth_rate_vector(self):
+        return np.array([
+            species.growth_rate
+            for species in self.species
         ])
