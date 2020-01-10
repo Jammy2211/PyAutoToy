@@ -19,6 +19,11 @@ class SpeciesCollection:
     @property
     def interaction_matrix(self):
         return np.array([
-            list(species.interactions.values())
-            for species in self.species
+            [
+                species_a.interactions[
+                    species_b
+                ]
+                for species_b in self.species
+            ]
+            for species_a in self.species
         ])
