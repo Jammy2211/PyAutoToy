@@ -1,4 +1,3 @@
-import inspect
 import logging
 from typing import Union
 
@@ -9,14 +8,10 @@ from time_series.matrix import Matrix, Species
 logger = logging.getLogger(__name__)
 
 
-class InteractionsPriorModel(af.CollectionPriorModel):
-    pass
-
-
 class SpeciesPriorModel(af.PriorModel):
     def __init__(self, cls, **kwargs):
         super().__init__(cls, **kwargs)
-        self.interactions = InteractionsPriorModel()
+        self.interactions = af.CollectionPriorModel()
 
     def instance_for_arguments(self, arguments: {ModelObject: object}):
         arguments["interactions"] = self.interactions.instance_for_arguments(
@@ -109,7 +104,7 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
             s.interactions = {
                 pair_map[model]: value
                 for model, value
-                in s.interactions.__dict__.items()
+                in s.interactions.items()
                 if model in pair_map
             }
 
