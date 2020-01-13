@@ -4,6 +4,7 @@ import pytest
 
 import autofit as af
 from time_series import matrix_prior_model as m
+from time_series import observable as o
 from time_series import species as s
 
 
@@ -29,6 +30,24 @@ def make_self_interacting_prior_model(matrix_prior_model):
     for i in range(len(matrix_prior_model)):
         matrix_prior_model[i, i] = prior
     return matrix_prior_model
+
+
+def test_observables():
+    model = af.PriorModel(
+        s.Species,
+        observables=af.CollectionPriorModel(
+            one=o.Observable,
+            two=o.Observable
+        )
+    )
+
+    assert model.prior_count == 5
+
+    instance = model.instance_from_prior_medians()
+    assert isinstance(
+        instance.observables["one"],
+        o.Observable
+    )
 
 
 class TestBasicBehaviour:

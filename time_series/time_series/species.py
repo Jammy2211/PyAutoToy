@@ -9,7 +9,8 @@ class Species(m.Species):
     def __init__(
             self,
             interactions=None,
-            growth_rate: float = 1.0
+            growth_rate: float = 1.0,
+            observables=None
     ):
         """
         A species that has a defined growth rate and interaction rate with other species.
@@ -25,6 +26,7 @@ class Species(m.Species):
             interactions
         )
         self.growth_rate = growth_rate
+        self.observables = observables or dict()
 
 
 class SpeciesCollection(m.Matrix):
