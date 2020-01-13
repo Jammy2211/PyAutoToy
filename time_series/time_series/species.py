@@ -21,6 +21,9 @@ class Species(m.Species):
         ----------
         growth_rate
             The rate of growth of the species in the absence of other species.
+        observables
+            A dictionary relating the names of observables to their distributions with
+            respect to this species.
         """
         super().__init__(
             interactions
