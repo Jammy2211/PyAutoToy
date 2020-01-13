@@ -10,6 +10,15 @@ logger = logging.getLogger(__name__)
 
 class SpeciesPriorModel(af.PriorModel):
     def __init__(self, cls, **kwargs):
+        """
+        Prior model for a species in a matrix that has defined relationships with other species.
+
+        Parameters
+        ----------
+        cls
+            The class of the species
+        kwargs
+        """
         super().__init__(cls, **kwargs)
         self.interactions = af.CollectionPriorModel()
 
@@ -17,6 +26,18 @@ class SpeciesPriorModel(af.PriorModel):
         return f"{self.__class__.__name__} {self.id}"
 
     def instance_for_arguments(self, arguments: {ModelObject: object}):
+        """
+        Create an instance of the species class with interactions given actual values from priors.
+
+        Parameters
+        ----------
+        arguments
+            Maps prior objects to associated physical values.
+
+        Returns
+        -------
+        An instance of this species.
+        """
         arguments["interactions"] = self.interactions.instance_for_arguments(
             arguments
         )
@@ -96,13 +117,12 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
             )
             if isinstance(s, Species)
         ]
-        pairs = [
-            (str(model), instance) for model, instance
+        pair_map = {
+            str(model): instance for model, instance
             in zip(self, species)
             if isinstance(model, SpeciesPriorModel)
-        ]
-        pair_map = dict(pairs)
-
+        }
+        
         for s in species:
             s.interactions = {
                 pair_map[model]: value
