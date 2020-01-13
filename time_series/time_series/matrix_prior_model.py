@@ -122,7 +122,7 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
             in zip(self, species)
             if isinstance(model, SpeciesPriorModel)
         }
-        
+
         for s in species:
             s.interactions = {
                 pair_map[model]: value

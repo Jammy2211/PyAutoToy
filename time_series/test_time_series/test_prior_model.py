@@ -52,6 +52,16 @@ class TestBasicBehaviour:
         assert instance[0, 1] == 0.0
         assert instance[1, 0] == 0.0
 
+    def test_mix(self, self_interacting_prior_model):
+        self_interacting_prior_model[0, 1] = 1.0
+        self_interacting_prior_model[1, 0] = 2.0
+
+        instance = self_interacting_prior_model.instance_from_prior_medians()
+        assert instance[0, 0] == 0.5
+        assert instance[1, 1] == 0.5
+        assert instance[0, 1] == 1.0
+        assert instance[1, 0] == 2.0
+
     def test_model_info(self, self_interacting_prior_model):
         assert self_interacting_prior_model.info == """0
     growth_rate                                                                           UniformPrior, lower_limit = 0.0, upper_limit = 1.0
