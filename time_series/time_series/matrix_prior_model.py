@@ -13,6 +13,9 @@ class SpeciesPriorModel(af.PriorModel):
         super().__init__(cls, **kwargs)
         self.interactions = af.CollectionPriorModel()
 
+    def __str__(self):
+        return f"{self.__class__.__name__} {self.id}"
+
     def instance_for_arguments(self, arguments: {ModelObject: object}):
         arguments["interactions"] = self.interactions.instance_for_arguments(
             arguments
