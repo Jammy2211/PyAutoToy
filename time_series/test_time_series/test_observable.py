@@ -1,6 +1,7 @@
 import numpy as np
 
 from time_series.observable import Observable
+import autofit as af
 
 
 class TestObservable:
@@ -18,3 +19,11 @@ class TestObservable:
                 [0.10798193],
             ])
         )
+
+    def test_prior_model(self):
+        model = af.PriorModel(Observable)
+
+        assert model.prior_count == 2
+
+        instance = model.instance_from_prior_medians()
+        assert isinstance(instance, Observable)
