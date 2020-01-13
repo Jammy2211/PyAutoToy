@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Set
 
 import numpy as np
 
@@ -71,23 +71,50 @@ class SpeciesObservables:
     @assert_lengths_match
     def __init__(
             self,
-            abundances,
-            species
+            abundances: List[float],
+            species: List[Species]
     ):
+        """
+        Relates a list of relative abundances to associated species.
+
+        Parameters
+        ----------
+        abundances
+            A list of floats indicating the abundance of each species
+        species
+            A list of species
+        """
         self.abundances = abundances
         self.species = species
 
     @property
-    def observable_names(self):
+    def observable_names(self) -> Set[str]:
+        """
+        The names of all the observables found in the list of species
+        """
         return {
             key for species
             in self.species
             for key in species.observables.keys()
         }
 
-    def __getitem__(self, item):
+    def __getitem__(self, name: str) -> CompoundObservable:
+        """
+        Get a CompoundObservable which comprises an observable of the same name from each species.
+
+        Assumes every species has an observable with the given name.
+
+        Parameters
+        ----------
+        name
+            The name of the observable
+
+        Returns
+        -------
+        A compound observable comprising all observables with the given name
+        """
         observables = [
-            species.observables[item]
+            species.observables[name]
             for species in self.species
         ]
         return CompoundObservable(

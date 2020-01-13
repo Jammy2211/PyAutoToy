@@ -1,5 +1,8 @@
+from typing import List
+
 import numpy as np
 from scipy import stats
+
 from time_series.util import assert_lengths_match
 
 
@@ -63,7 +66,21 @@ class Observable:
 
 class CompoundObservable:
     @assert_lengths_match
-    def __init__(self, abundances, observables):
+    def __init__(
+            self,
+            abundances: List[float],
+            observables: List[Observable]
+    ):
+        """
+        Collates observables producing a PDF that sums member PDFs multiplied by their abundances.
+
+        Parameters
+        ----------
+        abundances
+            A list of abundances for the species from which the observable PDFs were taken.
+        observables
+            A list of observables.
+        """
         self.abundances = abundances
         self.observables = observables
 
@@ -72,7 +89,21 @@ class CompoundObservable:
             lower_limit: int = -2,
             upper_limit: int = 2,
             number_of_points: int = 1000
-    ):
+    ) -> np.ndarray:
+        """
+        Compute the Point Density Function from the constituent PDFs multiplied
+        by their abundances.
+
+        Parameters
+        ----------
+        lower_limit
+        upper_limit
+        number_of_points
+
+        Returns
+        -------
+        An array illustrating the pdf
+        """
         pdfs = [
             abundance * observable.pdf(
                 lower_limit=lower_limit,
