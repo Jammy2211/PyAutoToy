@@ -6,7 +6,11 @@ from time_series import matrix as m
 
 
 class Species(m.Species):
-    def __init__(self, growth_rate: float = 1.0):
+    def __init__(
+            self,
+            interactions=None,
+            growth_rate: float = 1.0
+    ):
         """
         A species that has a defined growth rate and interaction rate with other species.
 
@@ -17,7 +21,9 @@ class Species(m.Species):
         growth_rate
             The rate of growth of the species in the absence of other species.
         """
-        super().__init__()
+        super().__init__(
+            interactions
+        )
         self.growth_rate = growth_rate
 
 

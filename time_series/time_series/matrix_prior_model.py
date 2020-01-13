@@ -1,15 +1,28 @@
 import inspect
-from collections import defaultdict
+import logging
 from typing import Union
 
 import autofit as af
-from time_series.matrix import Matrix
+from autofit import ModelObject
+from time_series.matrix import Matrix, Species
+
+logger = logging.getLogger(__name__)
+
+
+class InteractionsPriorModel(af.CollectionPriorModel):
+    pass
 
 
 class SpeciesPriorModel(af.PriorModel):
     def __init__(self, cls, **kwargs):
         super().__init__(cls, **kwargs)
-        self.interactions = defaultdict(lambda: 0.0)
+        self.interactions = InteractionsPriorModel()
+
+    def instance_for_arguments(self, arguments: {ModelObject: object}):
+        arguments["interactions"] = self.interactions.instance_for_arguments(
+            arguments
+        )
+        return super().instance_for_arguments(arguments)
 
     def __getitem__(self, species: "SpeciesPriorModel") -> Union[float, af.Prior]:
         """
@@ -78,14 +91,30 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
         -------
         An instance of self.cls
         """
-        species = super().instance_for_arguments(
-            arguments
-        )
+        species = [
+            s for s
+            in super().instance_for_arguments(
+                arguments
+            )
+            if isinstance(s, Species)
+        ]
+        pairs = [
+            (str(model), instance) for model, instance
+            in zip(self, species)
+            if isinstance(model, SpeciesPriorModel)
+        ]
+        pair_map = dict(pairs)
+
+        for s in species:
+            s.interactions = {
+                pair_map[model]: value
+                for model, value
+                in s.interactions.__dict__.items()
+                if model in pair_map
+            }
+
         return self.cls(
-            list(filter(
-                lambda item: not inspect.isclass(item),
-                species
-            ))
+            species
         )
 
     def __setattr__(self, key, value):
