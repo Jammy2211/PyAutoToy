@@ -1,85 +1,13 @@
-from functools import wraps
-
-import numpy as np
 import pytest
 
 import autofit as af
 from time_series.observable import Observable
-from time_series.species import Species
+from time_series.species import Species, SpeciesObservables
 
 
 class Data:
     def __init__(self, **observables):
         self.observables = observables
-
-
-def assert_lengths_match(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        self, first, second = args + tuple(kwargs.values())
-        if len(first) != len(second):
-            raise AssertionError(
-                f"Length of lists passed to {func.__name__} do not match"
-            )
-        return func(self, first, second)
-
-    return wrapper
-
-
-class CompoundObservable:
-    @assert_lengths_match
-    def __init__(self, abundances, observables):
-        self.abundances = abundances
-        self.observables = observables
-
-    def pdf(
-            self,
-            lower_limit: int = -2,
-            upper_limit: int = 2,
-            number_of_points: int = 1000
-    ):
-        pdfs = [
-            abundance * observable.pdf(
-                lower_limit=lower_limit,
-                upper_limit=upper_limit,
-                number_points=number_of_points
-            )
-            for abundance, observable
-            in zip(
-                self.abundances,
-                self.observables
-            )
-        ]
-        return np.add(*pdfs)
-
-
-class SpeciesObservables:
-    @assert_lengths_match
-    def __init__(
-            self,
-            abundances,
-            species
-    ):
-        self.abundances = abundances
-        self.species = species
-
-    @property
-    def observable_names(self):
-        return {
-            key for species
-            in self.species
-            for key in species.observables.keys()
-        }
-
-    def __getitem__(self, item):
-        observables = [
-            species.observables[item]
-            for species in self.species
-        ]
-        return CompoundObservable(
-            self.abundances,
-            observables
-        )
 
 
 class Analysis(af.Analysis):
@@ -186,18 +114,18 @@ class TestAnalysis:
         # noinspection PyUnresolvedReferences
         assert (compound_result == addition_result).all()
 
-    def test_analysis(self, species_0, species_1, data):
-        instance = af.ModelInstance()
-        instance.populations = [1.0, 1.0]
-        instance.species = [
-            species_0,
-            species_1
-        ]
-
-        analysis = Analysis(
-            data
-        )
-
-        assert analysis.fit(
-            instance
-        ) == 0.0
+    # def test_analysis(self, species_0, species_1, data):
+    #     instance = af.ModelInstance()
+    #     instance.populations = [1.0, 1.0]
+    #     instance.species = [
+    #         species_0,
+    #         species_1
+    #     ]
+    #
+    #     analysis = Analysis(
+    #         data
+    #     )
+    #
+    #     assert analysis.fit(
+    #         instance
+    #     ) == 0.0

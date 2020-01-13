@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import stats
+from time_series.util import assert_lengths_match
 
 
 class Observable:
@@ -58,3 +59,30 @@ class Observable:
                 number_points
             )[:, None]
         )
+
+
+class CompoundObservable:
+    @assert_lengths_match
+    def __init__(self, abundances, observables):
+        self.abundances = abundances
+        self.observables = observables
+
+    def pdf(
+            self,
+            lower_limit: int = -2,
+            upper_limit: int = 2,
+            number_of_points: int = 1000
+    ):
+        pdfs = [
+            abundance * observable.pdf(
+                lower_limit=lower_limit,
+                upper_limit=upper_limit,
+                number_points=number_of_points
+            )
+            for abundance, observable
+            in zip(
+                self.abundances,
+                self.observables
+            )
+        ]
+        return np.add(*pdfs)

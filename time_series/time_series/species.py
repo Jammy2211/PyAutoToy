@@ -3,6 +3,8 @@ from typing import List
 import numpy as np
 
 from time_series import matrix as m
+from time_series.observable import CompoundObservable
+from time_series.util import assert_lengths_match
 
 
 class Species(m.Species):
@@ -63,3 +65,32 @@ class SpeciesCollection(m.Matrix):
             species.growth_rate
             for species in self.species
         ])
+
+
+class SpeciesObservables:
+    @assert_lengths_match
+    def __init__(
+            self,
+            abundances,
+            species
+    ):
+        self.abundances = abundances
+        self.species = species
+
+    @property
+    def observable_names(self):
+        return {
+            key for species
+            in self.species
+            for key in species.observables.keys()
+        }
+
+    def __getitem__(self, item):
+        observables = [
+            species.observables[item]
+            for species in self.species
+        ]
+        return CompoundObservable(
+            self.abundances,
+            observables
+        )
