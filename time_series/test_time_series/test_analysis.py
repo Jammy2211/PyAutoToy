@@ -1,18 +1,36 @@
 import pytest
 
 import autofit as af
+from time_series.fit import Fit
 from time_series.observable import Observable
 from time_series.species import Species, SpeciesObservables
 
 
 class Data:
-    def __init__(self, **observables):
+    def __init__(
+            self,
+            **observables
+    ):
         self.observables = observables
+
+    @property
+    def observable_names(self):
+        return set(self.observables.keys())
+
+    def __getitem__(self, observable_name):
+        return self.observables[observable_name]
 
 
 class Analysis(af.Analysis):
     def fit(self, instance):
-        pass
+        fitness = 0
+        species_observables = instance.species_observables
+        for observable_name in self.data.observable_names:
+            fitness -= Fit(
+                self.data[observable_name],
+                pdf(species_observables[observable_name])
+            ).chi_squared
+        return fitness
 
     def visualize(self, instance, during_analysis):
         pass
@@ -80,32 +98,40 @@ def make_species_1(a_1, b_1):
 
 def pdf(observable):
     return observable.pdf(
-        0,
-        20,
-        400
+        LOWER_LIMIT,
+        UPPER_LIMIT,
+        NUMBER_OF_POINTS
     )
 
 
 @pytest.fixture(name="data")
 def make_data(a_0, a_1, b_0, b_1):
-    Data(
+    return Data(
         a=pdf(a_0) + pdf(a_1),
         b=pdf(b_0) + pdf(b_1)
+    )
+
+
+@pytest.fixture(
+    name="species_observables"
+)
+def make_species_observables(
+        species_0,
+        species_1
+):
+    return SpeciesObservables(
+        abundances=[1.0, 1.0],
+        species=[species_0, species_1]
     )
 
 
 class TestAnalysis:
     def test_species_observables(
             self,
-            species_0,
-            species_1,
+            species_observables,
             a_0,
             a_1
     ):
-        species_observables = SpeciesObservables(
-            abundances=[1.0, 1.0],
-            species=[species_0, species_1]
-        )
         assert species_observables.observable_names == {"a", "b"}
 
         compound_observable_a = species_observables["a"]
@@ -114,18 +140,27 @@ class TestAnalysis:
         # noinspection PyUnresolvedReferences
         assert (compound_result == addition_result).all()
 
-    # def test_analysis(self, species_0, species_1, data):
-    #     instance = af.ModelInstance()
-    #     instance.populations = [1.0, 1.0]
-    #     instance.species = [
-    #         species_0,
-    #         species_1
-    #     ]
-    #
-    #     analysis = Analysis(
-    #         data
-    #     )
-    #
-    #     assert analysis.fit(
-    #         instance
-    #     ) == 0.0
+    def test_analysis(
+            self,
+            species_observables,
+            data
+    ):
+        instance = af.ModelInstance()
+        instance.species_observables = species_observables
+
+        analysis = Analysis(
+            data
+        )
+
+        # noinspection PyTypeChecker
+        assert analysis.fit(
+            instance
+        ) == 0.0
+
+        instance.species_observables.abundances = [
+            0.5, 0.5
+        ]
+        # noinspection PyTypeChecker
+        assert analysis.fit(
+            instance
+        ) < 0.0
