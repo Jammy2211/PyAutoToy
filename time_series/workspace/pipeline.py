@@ -46,10 +46,15 @@ def run_phase():
     ]
 
     phase = af.Phase(
-        phase_name="Species",
+        phase_name="phase_1",
         analysis_class=ts.Analysis,
         model=model
     )
+
+    phase.optimizer.const_efficiency_mode = True
+    phase.optimizer.n_live_points = 20
+    phase.optimizer.sampling_efficiency = 0.8
+
     result = phase.run(
         data
     )
