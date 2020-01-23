@@ -1,11 +1,37 @@
 import autofit as af
 from time_series.fit import Fit
-from time_series.data import pdf
+from time_series.data import pdf, Data
 from time_series.species import SpeciesObservables
 
 
 class Analysis(af.Analysis):
-    def fit(self, instance):
+
+    def __init__(self, data: Data):
+        """
+        Used to compare model instances to the data.
+
+        Parameters
+        ----------
+        data
+            Data comprising observations taken at a particular point in time.
+        """
+        self.data = data
+
+    def fit(self, instance: af.ModelInstance) -> float:
+        """
+        Determine how well a set of species with given distributions
+        for a set of observables and given abundances fits an observed
+        set of observables.
+
+        Parameters
+        ----------
+        instance
+            An instance of a model
+
+        Returns
+        -------
+        The evidence for the mdodel
+        """
         fitness = 0
         species_observables = SpeciesObservables(
             abundances=instance.abundances,
@@ -20,6 +46,3 @@ class Analysis(af.Analysis):
 
     def visualize(self, instance, during_analysis):
         pass
-
-    def __init__(self, data):
-        self.data = data

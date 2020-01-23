@@ -4,9 +4,34 @@ import numpy as np
 from scipy import stats
 
 from time_series.util import assert_lengths_match
+from abc import ABC, abstractmethod
 
 
-class Observable:
+class AbstractObservable(ABC):
+    @abstractmethod
+    def pdf(
+            self,
+            lower_limit: int,
+            upper_limit: int,
+            number_points: int
+    ) -> np.ndarray:
+        """
+        Generate a numpy array describing the point density function with a given number of points
+        between two limits.
+
+        Parameters
+        ----------
+        lower_limit
+        upper_limit
+        number_points
+
+        Returns
+        -------
+        An array illustrating the point density
+        """
+
+
+class Observable(AbstractObservable):
     def __init__(
             self,
             mean: float,
@@ -64,7 +89,7 @@ class Observable:
         )
 
 
-class CompoundObservable:
+class CompoundObservable(AbstractObservable):
     @assert_lengths_match
     def __init__(
             self,

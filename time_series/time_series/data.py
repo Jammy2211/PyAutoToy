@@ -1,7 +1,9 @@
 from random import randint
 
+import numpy as np
+
 import autofit as af
-import time_series as ts
+from time_series.observable import AbstractObservable, CompoundObservable, Observable
 
 LOWER_LIMIT = 0
 UPPER_LIMIT = 20
@@ -10,44 +12,7 @@ NUMBER_OF_POINTS = 40
 GRANULARITY = 100
 
 
-def rand_positive(upper_limit):
-    return randint(
-        0,
-        upper_limit * GRANULARITY
-    ) / GRANULARITY
-
-
-def generate_data(
-        number_of_observables,
-        number_of_species
-):
-    compound_observables = dict()
-    for number in range(number_of_observables):
-        compound_observables[
-            str(number)
-        ] = ts.CompoundObservable(
-            abundances=[
-                rand_positive(
-                    1
-                ) for _ in range(number_of_species)
-            ],
-            observables=[
-                ts.Observable(
-                    mean=rand_positive(3),
-                    deviation=rand_positive(2)
-                ) for _ in range(number_of_species)
-            ]
-        ).pdf(
-            LOWER_LIMIT,
-            UPPER_LIMIT,
-            NUMBER_OF_POINTS
-        )
-    return ts.Data(
-        **compound_observables
-    )
-
-
-def pdf(observable):
+def pdf(observable: AbstractObservable) -> np.ndarray:
     return observable.pdf(
         LOWER_LIMIT,
         UPPER_LIMIT,
@@ -79,3 +44,40 @@ class Data(af.Dataset):
             for key, value
             in self.observables.items()
         })
+
+
+def rand_positive(upper_limit):
+    return randint(
+        0,
+        upper_limit * GRANULARITY
+    ) / GRANULARITY
+
+
+def generate_data(
+        number_of_observables,
+        number_of_species
+) -> Data:
+    compound_observables = dict()
+    for number in range(number_of_observables):
+        compound_observables[
+            str(number)
+        ] = CompoundObservable(
+            abundances=[
+                rand_positive(
+                    1
+                ) for _ in range(number_of_species)
+            ],
+            observables=[
+                Observable(
+                    mean=rand_positive(3),
+                    deviation=rand_positive(2)
+                ) for _ in range(number_of_species)
+            ]
+        ).pdf(
+            LOWER_LIMIT,
+            UPPER_LIMIT,
+            NUMBER_OF_POINTS
+        )
+    return Data(
+        **compound_observables
+    )
