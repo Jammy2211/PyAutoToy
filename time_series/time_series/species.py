@@ -4,7 +4,6 @@ import numpy as np
 
 from time_series import matrix as m
 from time_series.observable import CompoundObservable
-from time_series.util import assert_lengths_match
 
 
 class Species(m.Species):
@@ -67,25 +66,54 @@ class SpeciesCollection(m.Matrix):
         ])
 
 
-class SpeciesObservables:
-    @assert_lengths_match
+class SpeciesAbundance:
     def __init__(
             self,
-            abundances: List[float],
-            species: List[Species]
+            species: Species,
+            abundance: float
+    ):
+        self.species = species
+        self.abundance = abundance
+
+
+class SpeciesObservables:
+    def __init__(
+            self,
+            species_abundances: List[SpeciesAbundance]
     ):
         """
         Relates a list of relative abundances to associated species.
 
         Parameters
         ----------
-        abundances
-            A list of floats indicating the abundance of each species
-        species
-            A list of species
+        species_abundances
+            A list of objects indicating the abundance of each species
         """
-        self.abundances = abundances
-        self.species = species
+        self.species_abundances = species_abundances
+
+    @property
+    def species(self):
+        return [
+            abundance.species
+            for abundance
+            in self.species_abundances
+        ]
+
+    @property
+    def abundances(self):
+        return [
+            abundance.abundance
+            for abundance
+            in self.species_abundances
+        ]
+
+    @abundances.setter
+    def abundances(self, abundances):
+        for species_abundance, abundance in zip(
+                self.species_abundances,
+                abundances
+        ):
+            species_abundance.abundance = abundances
 
     @property
     def observable_names(self) -> Set[str]:
