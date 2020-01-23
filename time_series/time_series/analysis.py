@@ -1,6 +1,6 @@
 import autofit as af
 from time_series.fit import Fit
-from time_series.util import pdf
+from time_series.data import pdf
 
 
 class Analysis(af.Analysis):

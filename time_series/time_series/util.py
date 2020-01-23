@@ -1,17 +1,5 @@
 from functools import wraps
 
-LOWER_LIMIT = 0
-UPPER_LIMIT = 20
-NUMBER_OF_POINTS = 400
-
-
-def pdf(observable):
-    return observable.pdf(
-        LOWER_LIMIT,
-        UPPER_LIMIT,
-        NUMBER_OF_POINTS
-    )
-
 
 def assert_lengths_match(func):
     """
