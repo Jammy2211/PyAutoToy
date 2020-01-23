@@ -116,4 +116,7 @@ class CompoundObservable:
                 self.observables
             )
         ]
-        return np.add(*pdfs)
+        sum_array = np.zeros(pdfs[0].shape)
+        for pdf in pdfs:
+            sum_array = np.add(sum_array, pdf)
+        return sum_array
