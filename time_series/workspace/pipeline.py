@@ -14,12 +14,7 @@ af.conf.instance = af.conf.Config(
 )
 
 
-def run_phase():
-    data = ts.generate_data(
-        number_of_observables=NUMBER_OF_OBSERVABLES,
-        number_of_species=NUMBER_OF_SPECIES
-    )
-
+def make_pipeline():
     model = af.ModelMapper()
     model.abundances = [
         af.UniformPrior(
@@ -46,7 +41,7 @@ def run_phase():
     ]
 
     phase = af.Phase(
-        phase_name="phase_1",
+        phase_name="observation_phase",
         analysis_class=ts.Analysis,
         model=model
     )
@@ -55,12 +50,18 @@ def run_phase():
     phase.optimizer.n_live_points = 20
     phase.optimizer.sampling_efficiency = 0.8
 
-    result = phase.run(
-        data
+    return af.Pipeline(
+        "timeseries",
+        phase
     )
-
-    print(result.instance)
 
 
 if __name__ == "__main__":
-    run_phase()
+    pipeline = make_pipeline()
+    data = ts.generate_data(
+        number_of_observables=NUMBER_OF_OBSERVABLES,
+        number_of_species=NUMBER_OF_SPECIES
+    )
+    pipeline.run(
+        data
+    )
