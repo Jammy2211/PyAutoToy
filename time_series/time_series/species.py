@@ -1,4 +1,4 @@
-from typing import List, Set
+from typing import List, Set, Iterable
 
 import numpy as np
 
@@ -79,7 +79,7 @@ class SpeciesAbundance:
 class SpeciesObservables:
     def __init__(
             self,
-            species_abundances: List[SpeciesAbundance]
+            species_abundances: Iterable[SpeciesAbundance]
     ):
         """
         Relates a list of relative abundances to associated species.
