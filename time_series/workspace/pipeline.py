@@ -3,8 +3,8 @@ from os import path
 import autofit as af
 import time_series as ts
 
-NUMBER_OF_SPECIES = 5
-NUMBER_OF_OBSERVABLES = 3
+NUMBER_OF_SPECIES = 3
+NUMBER_OF_OBSERVABLES = 2
 
 directory = path.dirname(path.realpath(__file__))
 
@@ -44,10 +44,6 @@ def run_phase():
         )
         for _ in range(NUMBER_OF_SPECIES)
     ]
-
-    # 5 * 3 * 2 priors for observables + 5 priors for abundances
-    assert model.prior_count == 35
-    assert len(model.prior_class_dict) == 35
 
     phase = af.Phase(
         phase_name="Species",
