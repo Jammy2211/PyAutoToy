@@ -6,7 +6,6 @@ import autofit as af
 from time_series import matrix_prior_model as m
 from time_series import observable as o
 from time_series import species as s
-from time_series.species import SpeciesObservables, SpeciesAbundance, Species
 
 
 @pytest.fixture(autouse=True)
@@ -91,20 +90,3 @@ class TestBasicBehaviour:
     growth_rate                                                                           UniformPrior, lower_limit = 0.0, upper_limit = 1.0
     interactions
         SpeciesPriorModel 3                                                               UniformPrior, lower_limit = 0.0, upper_limit = 1.0"""
-
-    def test_species_observables(self):
-        prior_model = af.PriorModel(
-            SpeciesObservables(
-                species_abundances=af.CollectionPriorModel([
-                    af.PriorModel(
-                        SpeciesAbundance,
-                        species=af.PriorModel(
-                            Species,
-
-                        )
-                    )
-                    for _ in range(5)
-                ])
-            )
-        )
-        assert prior_model
