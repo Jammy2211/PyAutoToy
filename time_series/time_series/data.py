@@ -5,7 +5,7 @@ import time_series as ts
 
 LOWER_LIMIT = 0
 UPPER_LIMIT = 20
-NUMBER_OF_POINTS = 400
+NUMBER_OF_POINTS = 40
 
 GRANULARITY = 100
 
