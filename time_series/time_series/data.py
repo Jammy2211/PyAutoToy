@@ -1,4 +1,5 @@
 from random import randint
+from typing import Set
 
 import numpy as np
 
@@ -29,10 +30,20 @@ class Data(af.Dataset):
             self,
             **observables
     ):
+        """
+        Contains a dictionary mapping named observables to their.
+
+        Parameters
+        ----------
+        observables
+        """
         self.observables = observables
 
     @property
-    def observable_names(self):
+    def observable_names(self) -> Set[str]:
+        """
+        The names of all the observables
+        """
         return set(self.observables.keys())
 
     def __getitem__(self, observable_name):
@@ -54,9 +65,21 @@ def rand_positive(upper_limit):
 
 
 def generate_data(
-        number_of_observables,
-        number_of_species
+        number_of_observables: int,
+        number_of_species: int
 ) -> Data:
+    """
+    Generate random data for a given number of observables and species.
+
+    Parameters
+    ----------
+    number_of_observables
+    number_of_species
+
+    Returns
+    -------
+    Randomly generated observable distribution data
+    """
     compound_observables = dict()
     for number in range(number_of_observables):
         compound_observables[
