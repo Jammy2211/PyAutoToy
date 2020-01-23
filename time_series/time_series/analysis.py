@@ -1,12 +1,16 @@
 import autofit as af
 from time_series.fit import Fit
 from time_series.data import pdf
+from time_series.species import SpeciesObservables
 
 
 class Analysis(af.Analysis):
     def fit(self, instance):
         fitness = 0
-        species_observables = instance.species_observables
+        species_observables = SpeciesObservables(
+            abundances=instance.abundances,
+            species=instance.species
+        )
         for observable_name in self.data.observable_names:
             fitness -= Fit(
                 self.data[observable_name],

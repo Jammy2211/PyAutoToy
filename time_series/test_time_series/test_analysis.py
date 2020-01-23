@@ -68,26 +68,18 @@ def make_data(a_0, a_1, b_0, b_1):
     )
 
 
-@pytest.fixture(
-    name="species_observables"
-)
-def make_species_observables(
-        species_0,
-        species_1
-):
-    return SpeciesObservables(
-        abundances=[1.0, 1.0],
-        species=[species_0, species_1]
-    )
-
-
 class TestAnalysis:
     def test_species_observables(
             self,
-            species_observables,
+            species_0,
+            species_1,
             a_0,
             a_1
     ):
+        species_observables = SpeciesObservables(
+            abundances=[1.0, 1.0],
+            species=[species_0, species_1]
+        )
         assert species_observables.observable_names == {"a", "b"}
 
         compound_observable_a = species_observables["a"]
@@ -98,11 +90,16 @@ class TestAnalysis:
 
     def test_analysis(
             self,
-            species_observables,
+            species_0,
+            species_1,
             data
     ):
         instance = af.ModelInstance()
-        instance.species_observables = species_observables
+        instance.abundances = [1.0, 1.0]
+        instance.species = [
+            species_0,
+            species_1
+        ]
 
         analysis = Analysis(
             data
@@ -113,7 +110,7 @@ class TestAnalysis:
             instance
         ) == 0.0
 
-        instance.species_observables.abundances = [
+        instance.abundances = [
             0.5, 0.5
         ]
         # noinspection PyTypeChecker
