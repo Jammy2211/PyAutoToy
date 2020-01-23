@@ -1,10 +1,17 @@
-import json
+from os import path
 
 import autofit as af
 import time_series as ts
 
 NUMBER_OF_SPECIES = 5
 NUMBER_OF_OBSERVABLES = 3
+
+directory = path.dirname(path.realpath(__file__))
+
+af.conf.instance = af.conf.Config(
+    path.join(directory, "config"),
+    path.join(directory, "output")
+)
 
 
 def run_phase():
@@ -23,7 +30,8 @@ def run_phase():
         )
     ]
     model.species = [
-        ts.Species(
+        af.PriorModel(
+            ts.Species,
             observables={
                 str(number): af.PriorModel(
                     ts.Observable,
@@ -31,13 +39,15 @@ def run_phase():
                     deviation=af.GaussianPrior(2, 1)
                 )
                 for number in range(NUMBER_OF_OBSERVABLES)
-            }
+            },
+            growth_rate=1.0
         )
         for _ in range(NUMBER_OF_SPECIES)
     ]
 
     # 5 * 3 * 2 priors for observables + 5 priors for abundances
     assert model.prior_count == 35
+    assert len(model.prior_class_dict) == 35
 
     phase = af.Phase(
         phase_name="Species",
