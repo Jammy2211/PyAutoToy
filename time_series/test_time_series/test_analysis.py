@@ -3,7 +3,7 @@ import pytest
 import autofit as af
 from time_series.fit import Fit
 from time_series.observable import Observable
-from time_series.species import Species, SpeciesObservables, SpeciesAbundance
+from time_series.species import Species, SpeciesObservables
 
 
 class Data:
@@ -120,16 +120,8 @@ def make_species_observables(
         species_1
 ):
     return SpeciesObservables(
-        species_abundances=[
-            SpeciesAbundance(
-                species_0,
-                1.0
-            ),
-            SpeciesAbundance(
-                species_1,
-                1.0
-            )
-        ]
+        abundances=[1.0, 1.0],
+        species=[species_0, species_1]
     )
 
 

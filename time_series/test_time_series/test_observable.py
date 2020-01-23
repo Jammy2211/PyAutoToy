@@ -27,4 +27,3 @@ class TestObservable:
 
         instance = model.instance_from_prior_medians()
         assert isinstance(instance, Observable)
-
