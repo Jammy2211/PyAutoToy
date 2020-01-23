@@ -1,5 +1,17 @@
 from functools import wraps
 
+LOWER_LIMIT = 0
+UPPER_LIMIT = 20
+NUMBER_OF_POINTS = 400
+
+
+def pdf(observable):
+    return observable.pdf(
+        LOWER_LIMIT,
+        UPPER_LIMIT,
+        NUMBER_OF_POINTS
+    )
+
 
 def assert_lengths_match(func):
     """
@@ -15,6 +27,7 @@ def assert_lengths_match(func):
     The same method but with a check that raises an AssertionError should the list lengths
     not match.
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         self, first, second = args + tuple(kwargs.values())

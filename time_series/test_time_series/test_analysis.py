@@ -1,47 +1,12 @@
 import pytest
 
 import autofit as af
+from time_series.analysis import Analysis
+from time_series.data import Data
 from time_series.fit import Fit
 from time_series.observable import Observable
 from time_series.species import Species, SpeciesObservables
-
-
-class Data:
-    def __init__(
-            self,
-            **observables
-    ):
-        self.observables = observables
-
-    @property
-    def observable_names(self):
-        return set(self.observables.keys())
-
-    def __getitem__(self, observable_name):
-        return self.observables[observable_name]
-
-
-class Analysis(af.Analysis):
-    def fit(self, instance):
-        fitness = 0
-        species_observables = instance.species_observables
-        for observable_name in self.data.observable_names:
-            fitness -= Fit(
-                self.data[observable_name],
-                pdf(species_observables[observable_name])
-            ).chi_squared
-        return fitness
-
-    def visualize(self, instance, during_analysis):
-        pass
-
-    def __init__(self, data):
-        self.data = data
-
-
-LOWER_LIMIT = 0
-UPPER_LIMIT = 20
-NUMBER_OF_POINTS = 400
+from time_series.util import pdf
 
 
 @pytest.fixture(name="a_0")
@@ -93,14 +58,6 @@ def make_species_1(a_1, b_1):
             a=a_1,
             b=b_1
         )
-    )
-
-
-def pdf(observable):
-    return observable.pdf(
-        LOWER_LIMIT,
-        UPPER_LIMIT,
-        NUMBER_OF_POINTS
     )
 
 
