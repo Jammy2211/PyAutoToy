@@ -23,7 +23,8 @@ def make_pipeline():
     # time step.
     model.abundances = [
         af.UniformPrior(
-            0, 1
+            lower_limit=0,
+            upper_limit=1
         )
         for _ in range(
             NUMBER_OF_SPECIES
@@ -38,8 +39,14 @@ def make_pipeline():
             observables={
                 str(number): af.PriorModel(
                     ts.Observable,
-                    mean=af.GaussianPrior(3, 1),
-                    deviation=af.GaussianPrior(2, 1)
+                    mean=af.GaussianPrior(
+                        mean=3,
+                        sigma=1
+                    ),
+                    deviation=af.GaussianPrior(
+                        mean=2,
+                        sigma=1
+                    )
                 )
                 for number in range(NUMBER_OF_OBSERVABLES)
             },
