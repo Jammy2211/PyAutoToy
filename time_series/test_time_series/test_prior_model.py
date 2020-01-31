@@ -3,9 +3,7 @@ import itertools
 import pytest
 
 import autofit as af
-from time_series import matrix_prior_model as m
-from time_series import observable as o
-from time_series import species as s
+import time_series as ts
 
 
 @pytest.fixture(autouse=True)
@@ -15,11 +13,11 @@ def reset_model_id():
 
 @pytest.fixture(name="matrix_prior_model")
 def make_matrix_prior_model():
-    return m.MatrixPriorModel(
-        s.SpeciesCollection,
+    return ts.MatrixPriorModel(
+        ts.SpeciesCollection,
         [
-            s.Species,
-            s.Species
+            ts.SpeciesPriorModel(ts.Species),
+            ts.SpeciesPriorModel(ts.Species)
         ]
     )
 
@@ -34,10 +32,10 @@ def make_self_interacting_prior_model(matrix_prior_model):
 
 def test_observables():
     model = af.PriorModel(
-        s.Species,
+        ts.Species,
         observables=af.CollectionPriorModel(
-            one=o.Observable,
-            two=o.Observable
+            one=ts.Observable,
+            two=ts.Observable
         )
     )
 
@@ -46,7 +44,7 @@ def test_observables():
     instance = model.instance_from_prior_medians()
     assert isinstance(
         instance.observables["one"],
-        o.Observable
+        ts.Observable
     )
 
 
@@ -59,7 +57,7 @@ class TestBasicBehaviour:
         assert matrix_prior_model.prior_count == 2
 
         instance = matrix_prior_model.instance_from_prior_medians()
-        assert isinstance(instance, s.SpeciesCollection)
+        assert isinstance(instance, ts.SpeciesCollection)
         assert len(instance) == 2
 
     def test_priors(self, self_interacting_prior_model):

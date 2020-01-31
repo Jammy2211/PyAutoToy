@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class SpeciesPriorModel(af.PriorModel):
-    def __init__(self, cls, **kwargs):
+    def __init__(self, cls=Species, **kwargs):
         """
         Prior model for a species in a matrix that has defined relationships with other species.
 
@@ -93,7 +93,7 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
         items
             A collection of items that implement the Species interface
         """
-        super().__init__(list(map(SpeciesPriorModel, items)))
+        super().__init__(items)
         self.cls = cls
 
     def instance_for_arguments(self, arguments: dict) -> object:

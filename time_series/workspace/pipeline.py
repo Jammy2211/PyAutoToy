@@ -1,4 +1,5 @@
 from os import path
+from typing import List
 
 import autofit as af
 import time_series as ts
@@ -15,6 +16,18 @@ af.conf.instance = af.conf.Config(
 )
 
 
+def make_abundances():
+    return [
+        af.UniformPrior(
+            lower_limit=0,
+            upper_limit=1
+        )
+        for _ in range(
+            NUMBER_OF_SPECIES
+        )
+    ]
+
+
 def make_phase(
         number=None,
         previous_phase=None
@@ -25,15 +38,7 @@ def make_phase(
 
     # We create a dimension for the abundance of each species at this
     # time step.
-    model.abundances = [
-        af.UniformPrior(
-            lower_limit=0,
-            upper_limit=1
-        )
-        for _ in range(
-            NUMBER_OF_SPECIES
-        )
-    ]
+    model.abundances = make_abundances()
 
     # If there was a previous phase we use the results of that phase to constrain
     # the species observables in this phase.
@@ -81,17 +86,39 @@ def make_phase(
 
 def make_pipeline(timesteps):
     phase = None
-    phases = list()
+    single_timestep_phases: List[af.Phase] = list()
     for timestep in timesteps:
         phase = make_phase(
             number=timestep,
             previous_phase=phase
         )
-        phases.append(phase)
+        single_timestep_phases.append(phase)
+
+    model = af.ModelMapper()
+    model.abundances = make_abundances()
+
+    instance_species_list = phase.result.instance.species
+
+    model.species_collection = ts.MatrixPriorModel(
+        ts.SpeciesCollection,
+        items=[
+            ts.SpeciesPriorModel(
+                observables=species.observables
+            )
+            for species in instance_species_list
+        ]
+    )
+
+    time_series_phase = af.Phase(
+        phase_name="TimeSeries",
+        model=model,
+        analysis_class=ts.TimeSeriesAnalysis
+    )
+
     # We stick our phases into a pipeline.
     return af.Pipeline(
         "timeseries",
-        *phases
+        *(single_timestep_phases + [time_series_phase])
     )
 
 
