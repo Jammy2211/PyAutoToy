@@ -65,7 +65,7 @@ def make_phase(
     # abundances and a list of species.
     phase = ts.SingleTimePhase(
         phase_name=f"observation_phase",
-        analysis_class=ts.Analysis,
+        analysis_class=ts.SingleTimeAnalysis,
         model=model,
         data_index=number
     )

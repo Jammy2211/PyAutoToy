@@ -1,6 +1,6 @@
 import copy
 from random import randint
-from typing import Set, List
+from typing import Set, List, Dict, Optional
 
 import numpy as np
 
@@ -67,14 +67,20 @@ class TimeSeriesData(af.Dataset):
     def name(self) -> str:
         return "TimeSeriesData"
 
-    def __init__(self, **timestep_data):
-        self.timestep_data = timestep_data
+    def __init__(
+            self,
+            timestep_data: Optional[Dict[int, Data]] = None
+    ):
+        self.timestep_data = timestep_data or dict()
 
     def __getitem__(self, item):
         return self.timestep_data[item]
 
     def __iter__(self):
-        return iter(self.timestep_data.items())
+        return iter(sorted(
+            self.timestep_data.items(),
+            key=lambda tup: tup[0]
+        ))
 
     def __setitem__(self, key, value):
         self.timestep_data[key] = value

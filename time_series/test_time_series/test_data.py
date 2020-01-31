@@ -48,3 +48,17 @@ def test_abundances(data_list):
 
 def test_type(data):
     assert isinstance(data["1"], np.ndarray)
+
+
+def test_ordering():
+    time_series_data = ts.TimeSeriesData({
+        10: ts.Data(),
+        5: ts.Data(),
+        15: ts.Data()
+    })
+
+    assert [
+        time
+        for time, _
+        in time_series_data
+    ] == [5, 10, 15]

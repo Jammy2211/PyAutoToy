@@ -1,7 +1,7 @@
 import pytest
 
 import autofit as af
-from time_series.analysis import Analysis
+from time_series.analysis import SingleTimeAnalysis
 from time_series.data import Data
 from time_series.data import pdf
 from time_series.observable import Observable
@@ -101,7 +101,7 @@ class TestAnalysis:
             species_1
         ]
 
-        analysis = Analysis(
+        analysis = SingleTimeAnalysis(
             data
         )
 

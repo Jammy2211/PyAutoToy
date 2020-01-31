@@ -1,10 +1,21 @@
 import autofit as af
 from time_series.fit import SingleTimeFit
-from time_series.data import pdf, Data
+from time_series.data import pdf, Data, TimeSeriesData
 from time_series.species import SpeciesObservables
 
 
-class Analysis(af.Analysis):
+class TimeSeriesAnalysis(af.Analysis):
+    def __init__(self, dataset: TimeSeriesData):
+        self.dataset = dataset
+
+    def fit(self, instance):
+        pass
+
+    def visualize(self, instance, during_analysis):
+        pass
+
+
+class SingleTimeAnalysis(af.Analysis):
 
     def __init__(self, dataset: Data):
         """
