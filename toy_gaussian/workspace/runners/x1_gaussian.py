@@ -55,7 +55,7 @@ imaging = toy.imaging.from_fits(
     pixel_scales=pixel_scales,
 )
 
-toy.plot.imaging.subplot(imaging=imaging)
+toy.plot.imaging.subplot_imaging(imaging=imaging)
 
 # Running a pipeline is easy, we simply import it from the pipelines folder and pass the lens dataset to its run function.
 # Below, we'll use a 3 phase example pipeline to fit the dataset with a parametric lens light, mass and source light

@@ -44,8 +44,8 @@ class TestPhase(object):
         analysis = phase_imaging_7x7.make_analysis(dataset=imaging_7x7)
 
         assert (
-            analysis.masked_imaging.image.in_2d
-            == imaging_7x7.image.in_2d * np.invert(mask_7x7)
+                analysis.masked_imaging.image.in_2d
+                == imaging_7x7.image.in_2d * np.invert(mask_7x7)
         ).all()
         assert (
             analysis.masked_imaging.noise_map.in_2d
@@ -118,8 +118,8 @@ class TestPhase(object):
 
         analysis = phase_imaging_7x7.make_analysis(dataset=imaging_7x7)
         assert (
-            analysis.masked_imaging.image.in_2d
-            == imaging_snr_limit.image.in_2d * np.invert(mask_7x7_1_pix)
+                analysis.masked_imaging.image.in_2d
+                == imaging_snr_limit.image.in_2d * np.invert(mask_7x7_1_pix)
         ).all()
         assert (
             analysis.masked_imaging.noise_map.in_2d
@@ -138,8 +138,8 @@ class TestPhase(object):
 
         analysis = phase_imaging_7x7.make_analysis(dataset=imaging_7x7)
         assert (
-            analysis.masked_imaging.image.in_2d
-            == imaging_snr_limit.image.in_2d * np.invert(mask_7x7_1_pix)
+                analysis.masked_imaging.image.in_2d
+                == imaging_snr_limit.image.in_2d * np.invert(mask_7x7_1_pix)
         ).all()
         assert (
             analysis.masked_imaging.noise_map.in_2d
@@ -163,8 +163,8 @@ class TestPhase(object):
 
         analysis = phase_imaging_7x7.make_analysis(dataset=imaging_7x7)
         assert (
-            analysis.masked_imaging.image.in_2d
-            == binned_up_imaging.image.in_2d * np.invert(binned_up_mask)
+                analysis.masked_imaging.image.in_2d
+                == binned_up_imaging.image.in_2d * np.invert(binned_up_mask)
         ).all()
         assert (analysis.masked_imaging.psf == binned_up_imaging.psf).all()
         assert (
@@ -181,8 +181,8 @@ class TestPhase(object):
         )
 
         assert (
-            analysis.masked_imaging.image.in_2d
-            == binned_up_masked_imaging.image.in_2d * np.invert(binned_up_mask)
+                analysis.masked_imaging.image.in_2d
+                == binned_up_masked_imaging.image.in_2d * np.invert(binned_up_mask)
         ).all()
         assert (analysis.masked_imaging.psf == binned_up_masked_imaging.psf).all()
         assert (
@@ -193,7 +193,7 @@ class TestPhase(object):
         assert (analysis.masked_imaging.mask == binned_up_masked_imaging.mask).all()
 
         assert (
-            analysis.masked_imaging.image.in_1d == binned_up_masked_imaging.image.in_1d
+                analysis.masked_imaging.image.in_1d == binned_up_masked_imaging.image.in_1d
         ).all()
         assert (
             analysis.masked_imaging.noise_map.in_1d

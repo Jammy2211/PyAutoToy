@@ -24,7 +24,7 @@ def imaging_of_phase(
 
     if plot_as_subplot:
 
-        aa.plot.imaging.subplot(
+        aa.plot.imaging.subplot_imaging(
             imaging=imaging,
             mask=mask,
             unit_label=unit_label,
@@ -80,7 +80,7 @@ def imaging_fit_of_phase(
 
     if plot_fit_as_subplot:
 
-        aa.plot.fit_imaging.subplot(
+        aa.plot.fit_imaging.subplot_fit_imaging(
             fit=fit,
             mask=mask,
             unit_label=unit_label,

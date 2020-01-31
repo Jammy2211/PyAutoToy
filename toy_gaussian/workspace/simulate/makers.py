@@ -49,7 +49,7 @@ def simulate_imaging_from_gaussian_and_output_to_fits(
         overwrite=True,
     )
 
-    aa.plot.imaging.subplot(
+    aa.plot.imaging.subplot_imaging(
         imaging=imaging,
         output_filename="imaging",
         output_path=dataset_path,
