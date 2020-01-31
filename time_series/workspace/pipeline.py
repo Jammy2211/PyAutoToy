@@ -62,10 +62,11 @@ def make_phase(
     # that evaluates the fit of any given instance.
     # In this case, the Analysis expects the instance to have a list of
     # abundances and a list of species.
-    phase = af.Phase(
+    phase = ts.TimeSeriesPhase(
         phase_name=f"observation_phase_{number}",
         analysis_class=ts.Analysis,
-        model=model
+        model=model,
+        data_index=number
     )
 
     # The phase uses MultiNest by default. We can actually change that if we
@@ -95,9 +96,10 @@ def make_pipeline(timesteps=1):
 
 if __name__ == "__main__":
     pipeline = make_pipeline()
-    data = ts.generate_data(
+    data = ts.generate_data_at_timesteps(
         number_of_observables=NUMBER_OF_OBSERVABLES,
-        number_of_species=NUMBER_OF_SPECIES
+        number_of_species=NUMBER_OF_SPECIES,
+        timesteps=[0]
     )
     pipeline.run(
         data

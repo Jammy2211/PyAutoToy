@@ -6,8 +6,8 @@ class TimeSeriesPhase(af.Phase):
     def __init__(
             self,
             paths,
+            data_index,
             *,
-            data_index=0,
             analysis_class,
             optimizer_class=af.MultiNest,
             model=None,

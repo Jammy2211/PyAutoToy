@@ -19,7 +19,8 @@ class MockAnalysis(af.Analysis):
 def make_phase():
     return ts.TimeSeriesPhase(
         "phase",
-        analysis_class=MockAnalysis
+        analysis_class=MockAnalysis,
+        data_index=0
     )
 
 

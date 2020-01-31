@@ -19,12 +19,12 @@ def make_data_list():
     name="data"
 )
 def make_data(data_list):
-    return data_list[0]
+    return data_list[5]
 
 
 def test_timesteps(data_list):
     assert [
-               data.timestep
+               data[0]
                for data
                in data_list
            ] == [
@@ -33,17 +33,17 @@ def test_timesteps(data_list):
 
 
 def test_observable_distributions(data_list):
-    observables = list(data_list[0].observables.values())[0].observables
+    observables = list(data_list[5].observables.values())[0].observables
     for data in data_list:
-        pairs = zip(list(data.observables.values())[0].observables, observables)
+        pairs = zip(list(data[1].observables.values())[0].observables, observables)
         for one, two in pairs:
             assert one == two
 
 
 def test_abundances(data_list):
-    abundances = list(data_list[0].observables.values())[0].abundances
-    for data in data_list[1:]:
-        assert abundances != list(data.observables.values())[0].abundances
+    abundances = list(data_list[5].observables.values())[0].abundances
+    for data in list(data_list)[1:]:
+        assert abundances != list(data[1].observables.values())[0].abundances
 
 
 def test_type(data):

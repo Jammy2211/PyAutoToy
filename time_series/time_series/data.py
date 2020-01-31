@@ -29,7 +29,6 @@ class Data(af.Dataset):
 
     def __init__(
             self,
-            timestep,
             **observables
     ):
         """
@@ -39,7 +38,6 @@ class Data(af.Dataset):
         ----------
         observables
         """
-        self.timestep = timestep
         self.observables = observables
 
     @property
@@ -64,6 +62,20 @@ class Data(af.Dataset):
         })
 
 
+class TimeSeriesData:
+    def __init__(self, **timestep_data):
+        self.timestep_data = timestep_data
+
+    def __getitem__(self, item):
+        return self.timestep_data[item]
+
+    def __iter__(self):
+        return iter(self.timestep_data.items())
+
+    def __setitem__(self, key, value):
+        self.timestep_data[key] = value
+
+
 def rand_positive(upper_limit):
     return randint(
         0,
@@ -75,7 +87,7 @@ def generate_data_at_timesteps(
         number_of_observables: int,
         number_of_species: int,
         timesteps: List[int]
-) -> List[Data]:
+) -> TimeSeriesData:
     """
     Generate data over a series of timesteps. Observables are parameterized the same way each timestep
     whilst the abundances change.
@@ -96,7 +108,7 @@ def generate_data_at_timesteps(
         number_of_observables,
         number_of_species
     )
-    data_list = list()
+    time_series_data = TimeSeriesData()
     for timestep in timesteps:
         data = copy.deepcopy(base_data)
         for compound_observable in data.observables.values():
@@ -105,9 +117,8 @@ def generate_data_at_timesteps(
                     1
                 ) for _ in range(number_of_species)
             ]
-        data.timestep = timestep
-        data_list.append(data)
-    return data_list
+        time_series_data[timestep] = data
+    return time_series_data
 
 
 def generate_data(
@@ -144,6 +155,5 @@ def generate_data(
             ]
         )
     return Data(
-        timestep=0,
         **compound_observables
     )
