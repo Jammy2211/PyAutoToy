@@ -14,7 +14,10 @@ af.conf.instance = af.conf.Config(
 )
 
 
-def make_pipeline():
+def make_phase(
+        number=None,
+        previous_phase=None
+):
     # This is our model. It's an object that can be given a unit vector
     # of length number of dimensions to create an instance.
     model = af.ModelMapper()
@@ -30,6 +33,13 @@ def make_pipeline():
             NUMBER_OF_SPECIES
         )
     ]
+
+    # If there was a previous phase we use the results of that phase to constrain
+    # the species observables in this phase.
+    if previous_phase is not None:
+        previous_model = previous_phase.result.model
+        model.species = previous_model.species
+
     # We also create a model for each species. We fix the growth rate
     # as we're just fitting for the abundances and observables. Each
     # species has a sub model representing each observable.
@@ -53,7 +63,7 @@ def make_pipeline():
     # In this case, the Analysis expects the instance to have a list of
     # abundances and a list of species.
     phase = af.Phase(
-        phase_name="observation_phase",
+        phase_name=f"observation_phase_{number}",
         analysis_class=ts.Analysis,
         model=model
     )
@@ -64,10 +74,22 @@ def make_pipeline():
     phase.optimizer.n_live_points = 20
     phase.optimizer.sampling_efficiency = 0.8
 
+    return phase
+
+
+def make_pipeline(timesteps=1):
+    phase = None
+    phases = list()
+    for timestep in range(timesteps):
+        phase = make_phase(
+            number=timestep,
+            previous_phase=phase
+        )
+        phases.append(phase)
     # We stick our phases into a pipeline.
     return af.Pipeline(
         "timeseries",
-        phase
+        *phases
     )
 
 
