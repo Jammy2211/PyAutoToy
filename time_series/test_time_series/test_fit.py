@@ -4,8 +4,8 @@ import pytest
 import time_series as ts
 
 
-@pytest.fixture(name="fit")
-def make_fit():
+@pytest.fixture(name="single_time_fit")
+def make_single_time_fit():
     return ts.SingleTimeFit(
         np.array([
             0.0, 1.0, 2.0
@@ -16,16 +16,29 @@ def make_fit():
     )
 
 
-class TestFit:
-    def test_residuals(self, fit):
-        assert (fit.residuals == np.array([
+@pytest.fixture(name="multi_time_fit")
+def make_multi_time_fit(single_time_fit):
+    return ts.MultiTimeFit([
+        single_time_fit,
+        single_time_fit
+    ])
+
+
+class TestSingleTimeFit:
+    def test_residuals(self, single_time_fit):
+        assert (single_time_fit.residuals == np.array([
             1.0, 0.0, -1.0
         ])).all()
 
-    def test_chi_squared_list(self, fit):
-        assert (fit.chi_squared_list == np.array([
+    def test_chi_squared_list(self, single_time_fit):
+        assert (single_time_fit.chi_squared_list == np.array([
             1.0, 0.0, 1.0
         ])).all()
 
-    def test_chi_squared(self, fit):
-        assert fit.chi_squared == 2.0
+    def test_chi_squared(self, single_time_fit):
+        assert single_time_fit.chi_squared == 2.0
+
+
+class TestMultiTimeFit:
+    def test_chi_squared(self, multi_time_fit):
+        assert multi_time_fit.chi_squared == 4.0

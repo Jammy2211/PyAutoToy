@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 
 
@@ -42,3 +44,19 @@ class SingleTimeFit:
         The sum of the squared differences between the observed and model data
         """
         return np.sum(self.chi_squared_list)
+
+
+class MultiTimeFit:
+    def __init__(self, single_time_fits: List[SingleTimeFit]):
+        self.single_time_fits = single_time_fits
+
+    @property
+    def chi_squared(self):
+        """
+        The sum of the squared differences between the observed and model data
+        """
+        return sum(
+            fit.chi_squared
+            for fit
+            in self.single_time_fits
+        )
