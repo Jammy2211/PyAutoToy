@@ -1,6 +1,7 @@
 import autofit as af
-from time_series.fit import SingleTimeFit
 from time_series.data import pdf, Data, TimeSeriesData
+from time_series.fit import SingleTimeFit
+from time_series.lotka_voltera import LotkaVolteraModel
 from time_series.species import SpeciesObservables
 
 
@@ -9,7 +10,34 @@ class TimeSeriesAnalysis(af.Analysis):
         self.dataset = dataset
 
     def fit(self, instance):
-        pass
+        initial_abundances = instance.abundances
+        species_collection = instance.species_collection
+
+        lotka_voltera = LotkaVolteraModel(
+            species_collection
+        )
+
+        abundances = initial_abundances
+        time = 0
+        fitness = 0
+
+        for data_time, dataset in self.dataset:
+            while time < data_time:
+                abundances = lotka_voltera.step(
+                    abundances
+                )
+                time += 1
+
+            species_observables = SpeciesObservables(
+                abundances=abundances,
+                species=species_collection
+            )
+            for observable_name in dataset.observable_names:
+                fitness -= SingleTimeFit(
+                    self.dataset[observable_name],
+                    pdf(species_observables[observable_name])
+                ).chi_squared
+        return fitness
 
     def visualize(self, instance, during_analysis):
         pass
