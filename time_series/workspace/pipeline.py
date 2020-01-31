@@ -99,7 +99,7 @@ def make_pipeline(timesteps):
 
     instance_species_list = phase.result.instance.species
 
-    model.species_collection = ts.MatrixPriorModel(
+    matrix = ts.MatrixPriorModel(
         ts.SpeciesCollection,
         items=[
             ts.SpeciesPriorModel(
@@ -108,6 +108,11 @@ def make_pipeline(timesteps):
             for species in instance_species_list
         ]
     )
+    for i in range(NUMBER_OF_SPECIES):
+        for j in range(NUMBER_OF_SPECIES):
+            matrix[i, j] = af.UniformPrior(0.0, 1.0)
+
+    model.species_collection = matrix
 
     time_series_phase = af.Phase(
         phase_name="TimeSeries",
