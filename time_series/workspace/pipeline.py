@@ -39,14 +39,6 @@ def make_pipeline():
             observables={
                 str(number): af.PriorModel(
                     ts.Observable,
-                    mean=af.GaussianPrior(
-                        mean=3,
-                        sigma=1
-                    ),
-                    deviation=af.GaussianPrior(
-                        mean=2,
-                        sigma=1
-                    )
                 )
                 for number in range(NUMBER_OF_OBSERVABLES)
             },
