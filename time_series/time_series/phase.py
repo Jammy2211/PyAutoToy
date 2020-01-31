@@ -21,7 +21,7 @@ class TimeSeriesPhase(af.Phase):
             model=model
         )
 
-    def make_analysis(self, dataset_list):
+    def make_analysis(self, dataset):
         return self.analysis_class(
-            dataset_list[self.data_index]
+            dataset[self.data_index]
         )

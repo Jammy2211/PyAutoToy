@@ -6,16 +6,16 @@ from time_series.species import SpeciesObservables
 
 class Analysis(af.Analysis):
 
-    def __init__(self, data: Data):
+    def __init__(self, dataset: Data):
         """
         Used to compare model instances to the data.
 
         Parameters
         ----------
-        data
+        dataset
             Data comprising observations taken at a particular point in time.
         """
-        self.data = data
+        self.dataset = dataset
 
     def fit(self, instance: af.ModelInstance) -> float:
         """
@@ -37,9 +37,9 @@ class Analysis(af.Analysis):
             abundances=instance.abundances,
             species=instance.species
         )
-        for observable_name in self.data.observable_names:
+        for observable_name in self.dataset.observable_names:
             fitness -= Fit(
-                self.data[observable_name],
+                self.dataset[observable_name],
                 pdf(species_observables[observable_name])
             ).chi_squared
         return fitness

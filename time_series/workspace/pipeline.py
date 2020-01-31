@@ -63,7 +63,7 @@ def make_phase(
     # In this case, the Analysis expects the instance to have a list of
     # abundances and a list of species.
     phase = ts.TimeSeriesPhase(
-        phase_name=f"observation_phase_{number}",
+        phase_name=f"observation_phase",
         analysis_class=ts.Analysis,
         model=model,
         data_index=number

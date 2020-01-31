@@ -62,7 +62,11 @@ class Data(af.Dataset):
         })
 
 
-class TimeSeriesData:
+class TimeSeriesData(af.Dataset):
+    @property
+    def name(self) -> str:
+        return "TimeSeriesData"
+
     def __init__(self, **timestep_data):
         self.timestep_data = timestep_data
 
