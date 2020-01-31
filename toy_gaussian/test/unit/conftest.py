@@ -1,10 +1,5 @@
-from os import path
-
-import numpy as np
-import pytest
-
 import autofit as af
-import toy_gaussian
+import toy_gaussian as toy
 from autoarray.mask import mask
 from test_autoarray.unit.conftest import *
 from toy_gaussian.test.mock import mock_pipeline
@@ -24,67 +19,35 @@ def set_config_path():
 #
 
 
-@pytest.fixture(name="gaussian")
-def make_gaussian():
+@pytest.fixture(name="gaussian_0")
+def make_gaussian_0():
     # noinspection PyTypeChecker
-    return toy_gaussian.SphericalGaussian(centre=(0.0, 0.0), intensity=1.0, sigma=0.5)
+    return toy.SphericalGaussian(centre=(0.0, 0.0), intensity=1.0, sigma=0.5)
 
 
-@pytest.fixture(name="mask_function_7x7_1_pix")
-def make_mask_function_7x7_1_pix():
-    # noinspection PyUnusedLocal
-    def mask_function_7x7_1_pix(shape_2d, pixel_scales):
-        array = np.array(
-            [
-                [True, True, True, True, True, True, True],
-                [True, True, True, True, True, True, True],
-                [True, True, True, True, True, True, True],
-                [True, True, True, False, True, True, True],
-                [True, True, True, True, True, True, True],
-                [True, True, True, True, True, True, True],
-                [True, True, True, True, True, True, True],
-            ]
-        )
-
-        return mask.Mask(mask_2d=array, pixel_scales=1.0)
-
-    return mask_function_7x7_1_pix
+@pytest.fixture(name="gaussian_1")
+def make_gaussian_1():
+    # noinspection PyTypeChecker
+    return toy.SphericalGaussian(centre=(0.5, 0.5), intensity=2.0, sigma=1.0)
 
 
-@pytest.fixture(name="mask_function_7x7")
-def make_mask_function_7x7():
-    # noinspection PyUnusedLocal
-    def mask_function_7x7(shape_2d, pixel_scales):
-        array = np.array(
-            [
-                [True, True, True, True, True, True, True],
-                [True, True, True, True, True, True, True],
-                [True, True, False, False, False, True, True],
-                [True, True, False, False, False, True, True],
-                [True, True, False, False, False, True, True],
-                [True, True, True, True, True, True, True],
-                [True, True, True, True, True, True, True],
-            ]
-        )
-
-        return aa.mask.manual(mask_2d=array, pixel_scales=1.0)
-
-    return mask_function_7x7
+@pytest.fixture(name="gaussians")
+def make_gaussians(gaussian_0, gaussian_1):
+    # noinspection PyTypeChecker
+    return [gaussian_0, gaussian_1]
 
 
 @pytest.fixture(name="phase_dataset_7x7")
-def make_phase_data(mask_function_7x7):
-    return toy_gaussian.PhaseDataset(
+def make_phase_data():
+    return toy.PhaseDataset(
         optimizer_class=mock_pipeline.MockNLO, phase_tag="", phase_name="test_phase"
     )
 
 
 @pytest.fixture(name="phase_imaging_7x7")
-def make_phase_imaging_7x7(mask_function_7x7):
-    return toy_gaussian.PhaseImaging(
-        optimizer_class=mock_pipeline.MockNLO,
-        mask_function=mask_function_7x7,
-        phase_name="test_phase",
+def make_phase_imaging_7x7():
+    return toy.PhaseImaging(
+        optimizer_class=mock_pipeline.MockNLO, phase_name="test_phase"
     )
 
 
@@ -98,3 +61,19 @@ def make_results_collection(results_7x7):
     results_collection = af.ResultsCollection()
     results_collection.add("phase", results_7x7)
     return results_collection
+
+
+@pytest.fixture(name="include_all")
+def make_include_all():
+    return toy.plot.Include(
+        origin=True,
+        mask=True,
+        grid=True,
+        border=True,
+        positions=True,
+        gaussian_centres=True,
+        inversion_pixelization_grid=True,
+        inversion_grid=True,
+        inversion_border=True,
+        inversion_image_pixelization_grid=True,
+    )

@@ -44,7 +44,7 @@ class TestPhase(object):
     #     assert phase_dataset_7x7.model.gaussians[0] == type(toy.SphericalGaussian)
 
     def test__customize(
-        self, mask_function_7x7, results_7x7, results_collection_7x7, imaging_7x7
+        self, mask_7x7, results_7x7, results_collection_7x7, imaging_7x7
     ):
         class MyPlanePhaseAnd(toy.PhaseImaging):
             def customize_priors(self, results):
@@ -57,13 +57,11 @@ class TestPhase(object):
         setattr(results_7x7.model, "gaussians", [gaussian_model])
 
         phase_dataset_7x7 = MyPlanePhaseAnd(
-            phase_name="test_phase",
-            optimizer_class=mock_pipeline.MockNLO,
-            mask_function=mask_function_7x7,
+            phase_name="test_phase", optimizer_class=mock_pipeline.MockNLO
         )
 
         phase_dataset_7x7.make_analysis(
-            dataset=imaging_7x7, results=results_collection_7x7
+            dataset=imaging_7x7, mask=mask_7x7, results=results_collection_7x7
         )
         phase_dataset_7x7.customize_priors(results_collection_7x7)
 
@@ -80,13 +78,11 @@ class TestPhase(object):
         setattr(results_7x7.model, "gaussians", [gaussian_model])
 
         phase_dataset_7x7 = MyPlanePhaseAnd(
-            phase_name="test_phase",
-            optimizer_class=mock_pipeline.MockNLO,
-            mask_function=mask_function_7x7,
+            phase_name="test_phase", optimizer_class=mock_pipeline.MockNLO
         )
 
         phase_dataset_7x7.make_analysis(
-            dataset=imaging_7x7, results=results_collection_7x7
+            dataset=imaging_7x7, mask=mask_7x7, results=results_collection_7x7
         )
         phase_dataset_7x7.customize_priors(results_collection_7x7)
 
@@ -145,18 +141,15 @@ class TestPhase(object):
 
 
 class TestResult(object):
-    def test__results_of_phase_are_available_as_properties(
-        self, imaging_7x7, mask_function_7x7
-    ):
+    def test__results_of_phase_are_available_as_properties(self, imaging_7x7, mask_7x7):
         clean_images()
 
         phase_dataset_7x7 = toy.PhaseImaging(
             optimizer_class=mock_pipeline.MockNLO,
-            mask_function=mask_function_7x7,
             gaussians=[toy.SphericalGaussian()],
             phase_name="test_phase_2",
         )
 
-        result = phase_dataset_7x7.run(dataset=imaging_7x7)
+        result = phase_dataset_7x7.run(dataset=imaging_7x7, mask=mask_7x7)
 
         assert isinstance(result, toy.AbstractPhase.Result)
