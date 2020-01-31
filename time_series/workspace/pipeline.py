@@ -5,6 +5,7 @@ import time_series as ts
 
 NUMBER_OF_SPECIES = 3
 NUMBER_OF_OBSERVABLES = 2
+TIMESTEPS = [7, 21, 101]
 
 directory = path.dirname(path.realpath(__file__))
 
@@ -39,23 +40,23 @@ def make_phase(
     if previous_phase is not None:
         previous_model = previous_phase.result.model
         model.species = previous_model.species
-
-    # We also create a model for each species. We fix the growth rate
-    # as we're just fitting for the abundances and observables. Each
-    # species has a sub model representing each observable.
-    model.species = [
-        af.PriorModel(
-            ts.Species,
-            observables={
-                str(number): af.PriorModel(
-                    ts.Observable,
-                )
-                for number in range(NUMBER_OF_OBSERVABLES)
-            },
-            growth_rate=1.0
-        )
-        for _ in range(NUMBER_OF_SPECIES)
-    ]
+    else:
+        # We also create a model for each species. We fix the growth rate
+        # as we're just fitting for the abundances and observables. Each
+        # species has a sub model representing each observable.
+        model.species = [
+            af.PriorModel(
+                ts.Species,
+                observables={
+                    str(number): af.PriorModel(
+                        ts.Observable,
+                    )
+                    for number in range(NUMBER_OF_OBSERVABLES)
+                },
+                growth_rate=1.0
+            )
+            for _ in range(NUMBER_OF_SPECIES)
+        ]
 
     # Next we create a phase. The phase comprises the model and an analysis
     # class. An analysis is instantiated with a data object and has a function
@@ -78,10 +79,10 @@ def make_phase(
     return phase
 
 
-def make_pipeline(timesteps=1):
+def make_pipeline(timesteps):
     phase = None
     phases = list()
-    for timestep in range(timesteps):
+    for timestep in timesteps:
         phase = make_phase(
             number=timestep,
             previous_phase=phase
@@ -95,12 +96,14 @@ def make_pipeline(timesteps=1):
 
 
 if __name__ == "__main__":
-    pipeline = make_pipeline()
+    pipeline = make_pipeline(
+        timesteps=TIMESTEPS
+    )
     data = ts.generate_data_at_timesteps(
         number_of_observables=NUMBER_OF_OBSERVABLES,
         number_of_species=NUMBER_OF_SPECIES,
-        timesteps=[0]
+        timesteps=TIMESTEPS
     )
     pipeline.run(
-        data
+        data,
     )
