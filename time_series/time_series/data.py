@@ -77,17 +77,20 @@ def generate_data_at_timesteps(
         timesteps: List[int]
 ) -> List[Data]:
     """
-    Generate data over a
+    Generate data over a series of timesteps. Observables are parameterized the same way each timestep
+    whilst the abundances change.
 
     Parameters
     ----------
     number_of_observables
     number_of_species
     timesteps
+        A list of integers indicating the number of steps through the Lotka Volterra model the sample
+        is taken.
 
     Returns
     -------
-
+    A list with a data object for each timestep.
     """
     base_data = generate_data(
         number_of_observables,
