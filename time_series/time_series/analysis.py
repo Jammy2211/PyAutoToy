@@ -30,7 +30,7 @@ class Analysis(af.Analysis):
 
         Returns
         -------
-        The evidence for the mdodel
+        The evidence for the model
         """
         fitness = 0
         species_observables = SpeciesObservables(

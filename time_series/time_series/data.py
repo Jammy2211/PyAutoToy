@@ -1,5 +1,6 @@
+import copy
 from random import randint
-from typing import Set
+from typing import Set, List
 
 import numpy as np
 
@@ -28,6 +29,7 @@ class Data(af.Dataset):
 
     def __init__(
             self,
+            timestep,
             **observables
     ):
         """
@@ -37,6 +39,7 @@ class Data(af.Dataset):
         ----------
         observables
         """
+        self.timestep = timestep
         self.observables = observables
 
     @property
@@ -47,7 +50,11 @@ class Data(af.Dataset):
         return set(self.observables.keys())
 
     def __getitem__(self, observable_name):
-        return self.observables[observable_name]
+        return self.observables[observable_name].pdf(
+            LOWER_LIMIT,
+            UPPER_LIMIT,
+            NUMBER_OF_POINTS
+        )
 
     def __str__(self):
         return str({
@@ -62,6 +69,42 @@ def rand_positive(upper_limit):
         0,
         upper_limit * GRANULARITY
     ) / GRANULARITY
+
+
+def generate_data_at_timesteps(
+        number_of_observables: int,
+        number_of_species: int,
+        timesteps: List[int]
+) -> List[Data]:
+    """
+    Generate data over a
+
+    Parameters
+    ----------
+    number_of_observables
+    number_of_species
+    timesteps
+
+    Returns
+    -------
+
+    """
+    base_data = generate_data(
+        number_of_observables,
+        number_of_species
+    )
+    data_list = list()
+    for timestep in timesteps:
+        data = copy.deepcopy(base_data)
+        for compound_observable in data.observables.values():
+            compound_observable.abundances = [
+                rand_positive(
+                    1
+                ) for _ in range(number_of_species)
+            ]
+        data.timestep = timestep
+        data_list.append(data)
+    return data_list
 
 
 def generate_data(
@@ -96,11 +139,8 @@ def generate_data(
                     deviation=rand_positive(2)
                 ) for _ in range(number_of_species)
             ]
-        ).pdf(
-            LOWER_LIMIT,
-            UPPER_LIMIT,
-            NUMBER_OF_POINTS
         )
     return Data(
+        timestep=0,
         **compound_observables
     )

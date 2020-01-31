@@ -63,8 +63,9 @@ def make_species_1(a_1, b_1):
 @pytest.fixture(name="data")
 def make_data(a_0, a_1, b_0, b_1):
     return Data(
-        a=pdf(a_0) + pdf(a_1),
-        b=pdf(b_0) + pdf(b_1)
+        0,
+        a=a_0 + a_1,
+        b=b_0 + b_1
     )
 
 

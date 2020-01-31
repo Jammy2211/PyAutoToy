@@ -88,6 +88,18 @@ class Observable(AbstractObservable):
             )[:, None]
         )
 
+    def __eq__(self, other):
+        return self.mean == other.mean and self.deviation == other.deviation
+
+    def __hash__(self):
+        return hash(self.mean) + hash(self.deviation)
+
+    def __add__(self, other):
+        return CompoundObservable(
+            [1.0, 1.0],
+            [self, other]
+        )
+
 
 class CompoundObservable(AbstractObservable):
     @assert_lengths_match
