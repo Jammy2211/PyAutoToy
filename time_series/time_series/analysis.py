@@ -1,5 +1,5 @@
 import autofit as af
-from time_series.fit import Fit
+from time_series.fit import SingleTimeFit
 from time_series.data import pdf, Data
 from time_series.species import SpeciesObservables
 
@@ -38,7 +38,7 @@ class Analysis(af.Analysis):
             species=instance.species
         )
         for observable_name in self.dataset.observable_names:
-            fitness -= Fit(
+            fitness -= SingleTimeFit(
                 self.dataset[observable_name],
                 pdf(species_observables[observable_name])
             ).chi_squared

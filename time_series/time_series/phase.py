@@ -1,7 +1,7 @@
 import autofit as af
 
 
-class TimeSeriesPhase(af.Phase):
+class SingleTimePhase(af.Phase):
     @af.convert_paths
     def __init__(
             self,

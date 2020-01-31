@@ -1,12 +1,12 @@
 import numpy as np
 import pytest
 
-from time_series.fit import Fit
+import time_series as ts
 
 
 @pytest.fixture(name="fit")
 def make_fit():
-    return Fit(
+    return ts.SingleTimeFit(
         np.array([
             0.0, 1.0, 2.0
         ]),

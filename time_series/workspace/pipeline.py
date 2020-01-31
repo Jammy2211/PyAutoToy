@@ -63,7 +63,7 @@ def make_phase(
     # that evaluates the fit of any given instance.
     # In this case, the Analysis expects the instance to have a list of
     # abundances and a list of species.
-    phase = ts.TimeSeriesPhase(
+    phase = ts.SingleTimePhase(
         phase_name=f"observation_phase",
         analysis_class=ts.Analysis,
         model=model,

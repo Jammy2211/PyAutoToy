@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Fit:
+class SingleTimeFit:
     def __init__(
             self,
             model_data: np.ndarray,
