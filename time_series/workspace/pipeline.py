@@ -1,5 +1,5 @@
 from os import path
-from typing import List
+from typing import List, Optional
 
 import autofit as af
 import time_series as ts
@@ -16,7 +16,11 @@ af.conf.instance = af.conf.Config(
 )
 
 
-def make_abundances():
+def make_abundances() -> List[af.UniformPrior]:
+    """
+    Convenience method for generating a list of priors, one for
+    each species, to describe the abundance of each species.
+    """
     return [
         af.UniformPrior(
             lower_limit=0,
@@ -29,9 +33,28 @@ def make_abundances():
 
 
 def make_phase(
-        number=None,
-        previous_phase=None
-):
+        timestep: int = None,
+        previous_phase: Optional[af.Phase] = None
+) -> af.Phase:
+    """
+    Make a phase to fit a collection of species to observables at a
+    given timestep.
+
+    Parameters
+    ----------
+    timestep
+        The timestep at which the observation was made. This is used
+        to generate a name for the phase and to extract relevant data
+        during fitting.
+    previous_phase
+        The previous phase. Either None or a phase from a previous
+        timestep. We use results from that phase to constrain this
+        phase.
+
+    Returns
+    -------
+    A phase for the timestep
+    """
     # This is our model. It's an object that can be given a unit vector
     # of length number of dimensions to create an instance.
     model = af.ModelMapper()
@@ -72,11 +95,12 @@ def make_phase(
         phase_name=f"observation_phase",
         analysis_class=ts.SingleTimeAnalysis,
         model=model,
-        data_index=number
+        data_index=timestep
     )
 
     # The phase uses MultiNest by default. We can actually change that if we
     # want in the constructor. We can also fiddle with its settings.
+    # TODO: Jam could you tune these?
     phase.optimizer.const_efficiency_mode = True
     phase.optimizer.n_live_points = 20
     phase.optimizer.sampling_efficiency = 0.8
@@ -117,7 +141,7 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
     single_timestep_phases: List[af.Phase] = list()
     for timestep in timesteps:
         phase = make_phase(
-            number=timestep,
+            timestep=timestep,
             previous_phase=phase
         )
         single_timestep_phases.append(phase)
@@ -149,6 +173,13 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
         analysis_class=ts.TimeSeriesAnalysis
     )
 
+    # The phase uses MultiNest by default. We can actually change that if we
+    # want in the constructor. We can also fiddle with its settings.
+    # TODO: Jam could you tune these?
+    phase.optimizer.const_efficiency_mode = True
+    phase.optimizer.n_live_points = 20
+    phase.optimizer.sampling_efficiency = 0.8
+
     # We stick our phases into a pipeline.
     return af.Pipeline(
         "timeseries",
@@ -157,14 +188,17 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
 
 
 if __name__ == "__main__":
+    # Create a pipeline to run data through
     pipeline = make_pipeline(
         timesteps=TIMESTEPS
     )
+    # Generate some mock data
     data = ts.generate_data_at_timesteps(
         number_of_observables=NUMBER_OF_OBSERVABLES,
         number_of_species=NUMBER_OF_SPECIES,
         timesteps=TIMESTEPS
     )
+    # Run the pipeline
     pipeline.run(
-        data,
+        data
     )
