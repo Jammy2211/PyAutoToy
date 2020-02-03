@@ -47,7 +47,7 @@ class TimeSeriesAnalysis(af.Analysis):
             )
             for observable_name in dataset.observable_names:
                 fitness -= SingleTimeFit(
-                    self.dataset[observable_name],
+                    dataset[observable_name],
                     pdf(species_observables[observable_name])
                 ).chi_squared
         return fitness
