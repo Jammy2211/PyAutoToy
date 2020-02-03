@@ -146,14 +146,26 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
         )
         single_timestep_phases.append(phase)
 
+    # Next we'll make a model that describes how the species grow
     model = af.ModelMapper()
     model.abundances = make_abundances()
 
+    # We'll take the species from the best result of the final
+    # observation phase.
     instance_species_list = phase.result.instance.species
 
+    # This matrix prior model object is useful for manipulating
+    # relationships between its constituents. You can use indexing
+    # to access species or the interaction between species.
+    # matrix[0] is species 0, matrix[0, 1] is the effect of species
+    # 1 on species 0.
+    #
+    # In this case, when instantiated it makes a SpeciesCollection.
     matrix = ts.MatrixPriorModel(
         ts.SpeciesCollection,
         items=[
+            # A new species prior model is made with freely varying
+            # growth rate and fixed observables.
             ts.SpeciesPriorModel(
                 cls=ts.Species,
                 observables=species.observables
@@ -161,12 +173,20 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
             for species in instance_species_list
         ]
     )
+
+    # Next we use the matrix indexing to define a prior describing
+    # the interaction between each species and every other species
     for i in range(NUMBER_OF_SPECIES):
         for j in range(NUMBER_OF_SPECIES):
             matrix[i, j] = af.UniformPrior(0.0, 1.0)
 
+    # Finally we associate the new matrix model with the overall
+    # model
     model.species_collection = matrix
 
+    # And make phase that uses this model. Here the analysis class
+    # is what will ultimately model the growth of species and compare
+    # the results to the observations
     time_series_phase = af.Phase(
         phase_name="time_series_phase",
         model=model,
