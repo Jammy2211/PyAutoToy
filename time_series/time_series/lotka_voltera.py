@@ -80,4 +80,4 @@ class LotkaVolteraModel:
         -------
         A vector of floats describing the new abundance of each species.
         """
-        return population + self.change(population)
+        return np.array(population) + self.change(population)
