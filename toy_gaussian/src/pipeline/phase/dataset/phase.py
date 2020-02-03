@@ -1,12 +1,7 @@
 import autofit as af
-import autoarray as aa
 from autofit.tools.phase import Dataset
 from toy_gaussian.src.pipeline.phase import abstract
 from toy_gaussian.src.pipeline.phase.dataset.result import Result
-
-
-def default_mask_function(shape_2d, pixel_scales):
-    return aa.mask.unmasked(shape_2d=shape_2d, pixel_scales=pixel_scales, sub_size=1)
 
 
 class PhaseDataset(abstract.AbstractPhase):
@@ -30,7 +25,7 @@ class PhaseDataset(abstract.AbstractPhase):
         super(PhaseDataset, self).__init__(paths, optimizer_class=optimizer_class)
         self.gaussians = gaussians or []
 
-    def run(self, dataset: Dataset, results=None, mask=None):
+    def run(self, dataset: Dataset, mask, results=None):
         """
         Run this phase.
 
@@ -51,7 +46,7 @@ class PhaseDataset(abstract.AbstractPhase):
         dataset.save(self.paths.phase_output_path)
         self.model = self.model.populate(results)
 
-        analysis = self.make_analysis(dataset=dataset, results=results, mask=mask)
+        analysis = self.make_analysis(dataset=dataset, mask=mask, results=results)
 
         self.customize_priors(results)
         self.assert_and_save_pickle()

@@ -1,3 +1,5 @@
+from autoarray import conf
+from autoarray import plot
 from autoarray.mask.mask import Mask as mask
 from autoarray.structures.arrays import Array as array
 from autoarray.structures.grids import (
@@ -5,7 +7,7 @@ from autoarray.structures.grids import (
     GridIrregular as grid_irregular,
     GridRectangular as grid_rectangular,
     GridVoronoi as grid_voronoi,
-    Positions as positions,
+    Coordinates as positions,
 )
 from autoarray.structures.kernel import Kernel as kernel
 from autoarray.structures.visibilities import Visibilities as visibilities
@@ -17,14 +19,16 @@ from autoarray.operators.transformer import Transformer as transformer
 from autoarray.operators.inversion.mappers import mapper
 from autoarray.operators.inversion.inversions import inversion
 from autoarray.operators.inversion import pixelizations as pix, regularization as reg
-from autoarray import conf
-from autoarray import plotters as plot
+from autoarray import plot
 
-from autoastro.profiles.light_profiles import SphericalGaussian, EllipticalGaussian
+from toy_gaussian.src import dimensions as dim
+from toy_gaussian.src import plot
+from toy_gaussian.src.model.gaussians import SphericalGaussian, EllipticalGaussian
 
 from toy_gaussian.src.pipeline.phase.abstract.phase import AbstractPhase
 from toy_gaussian.src.pipeline.phase.dataset.phase import PhaseDataset
 from toy_gaussian.src.pipeline.phase.imaging.phase import PhaseImaging
 
 from toy_gaussian.src.pipeline.pipeline import PipelineDataset, PipelineSettings
-from toy_gaussian.src.pipeline import phase_tagging, pipeline_tagging
+from toy_gaussian.src.pipeline.pipeline_settings import PipelineGeneralSettings
+from toy_gaussian.src.pipeline import phase_tagging

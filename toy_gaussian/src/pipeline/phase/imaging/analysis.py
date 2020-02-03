@@ -8,7 +8,9 @@ from toy_gaussian.src.pipeline import visualizer
 class Analysis(af.Analysis):
     def __init__(self, masked_imaging, image_path=None, results=None):
 
-        self.visualizer = visualizer.PhaseImagingVisualizer(masked_imaging, image_path)
+        self.visualizer = visualizer.PhaseImagingVisualizer(
+            masked_dataset=masked_imaging, image_path=image_path
+        )
 
         self.masked_imaging = masked_imaging
 
@@ -53,4 +55,6 @@ class Analysis(af.Analysis):
     def visualize(self, instance, during_analysis):
 
         fit = self.masked_imaging_fit_from_instance(instance=instance)
-        self.visualizer.plot_fit(fit, during_analysis)
+        self.visualizer.visualize_fit(
+            fit=fit, gaussians=instance.gaussians, during_analysis=during_analysis
+        )

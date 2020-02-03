@@ -55,7 +55,7 @@ imaging = toy.imaging.from_fits(
     pixel_scales=pixel_scales,
 )
 
-toy.plot.imaging.subplot(imaging=imaging)
+toy.plot.imaging.subplot_imaging(imaging=imaging)
 
 # Running a pipeline is easy, we simply import it from the pipelines folder and pass the lens dataset to its run function.
 # Below, we'll use a 3 phase example pipeline to fit the dataset with a parametric lens light, mass and source light
@@ -65,13 +65,13 @@ toy.plot.imaging.subplot(imaging=imaging)
 from toy_gaussian.workspace.pipelines.initialize import x1_gaussian
 
 pipeline_initialize = x1_gaussian.make_pipeline(
-    phase_folders=["gaussian_x1__sub_gaussian", dataset_label]
+    phase_folders=["gaussian_x1__sub_gaussian", dataset_label], optimizer_class=af.Emcee
 )
 
 from toy_gaussian.workspace.pipelines.main import x1_gaussian__sub_gaussian
 
 pipeline_main = x1_gaussian__sub_gaussian.make_pipeline(
-    phase_folders=["gaussian_x1__sub_gaussian", dataset_label]
+    phase_folders=["gaussian_x1__sub_gaussian", dataset_label], optimizer_class=af.Emcee
 )
 
 pipeline = pipeline_initialize + pipeline_main

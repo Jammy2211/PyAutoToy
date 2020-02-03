@@ -22,7 +22,6 @@ class PhaseImaging(dataset.PhaseDataset):
         sub_size=2,
         signal_to_noise_limit=None,
         bin_up_factor=None,
-        mask_function=None,
     ):
 
         """
@@ -52,7 +51,6 @@ class PhaseImaging(dataset.PhaseDataset):
             bin_up_factor=bin_up_factor,
             sub_size=sub_size,
             signal_to_noise_limit=signal_to_noise_limit,
-            mask_function=mask_function,
         )
 
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
@@ -74,7 +72,7 @@ class PhaseImaging(dataset.PhaseDataset):
         """
         return image
 
-    def make_analysis(self, dataset, results=None, mask=None):
+    def make_analysis(self, dataset, mask, results=None):
         """
         Create an lens object. Also calls the prior passing and masked_imaging modifying functions to allow child
         classes to change the behaviour of the phase.

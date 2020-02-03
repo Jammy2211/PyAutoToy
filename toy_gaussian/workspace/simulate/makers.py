@@ -49,11 +49,11 @@ def simulate_imaging_from_gaussian_and_output_to_fits(
         overwrite=True,
     )
 
-    aa.plot.imaging.subplot(
+    aa.plot.imaging.subplot_imaging(
         imaging=imaging,
         output_filename="imaging",
         output_path=dataset_path,
-        output_format="png",
+        format="png",
     )
 
     aa.plot.imaging.individual(
@@ -62,7 +62,7 @@ def simulate_imaging_from_gaussian_and_output_to_fits(
         plot_noise_map=True,
         plot_signal_to_noise_map=True,
         output_path=dataset_path,
-        output_format="png",
+        format="png",
     )
 
 

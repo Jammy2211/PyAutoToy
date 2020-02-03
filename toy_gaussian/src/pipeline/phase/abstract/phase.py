@@ -52,5 +52,5 @@ class AbstractPhase(af.AbstractPhase):
             optimizer=self.optimizer,
         )
 
-    def run(self, dataset, results=None, mask=None):
+    def run(self, dataset, mask, results=None):
         raise NotImplementedError()
