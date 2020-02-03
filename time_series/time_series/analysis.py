@@ -9,7 +9,20 @@ class TimeSeriesAnalysis(af.Analysis):
     def __init__(self, dataset: TimeSeriesData):
         self.dataset = dataset
 
-    def fit(self, instance):
+    def fit(self, instance: af.ModelInstance) -> float:
+        """
+        Grow the population forwards in time and compare the observables
+        to observation at given points in time.
+
+        Parameters
+        ----------
+        instance
+            With a list of abundances and a species_collection object
+
+        Returns
+        -------
+        How well the model matches observations.
+        """
         initial_abundances = instance.abundances
         species_collection = instance.species_collection
 
