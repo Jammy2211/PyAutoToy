@@ -103,6 +103,7 @@ def make_pipeline(timesteps):
         ts.SpeciesCollection,
         items=[
             ts.SpeciesPriorModel(
+                cls=ts.Species,
                 observables=species.observables
             )
             for species in instance_species_list
