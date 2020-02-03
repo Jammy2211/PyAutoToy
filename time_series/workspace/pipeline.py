@@ -84,7 +84,35 @@ def make_phase(
     return phase
 
 
-def make_pipeline(timesteps):
+def make_pipeline(timesteps: List[int]) -> af.Pipeline:
+    """
+    Create a pipeline that fits a time series of observations.
+
+    - First fit observations at each point in time with the abundance
+    of each species and the coefficients of the distribution of each
+    observable with respect to each species for each point in time.
+    - For each of these phases use priors on the observables from the
+    previous phase.
+    - Finally, fit observations at every time point, fixing the
+    observable distribution parameters but varying the initial abundance,
+    growth rate and interactions of each species. In this phase the
+    Lotka Voltera model is used to compute the growth given each
+    parameterisation.
+
+    Parameters
+    ----------
+    timesteps
+        A list of timesteps for which observations are provided.
+
+    Returns
+    -------
+    A pipeline comprising a phase for each timestep and a final
+    phase for a full time series.
+    """
+
+    # Loop through the timesteps and make a phase for each. Use
+    # the results from the previous phase to constrain the next
+    # phase if a previous phase exists.
     phase = None
     single_timestep_phases: List[af.Phase] = list()
     for timestep in timesteps:
@@ -116,7 +144,7 @@ def make_pipeline(timesteps):
     model.species_collection = matrix
 
     time_series_phase = af.Phase(
-        phase_name="TimeSeries",
+        phase_name="time_series_phase",
         model=model,
         analysis_class=ts.TimeSeriesAnalysis
     )
