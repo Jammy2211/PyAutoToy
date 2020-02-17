@@ -34,7 +34,7 @@ def clean_images():
     af.conf.instance.dataset_path = directory
 
 
-class TestPhase(object):
+class TestPhase:
     def test__make_analysis__mask_input_uses_mask__no_mask_uses_mask_function(
         self, phase_imaging_7x7, imaging_7x7
     ):
@@ -70,7 +70,7 @@ class TestPhase(object):
         assert analysis.masked_imaging.mask.sub_size == 2
 
 
-class TestResult(object):
+class TestResult:
     def test__results_of_phase_are_available_as_properties(self, imaging_7x7, mask_7x7):
         clean_images()
 
@@ -101,7 +101,7 @@ class TestResult(object):
         assert (result.mask == mask_7x7).all()
 
 
-class TestPhasePickle(object):
+class TestPhasePickle:
 
     # noinspection PyTypeChecker
     def test_assertion_failure(self, imaging_7x7, mask_7x7):

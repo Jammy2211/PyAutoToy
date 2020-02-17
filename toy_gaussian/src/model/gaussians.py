@@ -6,7 +6,7 @@ from toy_gaussian.src import dimensions as dim
 from toy_gaussian.src.model import geometry_profiles
 
 
-class LightProfile(object):
+class LightProfile:
     """Mixin class that implements functions common to all light profiles"""
 
     def profile_image_from_grid_radii(self, grid_radii):

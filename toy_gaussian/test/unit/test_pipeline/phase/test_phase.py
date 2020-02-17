@@ -34,7 +34,7 @@ def clean_images():
     af.conf.instance.dataset_path = directory
 
 
-class TestPhase(object):
+class TestPhase:
     def test__set_instances(self, phase_dataset_7x7):
         phase_dataset_7x7.gaussians = [toy.SphericalGaussian()]
         assert phase_dataset_7x7.model.gaussians == [toy.SphericalGaussian()]
@@ -140,7 +140,7 @@ class TestPhase(object):
         assert instance.gaussians[1].sigma == 0.8
 
 
-class TestResult(object):
+class TestResult:
     def test__results_of_phase_are_available_as_properties(self, imaging_7x7, mask_7x7):
         clean_images()
 
