@@ -13,13 +13,6 @@ import toy_gaussian as toy
 directory = path.dirname(path.realpath(__file__))
 
 
-@pytest.fixture(scope="session", autouse=True)
-def do_something():
-    af.conf.instance = af.conf.Config(
-        config_path="{}/../test_files/config/radial_min".format(directory)
-    )
-
-
 class TestMemoize:
     def test_add_to_cache(self):
         class MyProfile:
