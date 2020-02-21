@@ -1,5 +1,5 @@
 {
-    "*.pixelizations": {
+    "pixelizations": {
         "Rectangular": {
             "shape_0": {
                 "type": "Uniform",
@@ -70,7 +70,7 @@
             }
         }
     },
-    "*.geometry_profiles": {
+    "geometry_profiles": {
         "GeometryProfile": {
             "centre_0": {
                 "type": "Gaussian",
@@ -162,7 +162,7 @@
             }
         }
     },
-    "*.gaussians": {
+    "gaussians": {
         "SphericalGaussian": {
             "centre_0": {
                 "type": "Gaussian",
@@ -266,7 +266,7 @@
             }
         }
     },
-    "*.regularization": {
+    "regularization": {
         "Constant": {
             "coefficient": {
                 "type": "LogUniform",
