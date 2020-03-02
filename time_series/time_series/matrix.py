@@ -29,11 +29,7 @@ class Species:
         """
         return self.interactions[species]
 
-    def __setitem__(
-            self,
-            species: "Species",
-            interaction: float
-    ):
+    def __setitem__(self, species: "Species", interaction: float):
         """
         Convenience method for setting the interaction value of this species with another.
 
@@ -68,20 +64,14 @@ class Matrix(ABC):
 
         The diagonal is the self-interaction of the species.
         """
-        return np.array([
+        return np.array(
             [
-                species_a.interactions[
-                    species_b
-                ]
-                for species_b in self.items
+                [species_a.interactions[species_b] for species_b in self.items]
+                for species_a in self.items
             ]
-            for species_a in self.items
-        ])
+        )
 
-    def __getitem__(
-            self,
-            item: Index
-    ) -> SpeciesOrInteraction:
+    def __getitem__(self, item: Index) -> SpeciesOrInteraction:
         """
         If an integer is passed in then a species is returned.
 
@@ -102,11 +92,7 @@ class Matrix(ABC):
         elif isinstance(item, tuple):
             return self[item[0]][self[item[1]]]
 
-    def __setitem__(
-            self,
-            index: Index,
-            value: SpeciesOrInteraction
-    ):
+    def __setitem__(self, index: Index, value: SpeciesOrInteraction):
         """
         If the index is an integer then a species is places in that index of the species list.
 
