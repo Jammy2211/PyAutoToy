@@ -5,7 +5,7 @@ import inspect
 from gaussian.src import exc
 
 
-class DimensionsProfile(object):
+class DimensionsProfile:
     def __init__(self):
 
         pass

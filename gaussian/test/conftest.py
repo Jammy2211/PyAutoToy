@@ -3,6 +3,7 @@ import os
 import pytest
 from matplotlib import pyplot
 
+import autoconf.named
 import autofit as af
 
 
@@ -11,10 +12,10 @@ def make_general_config():
     general_config_path = "{}/test_files/config/plotting/".format(
         os.path.dirname(os.path.realpath(__file__))
     )
-    af.conf.instance.general = af.conf.NamedConfig(general_config_path + "general.ini")
+    af.conf.instance.general = autoconf.named.NamedConfig(general_config_path + "general.ini")
 
 
-class PlotPatch(object):
+class PlotPatch:
     def __init__(self):
         self.paths = []
 

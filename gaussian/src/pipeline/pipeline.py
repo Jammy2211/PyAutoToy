@@ -1,7 +1,7 @@
 import autofit as af
 
 
-class PipelineSettings(object):
+class PipelineSettings:
     def __init__(self,):
 
         pass

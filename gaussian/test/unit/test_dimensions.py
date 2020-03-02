@@ -4,7 +4,7 @@ import pytest
 import gaussian as g
 
 
-class TestLength(object):
+class TestLength:
     def test__conversions_from_arcsec_to_kpc_and_back__errors_raised_if_no_kpc_per_arcsec(
         self
     ):
@@ -39,7 +39,7 @@ class TestLength(object):
             unit_arcsec.convert(unit_length="lol")
 
 
-class TestLuminosity(object):
+class TestLuminosity:
     def test__conversions_from_eps_and_counts_and_back__errors_raised_if_no_exposure_time(
         self
     ):
@@ -92,8 +92,8 @@ class MockDimensionsProfile(g.dim.DimensionsProfile):
         self.length = length
 
 
-class TestDimensionsProfile(object):
-    class TestUnitProperties(object):
+class TestDimensionsProfile:
+    class TestUnitProperties:
         def test__extracts_length_correctly__raises_error_if_different_lengths_input(
             self
         ):
@@ -139,7 +139,7 @@ class TestDimensionsProfile(object):
 
             assert profile.unit_luminosity == "counts"
 
-    class TestUnitConversions(object):
+    class TestUnitConversions:
         def test__arcsec_to_kpc_conversions_of_length__float_and_tuple_length__conversion_converts_values(
             self
         ):

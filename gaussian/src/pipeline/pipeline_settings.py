@@ -1,4 +1,4 @@
-class PipelineGeneralSettings(object):
+class PipelineGeneralSettings:
     def __init__(self,):
 
         pass

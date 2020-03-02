@@ -1,7 +1,7 @@
 import autofit as af
 
 
-class MockAnalysis(object):
+class MockAnalysis:
     def __init__(self, value):
         self.value = value
 
@@ -9,7 +9,7 @@ class MockAnalysis(object):
         return 1
 
 
-class MockResults(object):
+class MockResults:
     def __init__(
         self, model_image=None, mask=None, instance=None, analysis=None, optimizer=None
     ):
@@ -36,6 +36,7 @@ class MockNLO(af.NonLinearOptimizer):
     def fit(self, analysis, model):
         class Fitness(object):
             def __init__(self, instance_from_vector):
+
                 self.result = None
                 self.instance_from_vector = instance_from_vector
 
