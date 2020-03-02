@@ -100,8 +100,8 @@ venv.bak/
 
 # mkdocs documentation
 /site
-toy_gaussian/workspace/dataset/
-toy_gaussian/workspace/output/
+gaussian/workspace/dataset/
+gaussian/workspace/output/
 
 output/
 .DS_Store

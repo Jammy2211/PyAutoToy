@@ -26,9 +26,7 @@ class TimeSeriesAnalysis(af.Analysis):
         initial_abundances = instance.abundances
         species_collection = instance.species_collection
 
-        lotka_voltera = LotkaVolteraModel(
-            species_collection
-        )
+        lotka_voltera = LotkaVolteraModel(species_collection)
 
         abundances = initial_abundances
         time = 0
@@ -36,19 +34,15 @@ class TimeSeriesAnalysis(af.Analysis):
 
         for data_time, dataset in self.dataset:
             while time < data_time:
-                abundances = lotka_voltera.step(
-                    abundances
-                )
+                abundances = lotka_voltera.step(abundances)
                 time += 1
 
             species_observables = SpeciesObservables(
-                abundances=abundances,
-                species=species_collection
+                abundances=abundances, species=species_collection
             )
             for observable_name in dataset.observable_names:
                 fitness -= SingleTimeFit(
-                    dataset[observable_name],
-                    pdf(species_observables[observable_name])
+                    dataset[observable_name], pdf(species_observables[observable_name])
                 ).chi_squared
         return fitness
 
@@ -57,7 +51,6 @@ class TimeSeriesAnalysis(af.Analysis):
 
 
 class SingleTimeAnalysis(af.Analysis):
-
     def __init__(self, dataset: Data):
         """
         Used to compare model instances to the data.
@@ -86,13 +79,11 @@ class SingleTimeAnalysis(af.Analysis):
         """
         fitness = 0
         species_observables = SpeciesObservables(
-            abundances=instance.abundances,
-            species=instance.species
+            abundances=instance.abundances, species=instance.species
         )
         for observable_name in self.dataset.observable_names:
             fitness -= SingleTimeFit(
-                self.dataset[observable_name],
-                pdf(species_observables[observable_name])
+                self.dataset[observable_name], pdf(species_observables[observable_name])
             ).chi_squared
         return fitness
 

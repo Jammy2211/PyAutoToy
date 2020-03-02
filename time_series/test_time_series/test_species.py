@@ -15,14 +15,8 @@ def make_species_b():
 
 
 @pytest.fixture(name="species_collection")
-def make_species_collection(
-        species_a,
-        species_b
-):
-    return s.SpeciesCollection([
-        species_a,
-        species_b
-    ])
+def make_species_collection(species_a, species_b):
+    return s.SpeciesCollection([species_a, species_b])
 
 
 class TestSpecies:
@@ -40,36 +34,18 @@ class TestSpeciesCollection:
         assert collection.species == [species_a]
         assert collection.interaction_matrix == np.array([[0.0]])
 
-    def test_interaction_matrix(
-            self,
-            species_a,
-            species_b,
-            species_collection
-    ):
+    def test_interaction_matrix(self, species_a, species_b, species_collection):
         species_a.interactions[species_b] = 0.5
         species_b.interactions[species_a] = 0.7
 
-        assert (species_collection.interaction_matrix == np.array(
-            [
-                [0.0, 0.5],
-                [0.7, 0.0]
-            ]
-        )).all()
+        assert (
+            species_collection.interaction_matrix == np.array([[0.0, 0.5], [0.7, 0.0]])
+        ).all()
 
-    def test_growth_rate_vector(
-            self,
-            species_collection
-    ):
-        assert (species_collection.growth_rate_vector == np.array(
-            [1.0, 2.0]
-        )).all()
+    def test_growth_rate_vector(self, species_collection):
+        assert (species_collection.growth_rate_vector == np.array([1.0, 2.0])).all()
 
-    def test_simple_indexing(
-            self,
-            species_a,
-            species_b,
-            species_collection
-    ):
+    def test_simple_indexing(self, species_a, species_b, species_collection):
         assert species_collection[0] == species_a
         assert species_collection[1] == species_b
 
@@ -79,12 +55,7 @@ class TestSpeciesCollection:
         assert species_collection[0] == species_b
         assert species_collection[1] == species_a
 
-    def test_interaction_indexing(
-            self,
-            species_a,
-            species_b,
-            species_collection
-    ):
+    def test_interaction_indexing(self, species_a, species_b, species_collection):
         species_collection[0, 0] = 0.0
         species_collection[1, 0] = 1.0
         species_collection[0, 1] = 0.1

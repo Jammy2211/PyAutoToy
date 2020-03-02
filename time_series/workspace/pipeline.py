@@ -11,8 +11,7 @@ TIMESTEPS = [7, 21, 101]
 directory = path.dirname(path.realpath(__file__))
 
 af.conf.instance = af.conf.Config(
-    path.join(directory, "config"),
-    path.join(directory, "output")
+    path.join(directory, "config"), path.join(directory, "output")
 )
 
 
@@ -22,19 +21,12 @@ def make_abundances() -> List[af.UniformPrior]:
     each species, to describe the abundance of each species.
     """
     return [
-        af.UniformPrior(
-            lower_limit=0,
-            upper_limit=1
-        )
-        for _ in range(
-            NUMBER_OF_SPECIES
-        )
+        af.UniformPrior(lower_limit=0, upper_limit=1) for _ in range(NUMBER_OF_SPECIES)
     ]
 
 
 def make_phase(
-        timestep: int = None,
-        previous_phase: Optional[af.Phase] = None
+    timestep: int = None, previous_phase: Optional[af.Phase] = None
 ) -> af.Phase:
     """
     Make a phase to fit a collection of species to observables at a
@@ -81,7 +73,7 @@ def make_phase(
                     )
                     for number in range(NUMBER_OF_OBSERVABLES)
                 },
-                growth_rate=1.0
+                growth_rate=1.0,
             )
             for _ in range(NUMBER_OF_SPECIES)
         ]
@@ -95,7 +87,7 @@ def make_phase(
         phase_name=f"observation_phase",
         analysis_class=ts.SingleTimeAnalysis,
         model=model,
-        data_index=timestep
+        data_index=timestep,
     )
 
     # The phase uses MultiNest by default. We can actually change that if we
@@ -140,10 +132,7 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
     phase = None
     single_timestep_phases: List[af.Phase] = list()
     for timestep in timesteps:
-        phase = make_phase(
-            timestep=timestep,
-            previous_phase=phase
-        )
+        phase = make_phase(timestep=timestep, previous_phase=phase)
         single_timestep_phases.append(phase)
 
     # Next we'll make a model that describes how the species grow
@@ -166,12 +155,9 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
         items=[
             # A new species prior model is made with freely varying
             # growth rate and fixed observables.
-            ts.SpeciesPriorModel(
-                cls=ts.Species,
-                observables=species.observables
-            )
+            ts.SpeciesPriorModel(cls=ts.Species, observables=species.observables)
             for species in instance_species_list
-        ]
+        ],
     )
 
     # Next we use the matrix indexing to define a prior describing
@@ -190,7 +176,7 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
     time_series_phase = af.Phase(
         phase_name="time_series_phase",
         model=model,
-        analysis_class=ts.TimeSeriesAnalysis
+        analysis_class=ts.TimeSeriesAnalysis,
     )
 
     # The phase uses MultiNest by default. We can actually change that if we
@@ -201,24 +187,17 @@ def make_pipeline(timesteps: List[int]) -> af.Pipeline:
     phase.optimizer.sampling_efficiency = 0.8
 
     # We stick our phases into a pipeline.
-    return af.Pipeline(
-        "timeseries",
-        *(single_timestep_phases + [time_series_phase])
-    )
+    return af.Pipeline("timeseries", *(single_timestep_phases + [time_series_phase]))
 
 
 if __name__ == "__main__":
     # Create a pipeline to run data through
-    pipeline = make_pipeline(
-        timesteps=TIMESTEPS
-    )
+    pipeline = make_pipeline(timesteps=TIMESTEPS)
     # Generate some mock data
     data = ts.generate_data_at_timesteps(
         number_of_observables=NUMBER_OF_OBSERVABLES,
         number_of_species=NUMBER_OF_SPECIES,
-        timesteps=TIMESTEPS
+        timesteps=TIMESTEPS,
     )
     # Run the pipeline
-    pipeline.run(
-        data
-    )
+    pipeline.run(data)

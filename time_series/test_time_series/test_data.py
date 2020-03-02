@@ -4,32 +4,20 @@ import pytest
 import time_series as ts
 
 
-@pytest.fixture(
-    name="data_list"
-)
+@pytest.fixture(name="data_list")
 def make_data_list():
     return ts.data.generate_data_at_timesteps(
-        number_of_observables=3,
-        number_of_species=4,
-        timesteps=[5, 7, 13]
+        number_of_observables=3, number_of_species=4, timesteps=[5, 7, 13]
     )
 
 
-@pytest.fixture(
-    name="data"
-)
+@pytest.fixture(name="data")
 def make_data(data_list):
     return data_list[5]
 
 
 def test_timesteps(data_list):
-    assert [
-               data[0]
-               for data
-               in data_list
-           ] == [
-               5, 7, 13
-           ]
+    assert [data[0] for data in data_list] == [5, 7, 13]
 
 
 def test_observable_distributions(data_list):
@@ -51,14 +39,6 @@ def test_type(data):
 
 
 def test_ordering():
-    time_series_data = ts.TimeSeriesData({
-        10: ts.Data(),
-        5: ts.Data(),
-        15: ts.Data()
-    })
+    time_series_data = ts.TimeSeriesData({10: ts.Data(), 5: ts.Data(), 15: ts.Data()})
 
-    assert [
-        time
-        for time, _
-        in time_series_data
-    ] == [5, 10, 15]
+    assert [time for time, _ in time_series_data] == [5, 10, 15]

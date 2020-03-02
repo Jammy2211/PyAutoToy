@@ -15,10 +15,7 @@ def reset_model_id():
 def make_matrix_prior_model():
     return ts.MatrixPriorModel(
         ts.SpeciesCollection,
-        [
-            ts.SpeciesPriorModel(ts.Species),
-            ts.SpeciesPriorModel(ts.Species)
-        ]
+        [ts.SpeciesPriorModel(ts.Species), ts.SpeciesPriorModel(ts.Species)],
     )
 
 
@@ -33,27 +30,18 @@ def make_self_interacting_prior_model(matrix_prior_model):
 def test_observables():
     model = af.PriorModel(
         ts.Species,
-        observables=af.CollectionPriorModel(
-            one=ts.Observable,
-            two=ts.Observable
-        )
+        observables=af.CollectionPriorModel(one=ts.Observable, two=ts.Observable),
     )
 
     assert model.prior_count == 5
 
     instance = model.instance_from_prior_medians()
-    assert isinstance(
-        instance.observables["one"],
-        ts.Observable
-    )
+    assert isinstance(instance.observables["one"], ts.Observable)
 
 
 class TestBasicBehaviour:
     def test_instantiate(self, matrix_prior_model):
-        assert isinstance(
-            matrix_prior_model,
-            af.CollectionPriorModel
-        )
+        assert isinstance(matrix_prior_model, af.CollectionPriorModel)
         assert matrix_prior_model.prior_count == 2
 
         instance = matrix_prior_model.instance_from_prior_medians()
@@ -80,7 +68,9 @@ class TestBasicBehaviour:
         assert instance[1, 0] == 2.0
 
     def test_model_info(self, self_interacting_prior_model):
-        assert self_interacting_prior_model.info == """0
+        assert (
+            self_interacting_prior_model.info
+            == """0
     growth_rate                                                                           UniformPrior, lower_limit = 0.0, upper_limit = 1.0
     interactions
         SpeciesPriorModel 0                                                               UniformPrior, lower_limit = 0.0, upper_limit = 1.0
@@ -88,3 +78,4 @@ class TestBasicBehaviour:
     growth_rate                                                                           UniformPrior, lower_limit = 0.0, upper_limit = 1.0
     interactions
         SpeciesPriorModel 3                                                               UniformPrior, lower_limit = 0.0, upper_limit = 1.0"""
+        )

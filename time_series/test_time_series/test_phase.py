@@ -17,11 +17,7 @@ class MockAnalysis(af.Analysis):
 
 @pytest.fixture(name="phase")
 def make_phase():
-    return ts.SingleTimePhase(
-        "phase",
-        analysis_class=MockAnalysis,
-        data_index=0
-    )
+    return ts.SingleTimePhase("phase", analysis_class=MockAnalysis, data_index=0)
 
 
 def test_name(phase):

@@ -8,12 +8,7 @@ from time_series.util import assert_lengths_match
 
 
 class Species(m.Species):
-    def __init__(
-            self,
-            interactions=None,
-            growth_rate: float = 1.0,
-            observables=None
-    ):
+    def __init__(self, interactions=None, growth_rate: float = 1.0, observables=None):
         """
         A species that has a defined growth rate and interaction rate with other species.
 
@@ -27,9 +22,7 @@ class Species(m.Species):
             A dictionary relating the names of observables to their distributions with
             respect to this species.
         """
-        super().__init__(
-            interactions
-        )
+        super().__init__(interactions)
         self.growth_rate = growth_rate
         self.observables = observables or dict()
 
@@ -61,19 +54,12 @@ class SpeciesCollection(m.Matrix):
         """
         A vector of floats describing the growth rate of each individual species.
         """
-        return np.array([
-            species.growth_rate
-            for species in self.species
-        ])
+        return np.array([species.growth_rate for species in self.species])
 
 
 class SpeciesObservables:
     @assert_lengths_match
-    def __init__(
-            self,
-            abundances: List[float],
-            species: List[Species]
-    ):
+    def __init__(self, abundances: List[float], species: List[Species]):
         """
         Relates a list of relative abundances to associated species.
 
@@ -92,11 +78,7 @@ class SpeciesObservables:
         """
         The names of all the observables found in the list of species
         """
-        return {
-            key for species
-            in self.species
-            for key in species.observables.keys()
-        }
+        return {key for species in self.species for key in species.observables.keys()}
 
     def __getitem__(self, name: str) -> CompoundObservable:
         """
@@ -113,11 +95,5 @@ class SpeciesObservables:
         -------
         A compound observable comprising all observables with the given name
         """
-        observables = [
-            species.observables[name]
-            for species in self.species
-        ]
-        return CompoundObservable(
-            self.abundances,
-            observables
-        )
+        observables = [species.observables[name] for species in self.species]
+        return CompoundObservable(self.abundances, observables)

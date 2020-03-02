@@ -38,9 +38,7 @@ class SpeciesPriorModel(af.PriorModel):
         -------
         An instance of this species.
         """
-        arguments["interactions"] = self.interactions.instance_for_arguments(
-            arguments
-        )
+        arguments["interactions"] = self.interactions.instance_for_arguments(arguments)
         return super().instance_for_arguments(arguments)
 
     def __getitem__(self, species: "SpeciesPriorModel") -> Union[float, af.Prior]:
@@ -62,9 +60,7 @@ class SpeciesPriorModel(af.PriorModel):
         return self.interactions[species]
 
     def __setitem__(
-            self,
-            species: "SpeciesPriorModel",
-            interaction: Union[float, af.Prior]
+        self, species: "SpeciesPriorModel", interaction: Union[float, af.Prior]
     ):
         """
         Convenience method for setting the interaction value of this species with another.
@@ -111,29 +107,24 @@ class MatrixPriorModel(af.CollectionPriorModel, Matrix):
         An instance of self.cls
         """
         species = [
-            s for s
-            in super().instance_for_arguments(
-                arguments
-            )
+            s
+            for s in super().instance_for_arguments(arguments)
             if isinstance(s, Species)
         ]
         pair_map = {
-            str(model): instance for model, instance
-            in zip(self, species)
+            str(model): instance
+            for model, instance in zip(self, species)
             if isinstance(model, SpeciesPriorModel)
         }
 
         for s in species:
             s.interactions = {
                 pair_map[model]: value
-                for model, value
-                in s.interactions.items()
+                for model, value in s.interactions.items()
                 if model in pair_map
             }
 
-        return self.cls(
-            species
-        )
+        return self.cls(species)
 
     def __setattr__(self, key, value):
         """

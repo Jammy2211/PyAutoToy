@@ -4,11 +4,7 @@ import numpy as np
 
 
 class SingleTimeFit:
-    def __init__(
-            self,
-            model_data: np.ndarray,
-            observed_data: np.ndarray
-    ):
+    def __init__(self, model_data: np.ndarray, observed_data: np.ndarray):
         """
         Compare data produced by the model to observed data.
 
@@ -34,9 +30,7 @@ class SingleTimeFit:
         """
         The squared difference between the observed and model data
         """
-        return np.square(
-            self.residuals
-        )
+        return np.square(self.residuals)
 
     @property
     def chi_squared(self):
@@ -55,8 +49,4 @@ class MultiTimeFit:
         """
         The sum of the squared differences between the observed and model data
         """
-        return sum(
-            fit.chi_squared
-            for fit
-            in self.single_time_fits
-        )
+        return sum(fit.chi_squared for fit in self.single_time_fits)
