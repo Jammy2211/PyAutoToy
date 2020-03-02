@@ -73,10 +73,10 @@ def make_phase(
         # as we're just fitting for the abundances and observables. Each
         # species has a sub model representing each observable.
         model.species = [
-            af.PriorModel(
+            af.Model(
                 ts.Species,
                 observables={
-                    str(number): af.PriorModel(
+                    str(number): af.Model(
                         ts.Observable,
                     )
                     for number in range(NUMBER_OF_OBSERVABLES)
