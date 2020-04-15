@@ -1,8 +1,8 @@
-from autoarray.masked import masked_dataset
+from autoarray.dataset import masked_dataset
 from gaussian.src.pipeline.phase.dataset import meta_dataset_fit
 
 
-class MetaImagingFit(meta_dataset_fit.MetaDatasetFit):
+class MetaFitImaging(meta_dataset_fit.MetaDatasetFit):
     def __init__(
         self, model, sub_size=2, signal_to_noise_limit=None, bin_up_factor=None
     ):
