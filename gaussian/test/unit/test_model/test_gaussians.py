@@ -6,6 +6,7 @@ import autofit as af
 import autoarray as aa
 import gaussian as g
 
+import numpy as np
 
 @pytest.fixture(autouse=True)
 def reset_config():
@@ -15,7 +16,7 @@ def reset_config():
     af.conf.instance = af.conf.default
 
 
-grid = aa.grid_irregular.manual_1d([[1.0, 1.0], [2.0, 2.0], [3.0, 3.0], [2.0, 4.0]])
+grid = np.array([[1.0, 1.0], [2.0, 2.0], [3.0, 3.0], [2.0, 4.0]])
 
 
 class TestGaussian:
@@ -100,7 +101,7 @@ class TestGaussian:
             centre=(0.0, 0.0), axis_ratio=1.0, phi=0.0, intensity=1.0, sigma=1.0
         )
         assert gaussian.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[0.0, 1.0]])
+            grid=np.array([[0.0, 1.0]])
         ) == pytest.approx(0.24197, 1e-2)
 
         gaussian = g.EllipticalGaussian(
@@ -108,7 +109,7 @@ class TestGaussian:
         )
 
         assert gaussian.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[0.0, 1.0]])
+            grid=np.array([[0.0, 1.0]])
         ) == pytest.approx(2.0 * 0.24197, 1e-2)
 
         gaussian = g.EllipticalGaussian(
@@ -116,7 +117,7 @@ class TestGaussian:
         )
 
         assert gaussian.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[0.0, 1.0]])
+            grid=np.array([[0.0, 1.0]])
         ) == pytest.approx(0.1760, 1e-2)
 
         gaussian = g.EllipticalGaussian(
@@ -124,28 +125,28 @@ class TestGaussian:
         )
 
         assert gaussian.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[0.0, 3.0]])
+            grid=np.array([[0.0, 3.0]])
         ) == pytest.approx(0.0647, 1e-2)
 
         value = gaussian.profile_image_from_grid(
-            grid=aa.coordinates(coordinates=[[(0.0, 3.0)]])
+            grid=aa.Coordinates(coordinates=[[(0.0, 3.0)]])
         )
 
-        assert value[0][0] == pytest.approx(0.0647, 1e-2)
+        assert value.in_list[0][0] == pytest.approx(0.0647, 1e-2)
 
     def test__intensity_from_grid__change_geometry(self):
         gaussian = g.EllipticalGaussian(
             centre=(1.0, 1.0), axis_ratio=1.0, phi=0.0, intensity=1.0, sigma=1.0
         )
         assert gaussian.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[1.0, 0.0]])
+            grid=np.array([[1.0, 0.0]])
         ) == pytest.approx(0.24197, 1e-2)
 
         gaussian = g.EllipticalGaussian(
             centre=(0.0, 0.0), axis_ratio=0.5, phi=0.0, intensity=1.0, sigma=1.0
         )
         assert gaussian.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[1.0, 0.0]])
+            grid=np.array([[1.0, 0.0]])
         ) == pytest.approx(0.05399, 1e-2)
 
         gaussian_0 = g.EllipticalGaussian(
@@ -157,10 +158,10 @@ class TestGaussian:
         )
 
         assert gaussian_0.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[0.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
+            grid=np.array([[0.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
         ) == pytest.approx(
             gaussian_1.profile_image_from_grid(
-                grid=aa.grid_irregular.manual_1d([[0.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
+                grid=np.array([[0.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
             ),
             1e-4,
         )
@@ -174,10 +175,10 @@ class TestGaussian:
         )
 
         assert gaussian_0.profile_image_from_grid(
-            grid=aa.grid_irregular.manual_1d([[0.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
+            grid=np.array([[0.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
         ) == pytest.approx(
             gaussian_1.profile_image_from_grid(
-                grid=aa.grid_irregular.manual_1d([[0.0, 0.0], [0.0, -1.0], [0.0, 1.0]])
+                grid=np.array([[0.0, 0.0], [0.0, -1.0], [0.0, 1.0]])
             ),
             1e-4,
         )
@@ -194,7 +195,7 @@ class TestGaussian:
         ).all()
 
     def test__output_image_is_autoarray(self):
-        grid = aa.grid.uniform(shape_2d=(2, 2), pixel_scales=1.0, sub_size=1)
+        grid = aa.Grid.uniform(shape_2d=(2, 2), pixel_scales=1.0, sub_size=1)
 
         gaussian = g.EllipticalGaussian()
 

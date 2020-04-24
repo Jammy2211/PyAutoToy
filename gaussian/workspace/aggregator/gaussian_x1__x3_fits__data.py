@@ -28,4 +28,4 @@ print("Dataset")
 print(datasets, "\n")
 
 # We can plot instances of the dataset object:
-# [aplt.imaging.subplot_imaging(imaging=dataset) for dataset in datasets]
+# [aplt.Imaging.subplot_imaging(imaging=dataset) for dataset in datasets]

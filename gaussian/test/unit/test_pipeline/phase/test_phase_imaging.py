@@ -67,7 +67,7 @@ class TestPhase:
         clean_images()
 
         phase_imaging_7x7 = g.PhaseImaging(
-            optimizer_class=mock_pipeline.MockNLO,
+            non_linear_class=mock_pipeline.MockNLO,
             gaussians=[g.SphericalGaussian, g.SphericalGaussian],
             phase_name="test_phase_test_fit",
         )
@@ -80,7 +80,7 @@ class TestPhase:
         class MyPhase(g.PhaseImaging):
             def modify_image(self, image, results):
                 assert imaging_7x7.image.shape_2d == image.shape_2d
-                image = aa.array.full(
+                image = aa.Array.full(
                     fill_value=20.0, shape_2d=(7, 7), pixel_scales=image.pixel_scales
                 )
                 return image
@@ -161,7 +161,7 @@ class TestPhase:
 
         assert (analysis.masked_imaging.mask == binned_up_mask).all()
 
-        masked_imaging = aa.masked.imaging(imaging=imaging_7x7, mask=mask_7x7_1_pix)
+        masked_imaging = aa.MaskedImaging(imaging=imaging_7x7, mask=mask_7x7_1_pix)
 
         binned_up_masked_imaging = masked_imaging.binned_from_bin_up_factor(
             bin_up_factor=2
@@ -180,7 +180,7 @@ class TestPhase:
         assert (analysis.masked_imaging.mask == binned_up_masked_imaging.mask).all()
 
         assert (
-            analysis.masked_imaging.image.in_1d == binned_up_masked_imaging.image.in_1d
+                analysis.masked_imaging.image.in_1d == binned_up_masked_imaging.image.in_1d
         ).all()
         assert (
             analysis.masked_imaging.noise_map.in_1d
@@ -200,14 +200,14 @@ class TestPhase:
         instance = phase_imaging_7x7.model.instance_from_unit_vector([])
         fit_figure_of_merit = analysis.fit(instance=instance)
 
-        mask = phase_imaging_7x7.meta_imaging_fit.mask_with_phase_sub_size_from_mask(
+        mask = phase_imaging_7x7.meta_dataset.mask_with_phase_sub_size_from_mask(
             mask=mask_7x7
         )
-        masked_imaging = aa.masked.imaging(imaging=imaging_7x7, mask=mask)
+        masked_imaging = aa.MaskedImaging(imaging=imaging_7x7, mask=mask)
 
         model_image = gaussian.profile_image_from_grid(grid=masked_imaging.grid)
         fit = fit_masked_dataset(
             masked_dataset=masked_imaging, model_data=model_image.in_1d_binned
         )
 
-        assert fit.likelihood == fit_figure_of_merit
+        assert fit.log_likelihood == fit_figure_of_merit

@@ -5,7 +5,7 @@ class Result(af.Result):
     def __init__(
         self,
         instance,
-        figure_of_merit,
+        log_likelihood,
         previous_model,
         gaussian_tuples,
         analysis,
@@ -16,7 +16,7 @@ class Result(af.Result):
         """
         super().__init__(
             instance=instance,
-            figure_of_merit=figure_of_merit,
+            log_likelihood=log_likelihood,
             previous_model=previous_model,
             gaussian_tuples=gaussian_tuples,
         )

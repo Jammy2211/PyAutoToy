@@ -2,7 +2,7 @@ import autofit as af
 from gaussian.src.pipeline import phase_tagging
 from gaussian.src.pipeline.phase import dataset
 from gaussian.src.pipeline.phase.imaging.analysis import Analysis
-from gaussian.src.pipeline.phase.imaging.meta_imaging_fit import MetaImagingFit
+from gaussian.src.pipeline.phase.imaging.meta_imaging import MetaImaging
 from gaussian.src.pipeline.phase.imaging.result import Result
 
 
@@ -18,7 +18,7 @@ class PhaseImaging(dataset.PhaseDataset):
         paths,
         *,
         gaussians=None,
-        optimizer_class=af.MultiNest,
+        non_linear_class=af.MultiNest,
         sub_size=2,
         signal_to_noise_limit=None,
         bin_up_factor=None,
@@ -31,7 +31,7 @@ class PhaseImaging(dataset.PhaseDataset):
 
         Parameters
         ----------
-        optimizer_class: class
+        non_linear_class: class
             The class of a non_linear optimizer
         sub_size: int
             The side length of the subgrid
@@ -44,9 +44,9 @@ class PhaseImaging(dataset.PhaseDataset):
         )
         paths.phase_tag = phase_tag
 
-        super().__init__(paths, gaussians=gaussians, optimizer_class=optimizer_class)
+        super().__init__(paths, gaussians=gaussians, non_linear_class=non_linear_class)
 
-        self.meta_imaging_fit = MetaImagingFit(
+        self.meta_dataset = MetaImaging(
             model=self.model,
             bin_up_factor=bin_up_factor,
             sub_size=sub_size,
@@ -72,6 +72,9 @@ class PhaseImaging(dataset.PhaseDataset):
         """
         return image
 
+    def make_phase_attributes(self, analysis):
+        return PhaseAttributes()
+
     def make_analysis(self, dataset, mask, results=None):
         """
         Create an lens object. Also calls the prior passing and masked_imaging modifying functions to allow child
@@ -91,11 +94,10 @@ class PhaseImaging(dataset.PhaseDataset):
         lens : Analysis
             An lens object that the non-linear optimizer calls to determine the fit of a set of values
         """
-        self.meta_imaging_fit.model = self.model
-        modified_image = self.modify_image(image=dataset.image, results=results)
+        self.meta_dataset.model = self.model
 
-        masked_imaging = self.meta_imaging_fit.masked_dataset_from(
-            dataset=dataset, mask=mask, results=results, modified_image=modified_image
+        masked_imaging = self.meta_dataset.masked_dataset_from(
+            dataset=dataset, mask=mask, results=results,
         )
 
         self.output_phase_info()
@@ -117,7 +119,13 @@ class PhaseImaging(dataset.PhaseDataset):
         with open(file_phase_info, "w") as phase_info:
             phase_info.write("Optimizer = {} \n".format(type(self.optimizer).__name__))
             phase_info.write(
-                "Sub-grid size = {} \n".format(self.meta_imaging_fit.sub_size)
+                "Sub-grid size = {} \n".format(self.meta_dataset.sub_size)
             )
 
             phase_info.close()
+
+
+class PhaseAttributes:
+    def __init__(self):
+
+        pass

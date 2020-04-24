@@ -1,7 +1,7 @@
 import autoarray as aa
 
 
-class MetaDatasetFit:
+class MetaDataset:
     def __init__(
         self, model, sub_size=2, signal_to_noise_limit=None, is_hyper_phase=False
     ):

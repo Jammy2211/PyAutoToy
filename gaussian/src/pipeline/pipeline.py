@@ -16,4 +16,4 @@ class PipelineDataset(af.Pipeline):
         def runner(phase, results):
             return phase.run(dataset=dataset, results=results, mask=mask)
 
-        return self.run_function(runner, data_name)
+        return self.run_function(runner)

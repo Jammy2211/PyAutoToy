@@ -53,7 +53,7 @@ aggregator = af.Aggregator(directory=output_path + output_folder)
 # We can create a list of the optimizer classes of every phase. When you make a phase in a pipeline, you are
 # probably used to seeing the following line:
 
-# optimizer_class=af.MultiNest
+# non_linear_class=af.MultiNest
 
 # This line is telling the Phase which non-linear optimizer to use, in this case MultiNest. Every optimizer is created
 # as an instance of a class in Python, which has methods built-in allowing one to manipulate its results.
@@ -87,21 +87,21 @@ print(non_linear_outputs)
 
 # Whats particularly powerful is that every optimizer now acts as an interface to the MultiNest chains on the hard
 # disk. This means we can use the non_linear_outputs to, for example, create an instance of the most likely (e.g. highest
-# likelihood) model of every fit to an image.
+# log_likelihood) model of every fit to an image.
 
-most_likely_vector = list(map(lambda out: out.most_likely_vector, non_linear_outputs))
+max_log_likelihood_vector = list(map(lambda out: out.max_log_likelihood_vector, non_linear_outputs))
 
-print(most_likely_vector)
+print(max_log_likelihood_vector)
 
 # This creates a 1D Python list of all the model parameters. However, this isn't that much use. Afterall,
 # which values correspond to which parameters? To find out, you'd have to directly compare to the files output on the
 # hard-disk, which isn't ideal. However, we can instead create a model instance of every fit.
 
-most_likely_instances = list(
-    map(lambda out: out.most_likely_instance, non_linear_outputs)
+max_log_likelihood_instances = list(
+    map(lambda out: out.max_log_likelihood_instance, non_linear_outputs)
 )
 
-print(most_likely_instances)
+print(max_log_likelihood_instances)
 
 # This has created a list of 2 ModelInstance classes. A model instance uses the naming convention of the GalaxyModel in
 # the pipeline to store the results.

@@ -114,7 +114,7 @@ class EllipticalGaussian(EllipticalLightProfile):
             np.exp(-0.5 * np.square(np.divide(grid_radii, self.sigma))),
         )
 
-    @grids.convert_coordinates_to_grid
+    @grids.grid_like_to_numpy
     @geometry_profiles.transform_grid
     @geometry_profiles.move_grid_to_radial_minimum
     def profile_image_from_grid(self, grid, grid_radial_minimum=None):

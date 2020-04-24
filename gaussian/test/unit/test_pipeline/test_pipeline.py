@@ -90,7 +90,7 @@ class TestMetaData:
             in mock_files[1].text
         )
 
-        assert "phase_name///optimizer.pickle" in mock_files[2].filename
+        assert "phase_name///non_linear.pickle" in mock_files[2].filename
 
 
 class TestPassMask:

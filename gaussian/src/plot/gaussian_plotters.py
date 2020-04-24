@@ -66,7 +66,7 @@ class GaussianPlotter(plotters.AbstractPlotter):
     def plot_gaussian_attributes(self, gaussian_centres=None):
 
         if gaussian_centres is not None:
-            self.gaussian_centres_scatterer.scatter_grids(grids=gaussian_centres)
+            self.gaussian_centres_scatterer.scatter_grid(grid=gaussian_centres)
 
     def plot_array(
         self,

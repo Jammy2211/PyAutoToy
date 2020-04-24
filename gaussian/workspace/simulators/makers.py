@@ -12,12 +12,12 @@ def simulate_imaging_from_gaussian_and_output_to_fits(
     shape_2d,
     data_type,
     sub_size,
-    exposure_time=300.0,
+    exposure_time_map=al.Array.full(fill_value=300.0, shape_2d=grid.shape_2d),
     background_level=1.0,
 ):
 
     # Setup the grid which will be used for generating the image of the Gaussian.
-    grid = aa.grid.uniform(
+    grid = aa.Grid.uniform(
         shape_2d=shape_2d, pixel_scales=pixel_scales, sub_size=sub_size
     )
 
@@ -29,14 +29,14 @@ def simulate_imaging_from_gaussian_and_output_to_fits(
     )
 
     # Simulate the imaging data, including Poisson noise.
-    imaging = aa.imaging.simulate(
+    imaging = aa.Imaging.simulate(
         image=image.in_1d_binned,
         exposure_time=exposure_time,
         background_level=background_level,
         add_noise=True,
     )
 
-    imaging.psf = aa.array.ones(shape_2d=(1, 1), pixel_scales=1.0)
+    imaging.psf = aa.Array.ones(shape_2d=(1, 1), pixel_scales=1.0)
 
     # Output this simulated imaging-data to the PyAutoToy/gaussian/dataset/spherical_gaussian folder.
     workspace_path = "{}/../".format(os.path.dirname(os.path.realpath(__file__)))
@@ -52,14 +52,14 @@ def simulate_imaging_from_gaussian_and_output_to_fits(
         overwrite=True,
     )
 
-    aa.plot.imaging.subplot_imaging(
+    aa.plot.Imaging.subplot_imaging(
         imaging=imaging,
         sub_plotter=aplt.SubPlotter(
             output=aplt.Output(filename="imaging", path=dataset_path, format="png")
         ),
     )
 
-    aa.plot.imaging.individual(
+    aa.plot.Imaging.individual(
         imaging=imaging,
         plot_image=True,
         plot_noise_map=True,

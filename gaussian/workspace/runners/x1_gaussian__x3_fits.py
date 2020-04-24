@@ -55,15 +55,15 @@ for sigma in [0.1, 0.5, 1.0]:
         path=workspace_path, folder_names=["dataset", dataset_label]
     )
 
-    imaging = g.imaging.from_fits(
+    imaging = g.Imaging.from_fits(
         image_path=dataset_path + "image.fits",
         noise_map_path=dataset_path + "noise_map.fits",
         pixel_scales=pixel_scales,
     )
 
-    mask = g.mask.unmasked(shape_2d=imaging.shape_2d, pixel_scales=imaging.pixel_scales)
+    mask = g.Mask.unmasked(shape_2d=imaging.shape_2d, pixel_scales=imaging.pixel_scales)
 
-    # g.plot.imaging.subplot(imaging=imaging)
+    # g.plot.Imaging.subplot(imaging=imaging)
 
     # Running a pipeline is easy, we simply import it from the pipelines folder and pass the lens dataset to its run function.
     # Below, we'll use a 3 phase example pipeline to fit the dataset with a parametric lens light, mass and source light

@@ -33,7 +33,7 @@ class TestPhase:
     ):
         # If an input mask is supplied and there is no mask function, we use mask input.
 
-        mask_input = aa.mask.circular(
+        mask_input = aa.Mask.circular(
             shape_2d=imaging_7x7.shape_2d, pixel_scales=1.0, sub_size=1, radius=1.5
         )
 
@@ -46,17 +46,17 @@ class TestPhase:
     ):
         # If an input mask is supplied and there is no mask function, we use mask input.
 
-        mask_input = aa.mask.circular(
+        mask_input = aa.Mask.circular(
             shape_2d=imaging_7x7.shape_2d, pixel_scales=1, sub_size=1, radius=1.5
         )
 
-        phase_imaging_7x7.meta_imaging_fit.sub_size = 1
+        phase_imaging_7x7.meta_dataset.sub_size = 1
         analysis = phase_imaging_7x7.make_analysis(dataset=imaging_7x7, mask=mask_input)
 
         assert (analysis.masked_imaging.mask == mask_input).all()
         assert analysis.masked_imaging.mask.sub_size == 1
 
-        phase_imaging_7x7.meta_imaging_fit.sub_size = 2
+        phase_imaging_7x7.meta_dataset.sub_size = 2
         analysis = phase_imaging_7x7.make_analysis(dataset=imaging_7x7, mask=mask_input)
 
         assert (analysis.masked_imaging.mask == mask_input).all()
@@ -68,7 +68,7 @@ class TestResult:
         clean_images()
 
         phase_imaging_7x7 = g.PhaseImaging(
-            optimizer_class=mock_pipeline.MockNLO,
+            non_linear_class=mock_pipeline.MockNLO,
             gaussians=[g.SphericalGaussian],
             phase_name="test_phase_2",
         )
@@ -83,7 +83,7 @@ class TestResult:
         clean_images()
 
         phase_imaging_7x7 = g.PhaseImaging(
-            optimizer_class=mock_pipeline.MockNLO,
+            non_linear_class=mock_pipeline.MockNLO,
             gaussians=[g.SphericalGaussian],
             sub_size=2,
             phase_name="test_phase_2",
@@ -103,7 +103,7 @@ class TestPhasePickle:
 
         phase_imaging_7x7 = g.PhaseImaging(
             phase_name="phase_name",
-            optimizer_class=mock_pipeline.MockNLO,
+            non_linear_class=mock_pipeline.MockNLO,
             gaussians=[g.SphericalGaussian],
         )
 
@@ -113,7 +113,7 @@ class TestPhasePickle:
 
         phase_imaging_7x7 = g.PhaseImaging(
             phase_name="phase_name",
-            optimizer_class=mock_pipeline.MockNLO,
+            non_linear_class=mock_pipeline.MockNLO,
             gaussians=[g.SphericalGaussian],
         )
 
@@ -127,7 +127,7 @@ class TestPhasePickle:
 
         phase_imaging_7x7 = CustomPhase(
             phase_name="phase_name",
-            optimizer_class=mock_pipeline.MockNLO,
+            non_linear_class=mock_pipeline.MockNLO,
             gaussians=[g.SphericalGaussian],
         )
         phase_imaging_7x7.make_analysis = make_analysis

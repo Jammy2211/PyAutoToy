@@ -1,7 +1,7 @@
 import autofit as af
 from autoarray.exc import InversionException
 from autofit.exc import FitException
-from autoarray.fit.fit import fit_masked_dataset
+from autoarray.fit.fit import FitImaging
 from gaussian.src.pipeline import visualizer
 
 
@@ -31,7 +31,7 @@ class Analysis(af.Analysis):
 
         try:
             fit = self.masked_imaging_fit_from_instance(instance=instance)
-            return fit.figure_of_merit
+            return fit.log_likelihood
         except InversionException as e:
             raise FitException from e
 
@@ -48,8 +48,8 @@ class Analysis(af.Analysis):
             )
         ).in_1d_binned
 
-        return fit_masked_dataset(
-            masked_dataset=self.masked_imaging, model_data=gaussian_image
+        return FitImaging(
+            masked_imaging=self.masked_imaging, model_image=gaussian_image
         )
 
     def visualize(self, instance, during_analysis):

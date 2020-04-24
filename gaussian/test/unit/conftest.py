@@ -40,14 +40,14 @@ def make_gaussians(gaussian_0, gaussian_1):
 @pytest.fixture(name="phase_dataset_7x7")
 def make_phase_data():
     return g.PhaseDataset(
-        optimizer_class=mock_pipeline.MockNLO, phase_tag="", phase_name="test_phase"
+        non_linear_class=mock_pipeline.MockNLO, phase_tag="", phase_name="test_phase"
     )
 
 
 @pytest.fixture(name="phase_imaging_7x7")
 def make_phase_imaging_7x7():
     return g.PhaseImaging(
-        optimizer_class=mock_pipeline.MockNLO, phase_name="test_phase"
+        non_linear_class=mock_pipeline.MockNLO, phase_name="test_phase"
     )
 
 

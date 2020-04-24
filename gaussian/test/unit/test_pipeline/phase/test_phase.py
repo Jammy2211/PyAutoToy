@@ -57,7 +57,7 @@ class TestPhase:
         setattr(results_7x7.model, "gaussians", [gaussian_model])
 
         phase_dataset_7x7 = MyPlanePhaseAnd(
-            phase_name="test_phase", optimizer_class=mock_pipeline.MockNLO
+            phase_name="test_phase", non_linear_class=mock_pipeline.MockNLO
         )
 
         phase_dataset_7x7.make_analysis(
@@ -78,7 +78,7 @@ class TestPhase:
         setattr(results_7x7.model, "gaussians", [gaussian_model])
 
         phase_dataset_7x7 = MyPlanePhaseAnd(
-            phase_name="test_phase", optimizer_class=mock_pipeline.MockNLO
+            phase_name="test_phase", non_linear_class=mock_pipeline.MockNLO
         )
 
         phase_dataset_7x7.make_analysis(
@@ -107,7 +107,7 @@ class TestPhase:
                 af.PriorModel(cls=g.SphericalGaussian),
                 af.PriorModel(cls=g.SphericalGaussian),
             ],
-            optimizer_class=af.MultiNest,
+            non_linear_class=af.MultiNest,
             phase_name="test_phase",
         )
 
@@ -145,7 +145,7 @@ class TestResult:
         clean_images()
 
         phase_dataset_7x7 = g.PhaseImaging(
-            optimizer_class=mock_pipeline.MockNLO,
+            non_linear_class=mock_pipeline.MockNLO,
             gaussians=[g.SphericalGaussian()],
             phase_name="test_phase_2",
         )

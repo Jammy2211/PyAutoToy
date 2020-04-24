@@ -62,16 +62,16 @@ class TestGaussianPlotterAttributes:
 class TestGaussianPlotterPlots:
     def test__plot_array__works_with_all_extras_included(self, plot_path, plot_patch):
 
-        array = aa.array.ones(shape_2d=(31, 31), pixel_scales=(1.0, 1.0), sub_size=2)
+        array = aa.Array.ones(shape_2d=(31, 31), pixel_scales=(1.0, 1.0), sub_size=2)
 
-        mask = aa.mask.circular(
+        mask = aa.Mask.circular(
             shape_2d=array.shape_2d,
             pixel_scales=array.pixel_scales,
             radius=5.0,
             centre=(2.0, 2.0),
         )
 
-        grid = aa.grid.uniform(shape_2d=(11, 11), pixel_scales=0.5)
+        grid = aa.Grid.uniform(shape_2d=(11, 11), pixel_scales=0.5)
 
         plotter = aplt.Plotter(
             output=aplt.Output(path=plot_path, filename="array1", format="png")
@@ -104,7 +104,7 @@ class TestGaussianPlotterPlots:
 
         assert plot_path + "array2.png" in plot_patch.paths
 
-        aplt.array(
+        aplt.Array(
             array=array,
             mask=mask,
             grid=grid,
@@ -124,7 +124,7 @@ class TestGaussianPlotterPlots:
         if os.path.exists(plot_path):
             shutil.rmtree(plot_path)
 
-        arr = aa.array.ones(shape_2d=(31, 31), pixel_scales=(1.0, 1.0), sub_size=2)
+        arr = aa.Array.ones(shape_2d=(31, 31), pixel_scales=(1.0, 1.0), sub_size=2)
 
         plotter = aplt.Plotter(
             output=aplt.Output(path=plot_path, filename="array", format="fits")
@@ -138,11 +138,11 @@ class TestGaussianPlotterPlots:
 
         assert (arr == np.ones(shape=(31, 31))).all()
 
-        mask = aa.mask.circular(
+        mask = aa.Mask.circular(
             shape_2d=(31, 31), pixel_scales=(1.0, 1.0), radius=5.0, centre=(2.0, 2.0)
         )
 
-        masked_array = aa.masked.array.manual_2d(array=arr, mask=mask)
+        masked_array = aa.MaskedArray.manual_2d(array=arr, mask=mask)
 
         plotter.plot_array(array=masked_array)
 
@@ -153,7 +153,7 @@ class TestGaussianPlotterPlots:
         assert arr.shape == (13, 13)
 
     def test__plot_grid__works_with_all_extras_included(self, plot_path, plot_patch):
-        grid = aa.grid.uniform(shape_2d=(11, 11), pixel_scales=1.0)
+        grid = aa.Grid.uniform(shape_2d=(11, 11), pixel_scales=1.0)
         color_array = np.linspace(start=0.0, stop=1.0, num=grid.shape_1d)
 
         plotter = aplt.Plotter(
@@ -186,7 +186,7 @@ class TestGaussianPlotterPlots:
 
         assert plot_path + "grid2.png" in plot_patch.paths
 
-        aplt.grid(
+        aplt.Grid(
             grid=grid,
             color_array=color_array,
             axis_limits=[-1.5, 1.5, -2.5, 2.5],
@@ -232,7 +232,7 @@ class TestGaussianPlotterPlots:
 
         assert plot_path + "line2.png" in plot_patch.paths
 
-        aplt.line(
+        aplt.Line(
             y=np.array([1.0, 2.0, 3.0]),
             x=np.array([0.5, 1.0, 1.5]),
             plot_axis_type="loglog",
@@ -282,7 +282,7 @@ class TestGaussianPlotterPlots:
 
         assert plot_path + "mapper2.png" in plot_patch.paths
 
-        aplt.mapper_obj(
+        aplt.MapperObj(
             mapper=rectangular_mapper_7x7_3x3,
             gaussian_centres=[(1.0, 1.0)],
             image_pixel_indexes=[[(0, 0), (0, 1)], [(1, 2)]],
@@ -328,7 +328,7 @@ class TestGaussianPlotterPlots:
 
         assert plot_path + "mapper2.png" in plot_patch.paths
 
-        aplt.mapper_obj(
+        aplt.MapperObj(
             mapper=voronoi_mapper_9_3x3,
             image_pixel_indexes=[[(0, 0), (0, 1)], [(1, 2)]],
             source_pixel_indexes=[[0, 1], [2]],

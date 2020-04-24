@@ -49,15 +49,15 @@ dataset_path = af.path_util.make_and_return_path_from_path_and_folder_names(
     path=workspace_path, folder_names=["dataset", dataset_label]
 )
 
-imaging = g.imaging.from_fits(
+imaging = g.Imaging.from_fits(
     image_path=dataset_path + "image.fits",
     noise_map_path=dataset_path + "noise_map.fits",
     pixel_scales=pixel_scales,
 )
 
-mask = g.mask.unmasked(shape_2d=imaging.shape_2d, pixel_scales=imaging.pixel_scales)
+mask = g.Mask.unmasked(shape_2d=imaging.shape_2d, pixel_scales=imaging.pixel_scales)
 
-g.plot.imaging.subplot_imaging(imaging=imaging)
+# g.plot.Imaging.subplot_imaging(imaging=imaging)
 
 ### PIPELINE SETTINGS ###
 
@@ -71,6 +71,7 @@ from gaussian.workspace.pipelines.initialize import x1_gaussian
 pipeline__initialize = x1_gaussian.make_pipeline(
     pipeline_general_settings=pipeline_general_settings,
     phase_folders=["gaussian_x1_solo_fit", dataset_label],
+    non_linear_class=af.DynestyStatic,
 )
 
 from gaussian.workspace.pipelines.main import x1_gaussian
@@ -78,6 +79,7 @@ from gaussian.workspace.pipelines.main import x1_gaussian
 pipeline__main = x1_gaussian.make_pipeline(
     pipeline_general_settings=pipeline_general_settings,
     phase_folders=["gaussian_x1_solo_fit", dataset_label],
+    non_linear_class=af.DynestyStatic,
 )
 
 pipeline = pipeline__initialize + pipeline__main

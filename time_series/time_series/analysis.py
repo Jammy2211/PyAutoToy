@@ -75,7 +75,7 @@ class SingleTimeAnalysis(af.Analysis):
 
         Returns
         -------
-        The evidence for the model
+        The log evidence for the model
         """
         fitness = 0
         species_observables = SpeciesObservables(

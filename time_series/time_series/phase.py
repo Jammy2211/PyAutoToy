@@ -9,7 +9,7 @@ class SingleTimePhase(af.Phase):
         data_index,
         *,
         analysis_class,
-        optimizer_class=af.MultiNest,
+        non_linear_class=af.MultiNest,
         model=None,
     ):
         paths.phase_name = f"{paths.phase_name}_{data_index}"
@@ -17,7 +17,7 @@ class SingleTimePhase(af.Phase):
         super().__init__(
             paths,
             analysis_class=analysis_class,
-            optimizer_class=optimizer_class,
+            non_linear_class=non_linear_class,
             model=model,
         )
 

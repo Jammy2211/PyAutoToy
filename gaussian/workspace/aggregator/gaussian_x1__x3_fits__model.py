@@ -52,23 +52,23 @@ outputs = aggregator.filter(pipeline=pipeline_name).output
 print("Filtered MultiNest Outputs:")
 print(outputs, "\n")
 
-# We can, use these outputs to create a list of the most-likely (e.g. highest likelihood) model of each fit to our
+# We can, use these outputs to create a list of the most-likely (e.g. highest log likelihood) model of each fit to our
 # three images.
-most_likely_vector = [out.most_probable_vector for out in outputs]
+max_log_likelihood_vector = [out.most_probable_vector for out in outputs]
 print("Most Likely Model Parameter Lists:")
-print(most_likely_vector, "\n")
+print(max_log_likelihood_vector, "\n")
 
 # This provides us with lists of all model parameters. However, this isn't that much use - which values correspond
 # to which parameters?
 
 # Its more use to create the model instance of every fit.
-most_likely_instances = [out.most_probable_instance for out in outputs]
+max_log_likelihood_instances = [out.most_probable_instance for out in outputs]
 print("Most Likely Model Instances:")
-print(most_likely_instances, "\n")
+print(max_log_likelihood_instances, "\n")
 
 # A model instance uses the model defined by a pipeline. For our gaussians we can thus extract their parameters.
 print("Most Likely Gaussian Sigmas:")
-print([instance.gaussians.gaussian_0.sigma for instance in most_likely_instances])
+print([instance.gaussians.gaussian_0.sigma for instance in max_log_likelihood_instances])
 print()
 
 # We can also access the 'most probable' model, which is the model computed by marginalizing over the MultiNest samples
@@ -117,4 +117,4 @@ print("Dataset")
 print(datasets, "\n")
 
 # We can plot instances of the dataset object:
-[aplt.imaging.image(imaging=dataset) for dataset in datasets]
+[aplt.Imaging.image(imaging=dataset) for dataset in datasets]

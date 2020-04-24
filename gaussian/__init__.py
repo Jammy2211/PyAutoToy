@@ -1,25 +1,24 @@
 from autoarray import conf
 from autoarray import plot
-from autoarray.mask.mask import Mask as mask
-from autoarray.structures.arrays import Array as array
+from autoarray.mask.mask import Mask
+from autoarray.structures.arrays import Array
 from autoarray.structures.grids import (
-    Grid as grid,
-    GridIrregular as grid_irregular,
-    GridRectangular as grid_rectangular,
-    GridVoronoi as grid_voronoi,
-    Coordinates as positions,
+    Grid,
+    GridRectangular,
+    GridVoronoi ,
+    Coordinates,
 )
-from autoarray.structures.kernel import Kernel as kernel
-from autoarray.structures.visibilities import Visibilities as visibilities
-from autoarray.dataset.imaging import Imaging as imaging
-from autoarray.dataset.interferometer import Interferometer as interferometer
-from autoarray.dataset import data_converter
-from autoarray.operators.convolver import Convolver as convolver
-from autoarray.operators.transformer import Transformer as transformer
+from autoarray.structures.kernel import Kernel
+from autoarray.structures.visibilities import Visibilities
+from autoarray.dataset.imaging import Imaging
+from autoarray.dataset.interferometer import Interferometer
+from autoarray.operators.convolver import Convolver
+from autoarray.operators.transformer import TransformerDFT
 from autoarray.operators.inversion.mappers import mapper
 from autoarray.operators.inversion.inversions import inversion
 from autoarray.operators.inversion import pixelizations as pix, regularization as reg
 from autoarray import plot
+from autoarray.dataset import preprocess
 
 from gaussian.src import dimensions as dim
 from gaussian.src import plot

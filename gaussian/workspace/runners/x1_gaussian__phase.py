@@ -49,22 +49,22 @@ dataset_path = af.path_util.make_and_return_path_from_path_and_folder_names(
     path=workspace_path, folder_names=["dataset", dataset_label]
 )
 
-imaging = g.imaging.from_fits(
+imaging = g.Imaging.from_fits(
     image_path=dataset_path + "image.fits",
     noise_map_path=dataset_path + "noise_map.fits",
     pixel_scales=pixel_scales,
 )
 
-mask = g.mask.unmasked(shape_2d=imaging.shape_2d, pixel_scales=imaging.pixel_scales)
+mask = g.Mask.unmasked(shape_2d=imaging.shape_2d, pixel_scales=imaging.pixel_scales)
 
-# g.plot.imaging.subplot(imaging=imaging)
+# g.plot.Imaging.subplot(imaging=imaging)
 
 
 phase = g.PhaseImaging(
     phase_name="phase_gaussian_example_loads",
     gaussians=af.CollectionPriorModel(gaussian_0=g.SphericalGaussian),
     sub_size=1,
-    optimizer_class=af.Emcee,
+    non_linear_class=af.Emcee,
 )
 
 phase.optimizer.nwalkers = 100
