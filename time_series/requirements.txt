@@ -1,2 +1,2 @@
-numpy==1.17.2
+numpy==1.22.0
 autofit==0.49.0
